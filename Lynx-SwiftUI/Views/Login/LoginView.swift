@@ -7,10 +7,14 @@
 
 import SwiftUI
 import AuthenticationServices
+import GoogleSignIn
 
 struct LoginView: View {
-    
+    @EnvironmentObject var loginHandler: LoginHandler
     @State private var goToHome = false
+    @State private var showSignInError = false
+    @StateObject private var googleSignIn = GoogleSignIn()
+    
     
     var body: some View {
         ZStack {
@@ -63,9 +67,23 @@ struct LoginView: View {
     
     private var signInWithGoogleButton: some View {
         Button {
-            // TODO: Google Sign In
-            withAnimation {
-               goToHome = true
+            googleSignIn.signIn { profileAttributes in
+                self.loginHandler.commonSignIn(
+                    type: profileAttributes.type,
+                    id: profileAttributes.id,
+                    token: profileAttributes.oauthToken,
+                    email: profileAttributes.email,
+                    firstName: profileAttributes.firstName,
+                    lastName: profileAttributes.lastName,
+                    profilePictureURL: profileAttributes.profilePictureURL
+                ) { result in
+                    switch result {
+                    case .success(_):
+                        goToHome = true
+                    case .failure(_):
+                        showSignInError = true
+                    }
+                }
             }
         } label: {
             HStack {
@@ -89,6 +107,12 @@ struct LoginView: View {
                 cornerRadius: Constants.signInButtonCornerRadius
             )
         )
+        .alert("Failed to Sign in", isPresented: $googleSignIn.showErrorSigningIn) { } message: {
+            Text("""
+                      It looks like we weren't able to sign you in. Please try again. If the issue continues, please contact the developers.
+                 """
+            )
+        }
     }
     
     private struct Constants {
@@ -98,6 +122,12 @@ struct LoginView: View {
     }
 }
 
+enum SignInType: String, CaseIterable {
+    case google = "GOOGLE"
+    case apple = "APPLE"
+}
+
 #Preview {
     LoginView()
+        .environmentObject(LoginHandler())
 }

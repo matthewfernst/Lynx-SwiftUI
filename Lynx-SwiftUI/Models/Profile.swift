@@ -6,32 +6,47 @@
 //
 
 import Foundation
-import Security
-import UIKit
-import Apollo
 
-class Profile {
-    var type: String
-    var oauthToken: String
-    var id: String
-    var firstName, lastName: String
+struct Profile: Identifiable {
+    private(set) var id: String
+    private(set) var type: String
+    private(set) var oauthToken: String
+    private(set) var firstName, lastName: String
     var name: String { firstName + " " + lastName }
-    var email: String
-    var profilePicture: UIImage?
-    var profilePictureURL: String?
-    var appTheme: String = "System"
-    var measurementSystem: MeasurementSystem = Profile.getDefaultMeasurementSystem()
-    var notificationsAllowed: Bool?
+    private(set) var email: String
+    private(set) var profilePictureURL: URL?
+    private(set) var appTheme: String = "System"
+    private(set) var measurementSystem: MeasurementSystem = Profile.getDefaultMeasurementSystem()
+    private(set) var notificationsAllowed: Bool?
     
-    init(type: String, oauthToken: String, id: String, firstName: String, lastName: String, email: String, profilePicture: UIImage? = nil, profilePictureURL: String? = "") {
+    init(
+        type: String,
+        oauthToken: String,
+        id: String,
+        firstName: String,
+        lastName: String,
+        email: String,
+        profilePictureURL: URL? = nil
+    ) {
         self.type = type
         self.oauthToken = oauthToken
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.profilePicture = profilePicture
         self.profilePictureURL = profilePictureURL
+    }
+    
+    init(profileAttributes: ProfileAttributes) {
+        self.init(
+            type: profileAttributes.type,
+            oauthToken: profileAttributes.oauthToken,
+            id: profileAttributes.id,
+            firstName: profileAttributes.firstName,
+            lastName: profileAttributes.lastName,
+            email: profileAttributes.email,
+            profilePictureURL: profileAttributes.profilePictureURL
+        )
     }
     
     private static func getDefaultMeasurementSystem() -> MeasurementSystem {
@@ -43,30 +58,42 @@ class Profile {
         }
     }
     
-    public static func createProfile(type: String, oauthToken: String, id: String, firstName: String, lastName: String, email: String, profilePictureURL: String? = nil, completion: @escaping (Profile) -> Void) {
-        guard let profilePictureURL = URL(string: profilePictureURL ?? "") else {
-            completion(Profile(type: type, oauthToken: oauthToken, id: id, firstName: firstName, lastName: lastName, email: email))
-            return
-        }
-        
-        ProfilePictureUtils.downloadProfilePicture(with: profilePictureURL) { profilePicture in
-            let profile = Profile(type: type,
-                                  oauthToken: oauthToken,
-                                  id: id,
-                                  firstName: firstName,
-                                  lastName: lastName,
-                                  email: email,
-                                  profilePicture: profilePicture,
-                                  profilePictureURL: profilePictureURL.absoluteString)
-            completion(profile)
-        }
-    }
+//    static func createProfile(
+//        type: String,
+//        oauthToken: String,
+//        id: String,
+//        firstName: String,
+//        lastName: String,
+//        email: String,
+//        profilePictureURL: String? = nil,
+//        completion: @escaping (Profile) -> Void
+//    ) {
+//        guard let profilePictureURL = URL(string: profilePictureURL ?? "") else {
+//            completion(Profile(type: type, oauthToken: oauthToken, id: id, firstName: firstName, lastName: lastName, email: email))
+//            return
+//        }
+//        
+//        ProfilePictureUtils.downloadProfilePicture(with: profilePictureURL) { profilePicture in
+//            let profile = Profile(type: type,
+//                                  oauthToken: oauthToken,
+//                                  id: id,
+//                                  firstName: firstName,
+//                                  lastName: lastName,
+//                                  email: email,
+//                                  profilePictureURL: profilePictureURL.absoluteString)
+//            completion(profile)
+//        }
+//    }
     
-    public func editAttributes(newFirstName: String?, newLastName: String?, newEmail: String?, newProfilePicture: UIImage?, newProfilePictureURL: String?) {
+    mutating func editAttributes(
+        newFirstName: String?,
+        newLastName: String?,
+        newEmail: String?,
+        newProfilePictureURL: URL?
+    ) {
         self.firstName = newFirstName ?? self.firstName
         self.lastName = newLastName ?? self.lastName
         self.email = newEmail ?? self.email
-        self.profilePicture = newProfilePicture ?? self.profilePicture
         self.profilePictureURL = newProfilePictureURL ?? self.profilePictureURL
     }
     

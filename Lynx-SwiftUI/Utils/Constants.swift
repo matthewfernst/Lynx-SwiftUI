@@ -7,8 +7,7 @@
 
 import Foundation
 
-enum Constants
-{
+enum Constants {
     // Apollo
     static let graphQLEndpoint = "https://nyw0w1k06b.execute-api.us-west-1.amazonaws.com/production/graphql"
 
@@ -21,8 +20,4 @@ enum Constants
     
     // Email
     static let contactEmail = "matthew.f.ernst@icloud.com"
-    
-    // External Links
-    static let slopesHomepage = "https://getslopes.com"
-    static let mountainUIDisplayGithub = "https://github.com/matthewfernst/Mountain-UI"
 }

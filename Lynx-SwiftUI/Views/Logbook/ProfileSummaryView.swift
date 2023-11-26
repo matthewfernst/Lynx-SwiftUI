@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfileSummaryView: View {
+    @EnvironmentObject var loginHandler: LoginHandler
     var body: some View {
         HStack {
             profilePicture
@@ -17,12 +18,17 @@ struct ProfileSummaryView: View {
     
     
     private var profilePicture: some View {
-        Image("DebugProfilePic")
-            .resizable()
-            .scaledToFit()
-            .clipShape(Circle())
-            .frame(maxWidth: 110)
-            .padding()
+        AsyncImage(url: loginHandler.profile?.profilePictureURL) { image in
+            image
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(maxWidth: 110)
+                .padding()
+        } placeholder: {
+            ProgressView()
+        }
+
     }
     
     private var lifetimeSummary: some View {

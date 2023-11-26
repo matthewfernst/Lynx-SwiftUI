@@ -5,9 +5,10 @@
 //  Created by Matthew Ernst on 4/30/23.
 //
 
-import Foundation
+import SwiftUI
 
 class UserManager {
+    @EnvironmentObject var loginHandler: LoginHandler
     static let shared = UserManager()
     
     private init() {}
@@ -36,8 +37,8 @@ class UserManager {
             case noProfileSaved
             case noOauthTokenSaved
         }
-
-        guard let profile = LoginController.profile else {
+        
+        guard let profile = loginHandler.profile else {
             return completion(.failure(RenewTokenErrors.noProfileSaved))
         }
         
@@ -46,12 +47,12 @@ class UserManager {
         }
         
         ApolloLynxClient.loginOrCreateUser(type: profile.type,
-                                                 id: profile.id,
-                                                 token: oauthToken,
-                                                 email: profile.email,
-                                                 firstName: profile.firstName,
-                                                 lastName: profile.lastName,
-                                                 profilePictureUrl: profile.profilePictureURL) { result in
+                                           id: profile.id,
+                                           token: oauthToken,
+                                           email: profile.email,
+                                           firstName: profile.firstName,
+                                           lastName: profile.lastName,
+                                           profilePictureUrl: profile.profilePictureURL) { result in
             switch result {
             case .success:
                 completion(.success((UserManager.shared.token!.authorizationTokenValue)))
@@ -63,8 +64,7 @@ class UserManager {
     }
 }
 
-struct ExpirableAuthorizationToken
-{
+struct ExpirableAuthorizationToken {
     let authorizationToken: String
     let expirationDate: Date
     let oauthToken: String

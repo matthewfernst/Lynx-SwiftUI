@@ -118,13 +118,17 @@ class ApolloLynxClient {
                 }
                 
                 
+                var pictureURL: URL? = nil
+                if let urlString = selfLookup.profilePictureUrl {
+                    pictureURL = URL(string: urlString)
+                }
                 let profileAttributes = ProfileAttributes(type: type.rawValue,
                                                           oauthToken: oauthToken,
                                                           id: id,
                                                           email: selfLookup.email,
                                                           firstName: selfLookup.firstName,
                                                           lastName: selfLookup.lastName,
-                                                          profilePictureURL: selfLookup.profilePictureUrl)
+                                                          profilePictureURL: pictureURL)
                 Logger.apollo.debug("ProfileAttributes being returned:\n \(profileAttributes.debugDescription)")
                 completion(.success(profileAttributes))
             case .failure(let error):
@@ -153,7 +157,17 @@ class ApolloLynxClient {
         }
     }
     
-    public static func loginOrCreateUser(type: String, id: String, token: String, email: String?, firstName: String?, lastName: String?, profilePictureUrl: String?, completion: @escaping (Result<Bool, Error>) -> Void) {
+    static func loginOrCreateUser(
+        type: String,
+        id: String,
+        token: String,
+        email: String?,
+        firstName: String?,
+        lastName: String?,
+        profilePictureUrl: URL?,
+        completion: @escaping (Result<Bool,
+        Error>) -> Void
+    ) {
         
         Logger.apollo.debug("Login in with following: type               -> \(type)")
         Logger.apollo.debug("                         id                 -> \(id)")
@@ -161,7 +175,7 @@ class ApolloLynxClient {
         Logger.apollo.debug("                         email              -> \(email ?? "nil")")
         Logger.apollo.debug("                         firstName          -> \(firstName ?? "nil")")
         Logger.apollo.debug("                         lastName           -> \(lastName ?? "nil")")
-        Logger.apollo.debug("                         profilePictureUrl  -> \(profilePictureUrl ?? "nil")")
+        Logger.apollo.debug("                         profilePictureUrl  -> \(profilePictureUrl?.absoluteString ?? "nil")")
         
         
         var userData: [ApolloGeneratedGraphQL.UserDataPair] = []
@@ -170,7 +184,7 @@ class ApolloLynxClient {
         if let firstName = firstName, let lastName = lastName, let profilePictureUrl = profilePictureUrl {
             userData.append(ApolloGeneratedGraphQL.UserDataPair(key: "firstName", value: firstName))
             userData.append(ApolloGeneratedGraphQL.UserDataPair(key: "lastName", value: lastName))
-            userData.append(ApolloGeneratedGraphQL.UserDataPair(key: "profilePictureUrl", value: profilePictureUrl))
+            userData.append(ApolloGeneratedGraphQL.UserDataPair(key: "profilePictureUrl", value: profilePictureUrl.absoluteString))
             userDataNullable = GraphQLNullable<[ApolloGeneratedGraphQL.UserDataPair]>(arrayLiteral: userData[0], userData[1], userData[2])
         }
         
@@ -568,24 +582,31 @@ class ApolloLynxClient {
 
 
 // MARK: - ProfileAttributes
-struct ProfileAttributes: CustomDebugStringConvertible
-{
+struct ProfileAttributes: CustomDebugStringConvertible {
     var type: String
     var oauthToken: String
     var id: String
     var email: String
     var firstName: String
     var lastName: String
-    var profilePictureURL: String
+    var profilePictureURL: URL?
     
-    init(type: String, oauthToken: String, id: String, email: String, firstName: String, lastName: String, profilePictureURL: String? = "") {
+    init(
+        type: String,
+        oauthToken: String,
+        id: String,
+        email: String,
+        firstName: String,
+        lastName: String,
+        profilePictureURL: URL? = nil
+    ) {
         self.type = type
         self.oauthToken = oauthToken
         self.id = id
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
-        self.profilePictureURL = profilePictureURL ?? ""
+        self.profilePictureURL = profilePictureURL
     }
     
     var debugDescription: String {

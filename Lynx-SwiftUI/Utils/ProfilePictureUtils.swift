@@ -8,9 +8,8 @@
 import Foundation
 import UIKit
 
-struct ProfilePictureUtils
-{
-    public static func getDefaultProfilePicture(name: String, fontSize: CGFloat) -> UILabel {
+struct ProfilePictureUtils {
+    static func getDefaultProfilePicture(name: String, fontSize: CGFloat) -> UILabel {
         let initialsLabel = UILabel()
         
         initialsLabel.text = name.initials
@@ -20,7 +19,7 @@ struct ProfilePictureUtils
         return initialsLabel
     }
     
-    public static func setupDefaultProfilePicture(profile: Profile, profilePictureImageView: UIImageView, defaultProfilePictureLabel: UILabel?, fontSize: CGFloat) -> UILabel? {
+    static func setupDefaultProfilePicture(profile: Profile, profilePictureImageView: UIImageView, defaultProfilePictureLabel: UILabel?, fontSize: CGFloat) -> UILabel? {
         if defaultProfilePictureLabel == nil {
             profilePictureImageView.image = nil
             
@@ -39,7 +38,7 @@ struct ProfilePictureUtils
         return nil
     }
     
-    public static func downloadProfilePicture(with url: URL, completion: @escaping (UIImage) -> Void) {
+    static func downloadProfilePicture(with url: URL, completion: @escaping (UIImage) -> Void) {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 print("Error downloading profile picture: \(error)")

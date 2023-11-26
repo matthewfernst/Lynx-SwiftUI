@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LogbookView: View {
-    
+    @EnvironmentObject var loginHandler: LoginHandler
     @State private var showMoreInfo = false
     
     var body: some View {
