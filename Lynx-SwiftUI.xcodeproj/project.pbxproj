@@ -83,6 +83,8 @@
 		65B35F8A2B11C154002E99E4 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35F892B11C154002E99E4 /* UserDefaultsKeys.swift */; };
 		65B35F8E2B11C1E0002E99E4 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35F8D2B11C1E0002E99E4 /* Profile.swift */; };
 		65B35F902B11C2A0002E99E4 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35F8F2B11C2A0002E99E4 /* BookmarkManager.swift */; };
+		65B39A652B13E61100948C9D /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B39A642B13E61100948C9D /* ProfileManager.swift */; };
+		65B39A672B13FD0500948C9D /* LogbookStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B39A662B13FD0500948C9D /* LogbookStats.swift */; };
 		65F6CFD42B12E71E00E94E40 /* ProfilePictureUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F6CFD32B12E71E00E94E40 /* ProfilePictureUtils.swift */; };
 		65F6CFD62B12EA2300E94E40 /* LoginHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F6CFD52B12EA2300E94E40 /* LoginHandler.swift */; };
 		65F6CFDA2B13020300E94E40 /* GoogleSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F6CFD92B13020300E94E40 /* GoogleSignIn.swift */; };
@@ -163,6 +165,8 @@
 		65B35F892B11C154002E99E4 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		65B35F8D2B11C1E0002E99E4 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		65B35F8F2B11C2A0002E99E4 /* BookmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
+		65B39A642B13E61100948C9D /* ProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
+		65B39A662B13FD0500948C9D /* LogbookStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogbookStats.swift; sourceTree = "<group>"; };
 		65F6CFD32B12E71E00E94E40 /* ProfilePictureUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePictureUtils.swift; sourceTree = "<group>"; };
 		65F6CFD52B12EA2300E94E40 /* LoginHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginHandler.swift; sourceTree = "<group>"; };
 		65F6CFD92B13020300E94E40 /* GoogleSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignIn.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				65B35F8D2B11C1E0002E99E4 /* Profile.swift */,
+				65B39A642B13E61100948C9D /* ProfileManager.swift */,
 				65B35F8F2B11C2A0002E99E4 /* BookmarkManager.swift */,
 			);
 			path = Models;
@@ -253,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				65F6CFD52B12EA2300E94E40 /* LoginHandler.swift */,
+				65B39A662B13FD0500948C9D /* LogbookStats.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -567,6 +573,7 @@
 				65B35EF42B11BE0B002E99E4 /* ResponseLoggingInterceptor.swift in Sources */,
 				65B35EB22B11A1C5002E99E4 /* LoginView.swift in Sources */,
 				65B35F322B11BF4B002E99E4 /* Extensions.swift in Sources */,
+				65B39A672B13FD0500948C9D /* LogbookStats.swift in Sources */,
 				65B35F6A2B11C129002E99E4 /* DeleteAccountMutation.graphql.swift in Sources */,
 				65B35F752B11C129002E99E4 /* GetAllLeaderboardsQuery.graphql.swift in Sources */,
 				65B35F732B11C129002E99E4 /* GetProfileInformationQuery.graphql.swift in Sources */,
@@ -588,6 +595,7 @@
 				65B35F872B11C129002E99E4 /* SchemaMetadata.graphql.swift in Sources */,
 				65B35F802B11C129002E99E4 /* LogDetail.graphql.swift in Sources */,
 				65B35F2F2B11BF1D002E99E4 /* NetworkManager.swift in Sources */,
+				65B39A652B13E61100948C9D /* ProfileManager.swift in Sources */,
 				65B35F712B11C129002E99E4 /* GetUploadedLogsQuery.graphql.swift in Sources */,
 				65F6CFD42B12E71E00E94E40 /* ProfilePictureUtils.swift in Sources */,
 				65B35F742B11C129002E99E4 /* GetSelectedLeaderboardQuery.graphql.swift in Sources */,

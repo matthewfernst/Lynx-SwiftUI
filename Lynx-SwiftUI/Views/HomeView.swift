@@ -19,7 +19,7 @@ struct HomeView: View {
                 .tabItem {
                     Label("Leaderboard", systemImage: "trophy")
                 }
-        
+            
             
             AccountView()
                 .tabItem {

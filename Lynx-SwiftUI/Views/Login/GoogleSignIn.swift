@@ -10,7 +10,6 @@ import SwiftUI
 import GoogleSignIn
 
 class GoogleSignIn: ObservableObject {
-    @EnvironmentObject var loginHandler: LoginHandler
     @Published var showErrorSigningIn = false
     
     func signIn(completion: @escaping (ProfileAttributes) -> Void) {

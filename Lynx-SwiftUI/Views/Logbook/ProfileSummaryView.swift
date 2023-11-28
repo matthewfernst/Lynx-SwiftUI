@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ProfileSummaryView: View {
-    @EnvironmentObject var loginHandler: LoginHandler
+    @Binding var logbookStats: LogbookStats
+    
     var body: some View {
         HStack {
             profilePicture
@@ -18,7 +19,7 @@ struct ProfileSummaryView: View {
     
     
     private var profilePicture: some View {
-        AsyncImage(url: loginHandler.profile?.profilePictureURL) { image in
+        AsyncImage(url: ProfileManager.shared.profile?.profilePictureURL) { image in
             image
                 .resizable()
                 .scaledToFit()
@@ -33,16 +34,18 @@ struct ProfileSummaryView: View {
     
     private var lifetimeSummary: some View {
         VStack {
-            Text("--")
+            Text(logbookStats.lifetimeVertical)
                 .font(.system(size: 32))
                 .fontWeight(.semibold)
-            Text("lifetime vertical ft")
+            Text("lifetime vertical \(logbookStats.feetOrMeters)")
                 .font(.system(size: 18))
         }
         .padding()
     }
+    
+
 }
 
 #Preview {
-    ProfileSummaryView()
+    ProfileSummaryView(logbookStats: .constant(LogbookStats()))
 }

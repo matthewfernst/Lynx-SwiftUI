@@ -8,7 +8,6 @@
 import SwiftUI
 
 class UserManager {
-    @EnvironmentObject var loginHandler: LoginHandler
     static let shared = UserManager()
     
     private init() {}
@@ -38,7 +37,7 @@ class UserManager {
             case noOauthTokenSaved
         }
         
-        guard let profile = loginHandler.profile else {
+        guard let profile = ProfileManager.shared.profile else {
             return completion(.failure(RenewTokenErrors.noProfileSaved))
         }
         

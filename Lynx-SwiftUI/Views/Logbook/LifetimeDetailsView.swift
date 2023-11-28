@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct LifetimeDetailsView: View {
+    @Binding var logbookStats: LogbookStats
+    
     var body: some View {
         HStack {
-            getDetailView(withStat: "--", andText: "days")
-            getDetailView(withStat: "--", andText: "time on runs")
-            getDetailView(withStat: "--", andText: "runs")
+            getDetailView(
+                withStat: logbookStats.lifetimeDaysOnMountain,
+                andText: "days"
+            )
+            getDetailView(
+                withStat: logbookStats.lifetimeRunsTime,
+                andText: "time on runs"
+            )
+            getDetailView(
+                withStat: logbookStats.lifetimeRuns,
+                andText: "runs"
+            )
         }
     }
     private func getDetailView(withStat stat: String, andText text: String) -> some View {
@@ -26,5 +37,5 @@ struct LifetimeDetailsView: View {
 }
 
 #Preview {
-    LifetimeDetailsView()
+    LifetimeDetailsView(logbookStats: .constant(LogbookStats()))
 }

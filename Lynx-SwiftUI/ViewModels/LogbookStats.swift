@@ -4,9 +4,7 @@
 //
 //  Created by Matthew Ernst on 6/16/23.
 //
-import UIKit
 import Foundation
-
 
 struct LogbookStats {
     var logbooks: Logbooks = []
@@ -14,18 +12,18 @@ struct LogbookStats {
     // MARK: - Lifetime Stats
     
     var feetOrMeters: String {
-        switch TabViewController.profile?.measurementSystem {
+        switch ProfileManager.shared.profile?.measurementSystem {
         case .imperial:
-            return "FT"
+            return "ft"
         case .metric:
-            return "M"
+            return "m"
         case .none:
             return ""
         }
     }
     
     var milesPerHourOrKilometersPerHour: String {
-        switch TabViewController.profile?.measurementSystem {
+        switch ProfileManager.shared.profile?.measurementSystem {
         case .imperial:
             return "MPH"
         case .metric:
@@ -123,7 +121,7 @@ struct LogbookStats {
     }
     
     func logbookTopSpeed(at index: Int) -> String {
-        return String(format: "%.1f", logbook(at: index)?.topSpeed ?? 0.0)
+        return String(format: "%.1f\(milesPerHourOrKilometersPerHour)", logbook(at: index)?.topSpeed ?? 0.0)
     }
     
     func getConfiguredLogbookData(at index: Int) -> ConfiguredLogbookData? {
@@ -133,29 +131,41 @@ struct LogbookStats {
         
         let (runDurationHour, runDurationMinutes) = totalLogbookTime(at: index)
         
-        return ConfiguredLogbookData(locationName: logbook.locationName,
-                                       numberOfRuns: Int(logbook.runCount) ,
-                                       runDurationHour: runDurationHour,
-                                       runDurationMinutes: runDurationMinutes,
-                                       dateOfRun: formattedDateOfRun(at: index),
-                                       conditions: logbookConditions(at: index),
-                                       topSpeed: logbookTopSpeed(at: index))
+        return ConfiguredLogbookData(
+            resortName: logbook.locationName,
+            numberOfRuns: Int(logbook.runCount),
+            runDurationHour: runDurationHour,
+            runDurationMinutes: runDurationMinutes,
+            dateOfRun: formattedDateOfRun(at: index),
+            conditions: logbookConditions(at: index),
+            topSpeed: logbookTopSpeed(at: index)
+        )
     }
     
     // MARK: Lifetime Stats
     var lifetimeAverages: [(Stat, Stat?)] {
         return [
-            (Stat(label: "run vertical", information: calculateAverageVerticalFeet(), icon: UIImage(systemName: "arrow.down")!),
-            Stat(label: "run distance", information: calculateAverageDistance(), icon: UIImage(systemName: "arrow.right")!)),
-            (Stat(label: "speed", information: calculateAverageSpeed(), icon: UIImage(systemName: "speedometer")!), nil)
+            (
+            Stat(label: "run vertical", information: calculateAverageVerticalFeet(), systemImageName: "arrow.down"),
+            Stat(label: "run distance", information: calculateAverageDistance(), systemImageName: "arrow.right")
+            ),
+            (
+                Stat(label: "speed", information: calculateAverageSpeed(), systemImageName: "speedometer"),
+                nil
+            )
         ]
     }
     
     var lifetimeBest: [(Stat, Stat?)] {
         return [
-           (Stat(label: "top speed", information: calculateBestTopSpeed(), icon: UIImage(systemName: "flame")!),
-           Stat(label: "tallest run", information: calculateBestTallestRun(), icon: UIImage(systemName: "arrow.down")!)),
-           (Stat(label: "longest run", information: calculateBestLongestRun(), icon: UIImage(systemName: "arrow.right")!), nil)
+           (
+            Stat(label: "top speed", information: calculateBestTopSpeed(), systemImageName: "flame"),
+            Stat(label: "tallest run", information: calculateBestTallestRun(), systemImageName: "arrow.donw")
+           ),
+           (
+            Stat(label: "longest run", information: calculateBestLongestRun(), systemImageName: "arrow.right"), 
+            nil
+           )
         ]
     }
     
@@ -176,7 +186,7 @@ struct LogbookStats {
         let averageDistance = logbooks.map { $0.distance }.reduce(0.0) {
             return $0 + $1/Double(logbooks.count)
         }
-        switch TabViewController.profile?.measurementSystem {
+        switch ProfileManager.shared.profile?.measurementSystem {
         case .imperial:
             return String(format: "%.1f MI", averageDistance.feetToMiles)
         case .metric:
@@ -203,7 +213,7 @@ struct LogbookStats {
     }
     
     private func calculateBestLongestRun() -> String {
-        switch TabViewController.profile?.measurementSystem {
+        switch ProfileManager.shared.profile?.measurementSystem {
         case .imperial:
             return String(format: "%.1f MI", (logbooks.map { $0.distance }.max() ?? 0.0).feetToMiles)
         case .metric:
@@ -215,7 +225,7 @@ struct LogbookStats {
 }
 
 struct ConfiguredLogbookData {
-    let locationName: String
+    let resortName: String
     let numberOfRuns: Int
     let runDurationHour: Int
     let runDurationMinutes: Int
@@ -223,6 +233,13 @@ struct ConfiguredLogbookData {
     let conditions: String
     let topSpeed: String
 }
+
+struct Stat {
+    let label: String
+    var information: String
+    let systemImageName: String
+}
+
 
 extension Double {
     var feetToMiles: Self {

@@ -8,19 +8,35 @@
 import SwiftUI
 
 struct LogbookView: View {
-    @EnvironmentObject var loginHandler: LoginHandler
+    @State private var logbookStats = LogbookStats()
     @State private var showMoreInfo = false
     
     var body: some View {
         NavigationStack {
             VStack {
-                ProfileSummaryView()
-                LifetimeDetailsView()
+                ProfileSummaryView(logbookStats: $logbookStats)
+                LifetimeDetailsView(logbookStats: $logbookStats)
                 
                 Spacer()
-                
-                // TODO: List!
-                
+               
+                List {
+                    Section {
+                        NavigationLink {
+                            Text("TODO!")
+                        } label: {
+                            lifetimeSummaryLabel
+                        }
+                    }
+                    
+                    ForEach(logbookStats.logbooks.indices, id: \.self) { index in
+                        if let configuredData = logbookStats.getConfiguredLogbookData(at: index) {
+                            configuredSessionSummary(with: configuredData)
+                        }
+                    }
+                }
+                .refreshable {
+                    requestLogs()
+                }
             }
             .navigationTitle("Logbook")
             .toolbar {
@@ -47,6 +63,71 @@ struct LogbookView: View {
                     }
                 }
             }
+            .onAppear {
+                requestLogs()
+            }
+        }
+    }
+    
+    private var lifetimeSummaryLabel: some View {
+        VStack(alignment: .leading, spacing: Constants.Spacing.dateAndSummary) {
+            Text("Lifetime Summary")
+                .font(.system(
+                    size: Constants.Fonts.resortNameSize,
+                    weight: Constants.Fonts.resortNameWeight
+                ))
+            HStack {
+                Text(
+                    "\(logbookStats.lifetimeRuns) runs | \(logbookStats.lifetimeDaysOnMountain) days | \(logbookStats.lifetimeVertical)"
+                )
+            }
+            .foregroundStyle(Color(uiColor: .secondaryLabel))
+            .font(.system(
+                size: Constants.Fonts.detailSize,
+                weight: Constants.Fonts.detailWeight
+            ))
+        }
+    }
+    
+    private func configuredSessionSummary(with data: ConfiguredLogbookData) -> some View {
+        HStack(alignment: .top, spacing: Constants.Spacing.mainTitleAndDetails) {
+            Text(data.dateOfRun)
+                .multilineTextAlignment(.center)
+            
+            VStack(alignment: .leading, spacing: Constants.Spacing.dateAndSummary) {
+                Text(data.resortName)
+                    .font(.system(
+                        size: Constants.Fonts.resortNameSize,
+                        weight: Constants.Fonts.resortNameWeight
+                    ))
+                HStack {
+                    Image(systemName: "figure.snowboarding")
+                    Text(
+                        "| \(data.numberOfRuns) runs | \(data.runDurationHour)H \(data.runDurationMinutes)M | \(data.conditions) | \(data.topSpeed)"
+                    )
+                }
+                .foregroundStyle(Color(uiColor: .secondaryLabel))
+                .font(.system(
+                    size: Constants.Fonts.detailSize,
+                    weight: Constants.Fonts.detailWeight
+                ))
+            }
+        }
+    }
+    
+    private func requestLogs() {
+        ApolloLynxClient.clearCache()
+        Task {
+            ApolloLynxClient.getLogs(
+                measurementSystem: ProfileManager.shared.profile!.measurementSystem
+            ) { result in
+                switch result {
+                case .success(let logs):
+                    logbookStats.logbooks = logs
+                case .failure(_):
+                    print("shit")
+                }
+            }
         }
     }
     
@@ -56,9 +137,24 @@ struct LogbookView: View {
                        """
         static let mountainUILink = "https://github.com/matthewfernst/Mountain-UI"
         static let slopesLink = "https://getslopes.com"
+        
+        struct Spacing {
+            static let mainTitleAndDetails: CGFloat = 20
+            static let dateAndSummary: CGFloat = 4
+        }
+        
+        struct Fonts {
+            static let resortNameSize: CGFloat = 18
+            static let resortNameWeight: Font.Weight = .medium
+            
+            static let detailSize: CGFloat = 12
+            static let detailWeight: Font.Weight = .medium
+        }
+        
     }
 }
 
 #Preview {
     LogbookView()
+    
 }

@@ -10,40 +10,47 @@ import AuthenticationServices
 import GoogleSignIn
 
 struct LoginView: View {
-    @EnvironmentObject var loginHandler: LoginHandler
+    private var loginHandler = LoginHandler()
     @State private var goToHome = false
     @State private var showSignInError = false
+    @State private var isSigningIn = false
     @StateObject private var googleSignIn = GoogleSignIn()
     
     
     var body: some View {
         ZStack {
-            Image("LynxSignIn")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea(.all)
-                .overlay(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.clear, Color.black]),
-                        startPoint: .center,
-                        endPoint: .bottom
-                    )
-                    .edgesIgnoringSafeArea(.all)
-                )
-            
-            VStack {
-                Spacer()
-                Image("LynxLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 150)
-                    .offset(x: -90, y: -40)
-                signInWithAppleButton
-                signInWithGoogleButton
+            backgroundLynxImage
+            Group {
+                signInProgressView
+                signLynxLogoAndSignInButtonStack
             }
-            .fullScreenCover(isPresented: $goToHome, content: HomeView.init) // TODO: Better transition!
-            .padding()
+            .alert("Failed to Sign In", isPresented: $googleSignIn.showErrorSigningIn) {
+                Button("OK") {
+                    isSigningIn = false
+                }
+            } message: {
+                Text("""
+                          It looks like we weren't able to sign you in. Please try again. If the issue continues, please contact the developers.
+                     """
+                )
+            }
         }
+        .fullScreenCover(isPresented: $goToHome, content: HomeView.init) // TODO: Better transition!
+    }
+    
+    private var backgroundLynxImage: some View {
+        Image("LynxSignIn")
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea(.all)
+            .overlay(
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.clear, Color.black]),
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+                .edgesIgnoringSafeArea(.all)
+            )
     }
     
     private var signInWithAppleButton: some View {
@@ -67,6 +74,10 @@ struct LoginView: View {
     
     private var signInWithGoogleButton: some View {
         Button {
+            #if DEBUG
+            goToHome = true
+            #endif
+            isSigningIn = true
             googleSignIn.signIn { profileAttributes in
                 self.loginHandler.commonSignIn(
                     type: profileAttributes.type,
@@ -101,17 +112,38 @@ struct LoginView: View {
             height: Constants.signInButtonHeight
         )
         .background(.white)
-        
         .clipShape(
             RoundedRectangle(
                 cornerRadius: Constants.signInButtonCornerRadius
             )
         )
-        .alert("Failed to Sign in", isPresented: $googleSignIn.showErrorSigningIn) { } message: {
-            Text("""
-                      It looks like we weren't able to sign you in. Please try again. If the issue continues, please contact the developers.
-                 """
-            )
+
+    }
+    
+    private var signLynxLogoAndSignInButtonStack: some View {
+        VStack {
+            Spacer()
+            Image("LynxLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150)
+                .offset(x: -90, y: -40)
+            signInWithAppleButton
+            signInWithGoogleButton
+        }
+        .padding()
+    }
+    
+    @ViewBuilder
+    private var signInProgressView: some View {
+        if isSigningIn {
+            ProgressView("Signing in...")
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black.opacity(0.5))
+                .ignoresSafeArea(.all)
+                .zIndex(100)
         }
     }
     
@@ -122,12 +154,6 @@ struct LoginView: View {
     }
 }
 
-enum SignInType: String, CaseIterable {
-    case google = "GOOGLE"
-    case apple = "APPLE"
-}
-
 #Preview {
     LoginView()
-        .environmentObject(LoginHandler())
 }

@@ -12,9 +12,7 @@ enum ProfileError: Error {
     case profileCreationFailed
 }
 
-class LoginHandler: ObservableObject {
-    @Published var profile: Profile?
-    
+class LoginHandler {
     func commonSignIn(
         type: String,
         id: String,
@@ -66,7 +64,7 @@ class LoginHandler: ObservableObject {
         let defaults = UserDefaults.standard
         defaults.setValue(profileAttributes.type, forKey: UserDefaultsKeys.loginType)
         defaults.setValue(profileAttributes.id, forKey: UserDefaultsKeys.appleOrGoogleId)
-        profile = Profile(
+        ProfileManager.shared.profile = Profile(
             type: profileAttributes.type,
             oauthToken: profileAttributes.oauthToken,
             id: profileAttributes.id,
@@ -76,10 +74,15 @@ class LoginHandler: ObservableObject {
             profilePictureURL: profileAttributes.profilePictureURL
         )
         
-        if let profile = profile {
+        if let _ = ProfileManager.shared.profile {
             completion(.success(()))
         } else {
             completion(.failure(ProfileError.profileCreationFailed))
         }
     }
+}
+
+enum SignInType: String, CaseIterable {
+    case google = "GOOGLE"
+    case apple = "APPLE"
 }
