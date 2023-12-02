@@ -12,21 +12,21 @@ struct LifetimeDetailsView: View {
     
     var body: some View {
         HStack {
-            getDetailView(
+            detailView(
                 withStat: logbookStats.lifetimeDaysOnMountain,
                 andText: "days"
             )
-            getDetailView(
+            detailView(
                 withStat: logbookStats.lifetimeRunsTime,
                 andText: "time on runs"
             )
-            getDetailView(
+            detailView(
                 withStat: logbookStats.lifetimeRuns,
                 andText: "runs"
             )
         }
     }
-    private func getDetailView(withStat stat: String, andText text: String) -> some View {
+    private func detailView(withStat stat: String, andText text: String) -> some View {
         VStack {
             Text(stat)
                 .font(.system(size: 22, weight: .bold))

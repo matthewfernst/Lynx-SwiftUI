@@ -17,32 +17,41 @@ struct ProfileSummaryView: View {
         }
     }
     
-    
     private var profilePicture: some View {
         AsyncImage(url: ProfileManager.shared.profile?.profilePictureURL) { image in
             image
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
-                .frame(maxWidth: 110)
-                .padding()
+                .frame(maxWidth: Constants.Profile.imageWidth)
         } placeholder: {
             ProgressView()
         }
-
+        .padding()
     }
     
     private var lifetimeSummary: some View {
         VStack {
             Text(logbookStats.lifetimeVertical)
-                .font(.system(size: 32))
+                .font(.system(size: Constants.Font.statFontSize))
                 .fontWeight(.semibold)
-            Text("lifetime vertical \(logbookStats.feetOrMeters)")
-                .font(.system(size: 18))
+            Text("lifetime vertical \(logbookStats.feetOrMeters.lowercased())")
+                .font(.system(size: Constants.Font.labelFontSize))
         }
         .padding()
     }
     
+    
+    private struct Constants {
+        struct Font {
+            static let statFontSize: CGFloat = 32
+            static let labelFontSize: CGFloat = 18
+        }
+        
+        struct Profile {
+            static let imageWidth: CGFloat = 110
+        }
+    }
 
 }
 

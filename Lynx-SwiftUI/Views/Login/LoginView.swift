@@ -104,7 +104,7 @@ struct LoginView: View {
                     .frame(width: 12)
                 Text("Sign in with Google")
                     .foregroundStyle(.black)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
             }
         }
         .frame(

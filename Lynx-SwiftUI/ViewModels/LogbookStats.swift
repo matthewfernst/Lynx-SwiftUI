@@ -14,9 +14,9 @@ struct LogbookStats {
     var feetOrMeters: String {
         switch ProfileManager.shared.profile?.measurementSystem {
         case .imperial:
-            return "ft"
+            return "FT"
         case .metric:
-            return "m"
+            return "M"
         case .none:
             return ""
         }
@@ -39,7 +39,7 @@ struct LogbookStats {
         }
         return String(distance)
     }
- 
+    
     var lifetimeVertical: String {
         let totalVerticalFeet = logbooks.map { $0.verticalDistance }.reduce(0, +)
         
@@ -143,29 +143,27 @@ struct LogbookStats {
     }
     
     // MARK: Lifetime Stats
-    var lifetimeAverages: [(Stat, Stat?)] {
+    var lifetimeAverages: [[Stat]] {
         return [
-            (
-            Stat(label: "run vertical", information: calculateAverageVerticalFeet(), systemImageName: "arrow.down"),
-            Stat(label: "run distance", information: calculateAverageDistance(), systemImageName: "arrow.right")
-            ),
-            (
-                Stat(label: "speed", information: calculateAverageSpeed(), systemImageName: "speedometer"),
-                nil
-            )
+            [
+                Stat(label: "run vertical", information: calculateAverageVerticalFeet(), systemImageName: "arrow.down"),
+                Stat(label: "run distance", information: calculateAverageDistance(), systemImageName: "arrow.right")
+            ],
+            [
+                Stat(label: "speed", information: calculateAverageSpeed(), systemImageName: "speedometer")
+            ],
         ]
     }
     
-    var lifetimeBest: [(Stat, Stat?)] {
+    var lifetimeBest: [[Stat]] {
         return [
-           (
-            Stat(label: "top speed", information: calculateBestTopSpeed(), systemImageName: "flame"),
-            Stat(label: "tallest run", information: calculateBestTallestRun(), systemImageName: "arrow.donw")
-           ),
-           (
-            Stat(label: "longest run", information: calculateBestLongestRun(), systemImageName: "arrow.right"), 
-            nil
-           )
+            [
+                Stat(label: "top speed", information: calculateBestTopSpeed(), systemImageName: "flame"),
+                Stat(label: "tallest run", information: calculateBestTallestRun(), systemImageName: "ruler")
+            ],
+            [
+                Stat(label: "longest run", information: calculateBestLongestRun(), systemImageName: "timer"),
+            ]
         ]
     }
     
@@ -234,10 +232,11 @@ struct ConfiguredLogbookData {
     let topSpeed: String
 }
 
-struct Stat {
+struct Stat: Hashable, Identifiable {
     let label: String
     var information: String
     let systemImageName: String
+    var id: String { information }
 }
 
 

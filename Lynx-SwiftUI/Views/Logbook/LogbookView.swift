@@ -10,33 +10,14 @@ import SwiftUI
 struct LogbookView: View {
     @State private var logbookStats = LogbookStats()
     @State private var showMoreInfo = false
+    @State private var showUploadFilesSheet = false
     
     var body: some View {
         NavigationStack {
             VStack {
                 ProfileSummaryView(logbookStats: $logbookStats)
                 LifetimeDetailsView(logbookStats: $logbookStats)
-                
-                Spacer()
-               
-                List {
-                    Section {
-                        NavigationLink {
-                            Text("TODO!")
-                        } label: {
-                            lifetimeSummaryLabel
-                        }
-                    }
-                    
-                    ForEach(logbookStats.logbooks.indices, id: \.self) { index in
-                        if let configuredData = logbookStats.getConfiguredLogbookData(at: index) {
-                            configuredSessionSummary(with: configuredData)
-                        }
-                    }
-                }
-                .refreshable {
-                    requestLogs()
-                }
+                scrollableSessionSummaries
             }
             .navigationTitle("Logbook")
             .toolbar {
@@ -59,14 +40,52 @@ struct LogbookView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     AnimatedActionButton(systemImage: "folder.badge.plus") {
-                        
+                        showUploadFilesSheet = true
                     }
                 }
             }
             .onAppear {
                 requestLogs()
             }
+            .sheet(isPresented: $showUploadFilesSheet) {
+                FolderConnectionView()
+            }
+
         }
+    }
+    
+    private var scrollableSessionSummaries: some View {
+        List {
+            Section {
+                NavigationLink {
+                    FullLifetimeSummaryView(logbookStats: $logbookStats)
+                } label: {
+                    lifetimeSummaryLabel
+                }
+            } header: {
+                Text(yearHeader)
+                    .padding(.top)
+            }
+            .headerProminence(.increased)
+  
+            
+            ForEach(logbookStats.logbooks.indices, id: \.self) { index in
+                if let configuredData = logbookStats.getConfiguredLogbookData(at: index) {
+                    configuredSessionSummary(with: configuredData)
+                }
+            }
+        }
+        .refreshable {
+            requestLogs()
+        }
+    }
+    
+    private var yearHeader: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        let currentYear = dateFormatter.string(from: .now)
+        let pastYear = String((Int(currentYear) ?? 0) - 1)
+        return "\(pastYear)/\(currentYear)"
     }
     
     private var lifetimeSummaryLabel: some View {
@@ -102,6 +121,7 @@ struct LogbookView: View {
                     ))
                 HStack {
                     Image(systemName: "figure.snowboarding")
+                        .rotationEffect(.radians(.pi / 16))
                     Text(
                         "| \(data.numberOfRuns) runs | \(data.runDurationHour)H \(data.runDurationMinutes)M | \(data.conditions) | \(data.topSpeed)"
                     )
@@ -125,7 +145,7 @@ struct LogbookView: View {
                 case .success(let logs):
                     logbookStats.logbooks = logs
                 case .failure(_):
-                    print("shit")
+                    print("TODO")
                 }
             }
         }
