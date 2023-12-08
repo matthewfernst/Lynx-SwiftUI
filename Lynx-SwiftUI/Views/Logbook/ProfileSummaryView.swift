@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfileSummaryView: View {
+    @ObservedObject private var profileManager = ProfileManager.shared
     @Binding var logbookStats: LogbookStats
     
     var body: some View {
@@ -18,7 +19,7 @@ struct ProfileSummaryView: View {
     }
     
     private var profilePicture: some View {
-        AsyncImage(url: ProfileManager.shared.profile?.profilePictureURL) { image in
+        AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
             image
                 .resizable()
                 .scaledToFit()

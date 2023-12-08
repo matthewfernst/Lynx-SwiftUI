@@ -21,7 +21,7 @@ class LoginHandler {
         firstName: String? = nil,
         lastName: String? = nil,
         profilePictureURL: URL? = nil,
-        completion: @escaping (Result<Void,
+        completion: @escaping (Result<Bool,
                                Error>) -> Void
     ) {
         ApolloLynxClient.loginOrCreateUser(
@@ -31,14 +31,16 @@ class LoginHandler {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            profilePictureUrl: profilePictureURL) { result in
+            profilePictureUrl: profilePictureURL
+        ) { result in
                 switch result {
                 case .success(let validatedInvite):
                     Logger.loginHandler.info("Authorization Token successfully received.")
                     if validatedInvite {
                         self.loginUser(completion: completion)
                     } else {
-                        // TODO: Show Invitation Sheet!
+                        // Show Invitation Sheet
+                        completion(.success(validatedInvite))
                     }
                 case .failure:
                     completion(.failure(UserError.noAuthorizationTokenReturned))
@@ -47,7 +49,7 @@ class LoginHandler {
     }
     
     
-    private func loginUser(completion: @escaping (Result<Void, Error>) -> Void) {
+    private func loginUser(completion: @escaping (Result<Bool, Error>) -> Void) {
         ApolloLynxClient.getProfileInformation() { result in
             switch result {
             case .success(let profileAttributes):
@@ -60,7 +62,7 @@ class LoginHandler {
     }
     
     
-    private func signInUser(profileAttributes: ProfileAttributes, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func signInUser(profileAttributes: ProfileAttributes, completion: @escaping (Result<Bool, Error>) -> Void) {
         let defaults = UserDefaults.standard
         defaults.setValue(profileAttributes.type, forKey: UserDefaultsKeys.loginType)
         defaults.setValue(profileAttributes.id, forKey: UserDefaultsKeys.appleOrGoogleId)
@@ -75,7 +77,7 @@ class LoginHandler {
         )
         
         if let _ = ProfileManager.shared.profile {
-            completion(.success(()))
+            completion(.success((true)))
         } else {
             completion(.failure(ProfileError.profileCreationFailed))
         }

@@ -10,9 +10,15 @@ import SwiftUI
 struct EditProfileView: View {
     @Environment(\.dismiss) private var dismiss
     
+    private var editProfileHandler = EditProfileHandler()
+    
     @State private var firstName = ProfileManager.shared.profile!.firstName
     @State private var lastName = ProfileManager.shared.profile!.lastName
     @State private var email = ProfileManager.shared.profile!.email
+    
+    @State private var showSavingChanges = false
+    
+    private var profileChanges: [String: Any] = [:]
     
     var body: some View {
         NavigationStack {
@@ -35,18 +41,40 @@ struct EditProfileView: View {
                         dismiss()
                     }
                 }
-               
+                
                 ToolbarItemGroup(placement: .confirmationAction) {
                     Button {
-                        
+                        showSavingChanges = true
+                        editProfileHandler.saveEdits(
+                            withFirstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            profilePicture: nil // TODO: Update
+                        ) {
+                            showSavingChanges = false
+                            dismiss()
+                        }
                     } label: {
                         Text("Save")
                             .fontWeight(.bold)
                     }
                 }
             }
+            .overlay(
+                ZStack {
+                    if showSavingChanges {
+                        ProgressView("Saving...")
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(Color.black.opacity(0.5))
+                            .ignoresSafeArea(.all)
+                            .zIndex(100)
+                    }
+                }
+            )
         }
- 
+        
     }
     
     private var changeProfilePicture: some View {
@@ -78,8 +106,8 @@ struct EditProfileView: View {
                     .bold()
                     .padding(.trailing)
                 
-            TextField(firstName, text: $firstName)
-            TextField(lastName, text: $lastName)
+                TextField(firstName, text: $firstName)
+                TextField(lastName, text: $lastName)
             }
             HStack {
                 Text("Email")
@@ -123,3 +151,5 @@ struct EditProfileView: View {
 #Preview {
     EditProfileView()
 }
+
+

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProfileManager {
+class ProfileManager: ObservableObject {
     @Published var profile: Profile?
     
     static let shared = ProfileManager()

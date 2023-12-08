@@ -14,7 +14,10 @@ struct Lynx_SwiftUIApp: App {
         WindowGroup {
 //            HomeView()
             LoginView()
-                
+//            InvitationKeyView { key, b in
+//                print(key)
+//                b(false)
+//            }
         }
     }
 }

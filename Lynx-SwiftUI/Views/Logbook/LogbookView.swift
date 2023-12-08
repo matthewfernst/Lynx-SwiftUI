@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LogbookView: View {
+    @ObservedObject private var profileManager = ProfileManager.shared
+    
     @State private var logbookStats = LogbookStats()
     @State private var showMoreInfo = false
     @State private var showUploadFilesSheet = false
@@ -139,7 +141,7 @@ struct LogbookView: View {
         ApolloLynxClient.clearCache()
         Task {
             ApolloLynxClient.getLogs(
-                measurementSystem: ProfileManager.shared.profile!.measurementSystem
+                measurementSystem: profileManager.profile!.measurementSystem
             ) { result in
                 switch result {
                 case .success(let logs):

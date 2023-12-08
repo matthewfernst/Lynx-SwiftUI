@@ -9,7 +9,8 @@ import SwiftUI
 import MessageUI
 
 struct AccountView: View {
-    
+    @ObservedObject private var profileManager = ProfileManager.shared
+
     @State private var showMessagesNotAvailable = false
     @State private var messagesAlertBody = ""
     @State private var copyMessageText = ""
@@ -57,7 +58,7 @@ struct AccountView: View {
         NavigationLink(destination: EditProfileView()) {
             Section {
                 HStack {
-                    AsyncImage(url: ProfileManager.shared.profile?.profilePictureURL) { image in
+                    AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
                         image
                             .resizable()
                             .scaledToFit()
@@ -68,7 +69,7 @@ struct AccountView: View {
                     .frame(maxWidth: Constants.ProfileInformation.imageWidth)
                     
                     VStack(alignment: .leading) {
-                        Text(ProfileManager.shared.profile!.name)
+                        Text(profileManager.profile!.name)
                             .font(.title2)
                         Text("Edit Account & Profile")
                             .font(.caption)
@@ -77,6 +78,7 @@ struct AccountView: View {
                 }
             }
         }
+        
     }
     
     private var settings: some View {
@@ -147,6 +149,22 @@ struct AccountView: View {
             }
         } header: {
             Text("Found an issue or need help?")
+        } footer: {
+            HStack {
+                Spacer()
+                VStack(alignment: .center) {
+                    Text("Made with ❤️ + ☕️ in San Diego, CA and Seattle, WA")
+                    if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                        Text("Version \(appVersion)")
+                    }
+                }
+                .multilineTextAlignment(.center)
+                .font(.system(size: Constants.Fonts.footerSize))
+                .padding(.top, Constants.Fonts.footerPadding)
+                
+                Spacer()
+            }
+            
         }
         .onTapGesture {
             presentMailCompose()
@@ -170,7 +188,7 @@ struct AccountView: View {
                 }
             
             Text(text)
-                .padding([.leading, .trailing], 5)
+                .padding(.horizontal, Constants.Cell.textToIconPadding)
         }
     }
     
@@ -201,6 +219,11 @@ struct AccountView: View {
             static let imageWidth: CGFloat = 70
         }
         
+        struct Fonts {
+            static let footerSize: CGFloat = 11
+            static let footerPadding: CGFloat = 25
+        }
+        
         struct Links {
             static let gitHubURL = URL(string: "https://www.github.com/matthewfernst")!
             static let twitterURL = URL(string: "https://twitter.com/ErnstMatthew")!
@@ -210,6 +233,8 @@ struct AccountView: View {
             static let cornerRadius: CGFloat = 8
             static let systemImageWidth: CGFloat = 28
             static let systemImageHeight: CGFloat = 28
+            
+            static let textToIconPadding: CGFloat = 5
             
             static let gitHubWidthAndHeight: CGFloat = 25
             static let twitterWidthAndHeight: CGFloat = 20

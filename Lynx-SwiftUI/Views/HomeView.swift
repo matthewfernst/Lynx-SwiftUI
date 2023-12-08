@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.colorScheme) private var systemTheme
+    @ObservedObject private var profileManager = ProfileManager.shared
+    
     var body: some View {
         TabView {
             LogbookView()

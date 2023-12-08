@@ -13,6 +13,7 @@ struct LoginView: View {
     private var loginHandler = LoginHandler()
     @State private var goToHome = false
     @State private var showSignInError = false
+    @State private var showInvitationSheet = false
     @State private var isSigningIn = false
     @StateObject private var googleSignIn = GoogleSignIn()
     
@@ -35,6 +36,11 @@ struct LoginView: View {
                 )
             }
         }
+        .sheet(isPresented: $showInvitationSheet, content: {
+            InvitationKeyView(goToHome: $goToHome)
+                .interactiveDismissDisabled()
+        })
+        
         .fullScreenCover(isPresented: $goToHome, content: HomeView.init) // TODO: Better transition!
     }
     
@@ -89,8 +95,12 @@ struct LoginView: View {
                     profilePictureURL: profileAttributes.profilePictureURL
                 ) { result in
                     switch result {
-                    case .success(_):
-                        goToHome = true
+                    case .success(let validatedInvite):
+                        if validatedInvite {
+                            goToHome = true
+                        } else {
+                            showInvitationSheet = true
+                        }
                     case .failure(_):
                         showSignInError = true
                     }

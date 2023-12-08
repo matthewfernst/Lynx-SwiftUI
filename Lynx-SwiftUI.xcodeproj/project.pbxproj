@@ -12,6 +12,8 @@
 		6529A8342B17EBF300FF455E /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A8332B17EBF300FF455E /* EditProfileView.swift */; };
 		6529A8362B17EC1000FF455E /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A8352B17EC1000FF455E /* NotificationSettingsView.swift */; };
 		6529A83C2B190ECF00FF455E /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A83B2B190ECF00FF455E /* GeneralSettingsView.swift */; };
+		6529A83E2B1AE5F500FF455E /* EditProfileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A83D2B1AE5F500FF455E /* EditProfileHandler.swift */; };
+		6529A8402B1AECCC00FF455E /* InvitationKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A83F2B1AECCC00FF455E /* InvitationKeyView.swift */; };
 		65B35E902B118C17002E99E4 /* Lynx_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */; };
 		65B35E942B118C18002E99E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E932B118C18002E99E4 /* Assets.xcassets */; };
 		65B35E972B118C18002E99E4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E962B118C18002E99E4 /* Preview Assets.xcassets */; };
@@ -101,6 +103,8 @@
 		6529A8332B17EBF300FF455E /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		6529A8352B17EC1000FF455E /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		6529A83B2B190ECF00FF455E /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		6529A83D2B1AE5F500FF455E /* EditProfileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHandler.swift; sourceTree = "<group>"; };
+		6529A83F2B1AECCC00FF455E /* InvitationKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationKeyView.swift; sourceTree = "<group>"; };
 		65B35E8C2B118C17002E99E4 /* Lynx-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lynx-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lynx_SwiftUIApp.swift; sourceTree = "<group>"; };
 		65B35E932B118C18002E99E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -197,6 +201,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		652733DD2B22BEEB0081B2E5 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				6529A83B2B190ECF00FF455E /* GeneralSettingsView.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
 		6529A8302B17859C00FF455E /* FolderConnection */ = {
 			isa = PBXGroup;
 			children = (
@@ -278,6 +290,7 @@
 			children = (
 				65F6CFD52B12EA2300E94E40 /* LoginHandler.swift */,
 				65B39A662B13FD0500948C9D /* LogbookStats.swift */,
+				6529A83D2B1AE5F500FF455E /* EditProfileHandler.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -306,8 +319,8 @@
 			children = (
 				65B35EA62B1193CC002E99E4 /* AccountView.swift */,
 				6529A8332B17EBF300FF455E /* EditProfileView.swift */,
+				652733DD2B22BEEB0081B2E5 /* General */,
 				6529A8352B17EC1000FF455E /* NotificationSettingsView.swift */,
-				6529A83B2B190ECF00FF455E /* GeneralSettingsView.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -317,6 +330,7 @@
 			children = (
 				65B35EB12B11A1C5002E99E4 /* LoginView.swift */,
 				65F6CFD92B13020300E94E40 /* GoogleSignIn.swift */,
+				6529A83F2B1AECCC00FF455E /* InvitationKeyView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -621,6 +635,7 @@
 				65B35F872B11C129002E99E4 /* SchemaMetadata.graphql.swift in Sources */,
 				65B35F802B11C129002E99E4 /* LogDetail.graphql.swift in Sources */,
 				65B35F2F2B11BF1D002E99E4 /* NetworkManager.swift in Sources */,
+				6529A83E2B1AE5F500FF455E /* EditProfileHandler.swift in Sources */,
 				65B39A652B13E61100948C9D /* ProfileManager.swift in Sources */,
 				65B35F712B11C129002E99E4 /* GetUploadedLogsQuery.graphql.swift in Sources */,
 				65F6CFD42B12E71E00E94E40 /* ProfilePictureUtils.swift in Sources */,
@@ -628,6 +643,7 @@
 				65B35F8A2B11C154002E99E4 /* UserDefaultsKeys.swift in Sources */,
 				65B35F7D2B11C129002E99E4 /* Mutation.graphql.swift in Sources */,
 				65B35F702B11C129002E99E4 /* SubmitInviteKeyMutation.graphql.swift in Sources */,
+				6529A8402B1AECCC00FF455E /* InvitationKeyView.swift in Sources */,
 				65B35EB02B119BB8002E99E4 /* LifetimeDetailsView.swift in Sources */,
 				65B35F782B11C129002E99E4 /* MeasurementSystem.graphql.swift in Sources */,
 				65B35EA12B11931E002E99E4 /* HomeView.swift in Sources */,

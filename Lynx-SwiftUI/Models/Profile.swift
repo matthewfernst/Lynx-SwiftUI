@@ -15,9 +15,8 @@ struct Profile: Identifiable {
     var name: String { firstName + " " + lastName }
     private(set) var email: String
     private(set) var profilePictureURL: URL?
-    private(set) var appTheme: String = "System"
-    private(set) var measurementSystem: MeasurementSystem = Profile.getDefaultMeasurementSystem()
-    private(set) var notificationsAllowed: Bool?
+    var measurementSystem: MeasurementSystem = Profile.getDefaultMeasurementSystem()
+    var notificationsAllowed: Bool?
     
     init(
         type: String,
@@ -96,7 +95,6 @@ struct Profile: Identifiable {
         self.email = newEmail ?? self.email
         self.profilePictureURL = newProfilePictureURL ?? self.profilePictureURL
     }
-    
 }
 
 // MARK: - Extensions for Debugging
