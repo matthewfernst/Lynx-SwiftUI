@@ -84,6 +84,12 @@ class LoginHandler {
             completion(.failure(ProfileError.profileCreationFailed))
         }
     }
+    
+    static func signOut() {
+        UserManager.shared.token = nil
+        ApolloLynxClient.clearCache()
+        BookmarkManager.removeAllBookmarks()
+    }
 }
 
 enum SignInType: String, CaseIterable {

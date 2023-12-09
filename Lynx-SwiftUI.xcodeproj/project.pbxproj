@@ -205,14 +205,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		652733DD2B22BEEB0081B2E5 /* General */ = {
-			isa = PBXGroup;
-			children = (
-				6529A83B2B190ECF00FF455E /* GeneralSettingsView.swift */,
-			);
-			path = General;
-			sourceTree = "<group>";
-		};
 		6529A8302B17859C00FF455E /* FolderConnection */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,7 +315,7 @@
 			children = (
 				65B35EA62B1193CC002E99E4 /* AccountView.swift */,
 				6529A8332B17EBF300FF455E /* EditProfileView.swift */,
-				652733DD2B22BEEB0081B2E5 /* General */,
+				6529A83B2B190ECF00FF455E /* GeneralSettingsView.swift */,
 				6529A8352B17EC1000FF455E /* NotificationSettingsView.swift */,
 			);
 			path = Account;

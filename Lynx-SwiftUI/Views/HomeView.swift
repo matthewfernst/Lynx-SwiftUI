@@ -24,7 +24,6 @@ struct HomeView: View {
                     Label("Leaderboard", systemImage: "trophy")
                 }
             
-            
             AccountView()
                 .tabItem {
                     Label("Account", systemImage: "person.crop.circle.fill")
@@ -41,6 +40,9 @@ struct HomeView: View {
         let center = UNUserNotificationCenter.current()
         
         center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            DispatchQueue.main.async {
+                profileManager.update(withNotifcationsAllowed: granted)
+            }
             if granted {
                 Logger.homeView.debug("Notifications granted")
             } else {

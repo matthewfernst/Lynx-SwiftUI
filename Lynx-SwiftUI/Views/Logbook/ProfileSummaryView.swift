@@ -30,17 +30,6 @@ struct ProfileSummaryView: View {
             ProgressView()
                 .padding()
         }
-
-//        AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
-//            image
-//                .resizable()
-//                .scaledToFit()
-//                .clipShape(Circle())
-//                .frame(maxWidth: Constants.Profile.imageWidth)
-//        } placeholder: {
-//            ProgressView()
-//        }
-        
     }
     
     private var lifetimeSummary: some View {

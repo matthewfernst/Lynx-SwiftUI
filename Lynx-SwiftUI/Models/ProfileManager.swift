@@ -40,6 +40,10 @@ class ProfileManager: ObservableObject {
         profile?.measurementSystem = newSystem
     }
     
+    func update(withNotifcationsAllowed allowed: Bool) {
+        profile?.notificationsAllowed = allowed
+    }
+    
     // MARK: - Helpers
     private func downloadProfilePicture(withURL url: URL) {
         URLSession.shared.dataTask(with: url) { data, response, error in

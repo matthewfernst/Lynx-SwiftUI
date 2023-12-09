@@ -33,6 +33,8 @@ struct GeneralSettingsView: View {
                             selectedUnit = profileMeasurementSystem
                         }
                     }
+                } footer: {
+                    Text("Units changed are local to the Lynx App only and not Mountain-UI.")
                 }
             }
             .navigationTitle("General")

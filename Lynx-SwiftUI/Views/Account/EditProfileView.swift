@@ -23,6 +23,8 @@ struct EditProfileView: View {
     @State private var email = ProfileManager.shared.profile!.email
     
     @State private var showSavingChanges = false
+    
+    @State private var gotToLogin = false
 
     var body: some View {
         NavigationStack {
@@ -70,6 +72,7 @@ struct EditProfileView: View {
                 }
             )
         }
+        .fullScreenCover(isPresented: $gotToLogin, content: LoginView.init)
         
     }
     
@@ -136,7 +139,8 @@ struct EditProfileView: View {
                 Label("Merge Accounts", systemImage: "shared.with.you")
             }
             Button {
-                
+                LoginHandler.signOut()
+                gotToLogin = true
             } label: {
                 Label("Sign Out", systemImage: "door.right.hand.closed")
             }

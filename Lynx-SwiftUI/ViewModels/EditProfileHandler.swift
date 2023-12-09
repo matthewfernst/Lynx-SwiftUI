@@ -10,7 +10,6 @@ import PhotosUI
 import OSLog
 
 class EditProfileHandler {
-    
     func saveEdits(
         withFirstName firstName: String,
         lastName: String,

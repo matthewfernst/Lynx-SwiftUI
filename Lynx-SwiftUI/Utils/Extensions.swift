@@ -19,9 +19,11 @@ extension Logger {
     
     static let homeView = Logger(subsystem: subsystem, category: "HomeView")
     
+    static let invitationKeySheet = Logger(subsystem: subsystem, category: "InvitationKeySheet")
+    
     static let loginHandler = Logger(subsystem: subsystem, category: "LoginHandler")
     
-    static let invitationKeySheet = Logger(subsystem: subsystem, category: "InvitationKeySheet")
+    static let notifications = Logger(subsystem: subsystem, category: "Notifications")
 }
 
 extension String {
