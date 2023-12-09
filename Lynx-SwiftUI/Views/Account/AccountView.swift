@@ -10,6 +10,7 @@ import MessageUI
 
 struct AccountView: View {
     @ObservedObject private var profileManager = ProfileManager.shared
+    @State private var refreshView = false
 
     @State private var showMessagesNotAvailable = false
     @State private var messagesAlertBody = ""
@@ -58,16 +59,16 @@ struct AccountView: View {
         NavigationLink(destination: EditProfileView()) {
             Section {
                 HStack {
-                    AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
-                        image
+                    if let profilePic = profileManager.profilePicture {
+                        profilePic
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
-                    } placeholder: {
+                            .frame(maxWidth: Constants.ProfileInformation.imageWidth)
+                    } else {
                         ProgressView()
+                            .padding()
                     }
-                    .frame(maxWidth: Constants.ProfileInformation.imageWidth)
-                    
                     VStack(alignment: .leading) {
                         Text(profileManager.profile!.name)
                             .font(.title2)

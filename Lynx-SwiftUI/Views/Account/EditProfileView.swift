@@ -6,20 +6,24 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditProfileView: View {
+    @ObservedObject private var profileManager = ProfileManager.shared
     @Environment(\.dismiss) private var dismiss
     
     private var editProfileHandler = EditProfileHandler()
+
+    @State private var profilePictureItem: PhotosPickerItem?
+    @State private var newProfilePictureData: Data?
+    @State private var newProfilePicture: Image?
     
     @State private var firstName = ProfileManager.shared.profile!.firstName
     @State private var lastName = ProfileManager.shared.profile!.lastName
     @State private var email = ProfileManager.shared.profile!.email
     
     @State private var showSavingChanges = false
-    
-    private var profileChanges: [String: Any] = [:]
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -49,7 +53,7 @@ struct EditProfileView: View {
                             withFirstName: firstName,
                             lastName: lastName,
                             email: email,
-                            profilePicture: nil // TODO: Update
+                            profilePictureData: newProfilePictureData
                         ) {
                             showSavingChanges = false
                             dismiss()
@@ -79,23 +83,38 @@ struct EditProfileView: View {
     
     private var changeProfilePicture: some View {
         VStack {
-            AsyncImage(url: ProfileManager.shared.profile?.profilePictureURL) { image in
-                image
+            if let newProfilePicture {
+                newProfilePicture
                     .resizable()
                     .scaledToFit()
                     .clipShape(Circle())
-            } placeholder: {
-                ProgressView()
+                    .frame(maxWidth: Constants.profilePictureWidth)
+            } else {
+                AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(maxWidth: Constants.profilePictureWidth)
             }
-            .frame(maxWidth: Constants.profilePictureWidth)
-            .padding(.bottom)
-            Button {
-                
-            } label: {
-                Text("Change Profile Picture")
-            }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.small)
+            
+            
+            PhotosPicker("Change Profile Picture", selection: $profilePictureItem)
+                .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+                .onChange(of: profilePictureItem) { _, _ in
+                    Task {
+                        if let data = try? await profilePictureItem?.loadTransferable(type: Data.self) {
+                            newProfilePictureData = data
+                            if let uiImage = UIImage(data: data) {
+                                newProfilePicture = Image(uiImage: uiImage)
+                            }
+                        }
+                    }
+                }
         }
     }
     
@@ -148,8 +167,10 @@ struct EditProfileView: View {
     }
 }
 
+
 #Preview {
     EditProfileView()
 }
+
 
 

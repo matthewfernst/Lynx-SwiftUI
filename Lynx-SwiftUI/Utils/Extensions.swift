@@ -15,6 +15,8 @@ extension Logger {
     
     static let bookmarkManager = Logger(subsystem: subsystem, category: "BookmarkManager")
     
+    static let editProfileHandler = Logger(subsystem: subsystem, category: "EditProfileHandler")
+    
     static let loginHandler = Logger(subsystem: subsystem, category: "LoginHandler")
     
     static let invitationKeySheet = Logger(subsystem: subsystem, category: "InvitationKeySheet")

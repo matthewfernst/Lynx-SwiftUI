@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		652733E72B22D4F40081B2E5 /* CropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 652733E62B22D4F40081B2E5 /* CropViewController */; };
+		652733E92B22D4F40081B2E5 /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 652733E82B22D4F40081B2E5 /* TOCropViewController */; };
 		6529A82F2B1669C300FF455E /* FullLifetimeSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A82E2B1669C300FF455E /* FullLifetimeSummaryView.swift */; };
 		6529A8322B1785DF00FF455E /* FolderConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A8312B1785DF00FF455E /* FolderConnectionView.swift */; };
 		6529A8342B17EBF300FF455E /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6529A8332B17EBF300FF455E /* EditProfileView.swift */; };
@@ -193,6 +195,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				65B35F2B2B11BEA1002E99E4 /* GoogleSignInSwift in Frameworks */,
+				652733E92B22D4F40081B2E5 /* TOCropViewController in Frameworks */,
+				652733E72B22D4F40081B2E5 /* CropViewController in Frameworks */,
 				65B35F352B11BFE2002E99E4 /* Apollo in Frameworks */,
 				65B35F292B11BEA1002E99E4 /* GoogleSignIn in Frameworks */,
 			);
@@ -522,6 +526,8 @@
 				65B35F282B11BEA1002E99E4 /* GoogleSignIn */,
 				65B35F2A2B11BEA1002E99E4 /* GoogleSignInSwift */,
 				65B35F342B11BFE2002E99E4 /* Apollo */,
+				652733E62B22D4F40081B2E5 /* CropViewController */,
+				652733E82B22D4F40081B2E5 /* TOCropViewController */,
 			);
 			productName = "Lynx-SwiftUI";
 			productReference = 65B35E8C2B118C17002E99E4 /* Lynx-SwiftUI.app */;
@@ -554,6 +560,7 @@
 			packageReferences = (
 				65B35F272B11BEA1002E99E4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				65B35F332B11BFE2002E99E4 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				652733E52B22D4F40081B2E5 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 			);
 			productRefGroup = 65B35E8D2B118C17002E99E4 /* Products */;
 			projectDirPath = "";
@@ -873,6 +880,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		652733E52B22D4F40081B2E5 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TimOliver/TOCropViewController";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.1;
+			};
+		};
 		65B35F272B11BEA1002E99E4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
@@ -892,6 +907,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		652733E62B22D4F40081B2E5 /* CropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 652733E52B22D4F40081B2E5 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = CropViewController;
+		};
+		652733E82B22D4F40081B2E5 /* TOCropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 652733E52B22D4F40081B2E5 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = TOCropViewController;
+		};
 		65B35F282B11BEA1002E99E4 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 65B35F272B11BEA1002E99E4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;

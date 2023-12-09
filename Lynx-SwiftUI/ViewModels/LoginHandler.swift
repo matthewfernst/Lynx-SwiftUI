@@ -66,14 +66,16 @@ class LoginHandler {
         let defaults = UserDefaults.standard
         defaults.setValue(profileAttributes.type, forKey: UserDefaultsKeys.loginType)
         defaults.setValue(profileAttributes.id, forKey: UserDefaultsKeys.appleOrGoogleId)
-        ProfileManager.shared.profile = Profile(
-            type: profileAttributes.type,
-            oauthToken: profileAttributes.oauthToken,
-            id: profileAttributes.id,
-            firstName: profileAttributes.firstName,
-            lastName: profileAttributes.lastName,
-            email: profileAttributes.email,
-            profilePictureURL: profileAttributes.profilePictureURL
+        ProfileManager.shared.update(
+            withNewProfile: Profile(
+                type: profileAttributes.type,
+                oauthToken: profileAttributes.oauthToken,
+                id: profileAttributes.id,
+                firstName: profileAttributes.firstName,
+                lastName: profileAttributes.lastName,
+                email: profileAttributes.email,
+                profilePictureURL: profileAttributes.profilePictureURL
+            )
         )
         
         if let _ = ProfileManager.shared.profile {

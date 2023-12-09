@@ -14,7 +14,7 @@ struct Profile: Identifiable {
     private(set) var firstName, lastName: String
     var name: String { firstName + " " + lastName }
     private(set) var email: String
-    private(set) var profilePictureURL: URL?
+    var profilePictureURL: URL?
     var measurementSystem: MeasurementSystem = Profile.getDefaultMeasurementSystem()
     var notificationsAllowed: Bool?
     
@@ -84,16 +84,10 @@ struct Profile: Identifiable {
 //        }
 //    }
     
-    mutating func editAttributes(
-        newFirstName: String?,
-        newLastName: String?,
-        newEmail: String?,
-        newProfilePictureURL: URL?
-    ) {
+    mutating func edit(newFirstName: String?, newLastName: String?, newEmail: String?) {
         self.firstName = newFirstName ?? self.firstName
         self.lastName = newLastName ?? self.lastName
         self.email = newEmail ?? self.email
-        self.profilePictureURL = newProfilePictureURL ?? self.profilePictureURL
     }
 }
 

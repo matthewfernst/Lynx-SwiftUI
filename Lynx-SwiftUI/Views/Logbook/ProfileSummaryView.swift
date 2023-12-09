@@ -18,17 +18,29 @@ struct ProfileSummaryView: View {
         }
     }
     
+    @ViewBuilder
     private var profilePicture: some View {
-        AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
-            image
+        if let profilePic = profileManager.profilePicture {
+            profilePic
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
                 .frame(maxWidth: Constants.Profile.imageWidth)
-        } placeholder: {
+        } else {
             ProgressView()
+                .padding()
         }
-        .padding()
+
+//        AsyncImage(url: profileManager.profile?.profilePictureURL) { image in
+//            image
+//                .resizable()
+//                .scaledToFit()
+//                .clipShape(Circle())
+//                .frame(maxWidth: Constants.Profile.imageWidth)
+//        } placeholder: {
+//            ProgressView()
+//        }
+        
     }
     
     private var lifetimeSummary: some View {

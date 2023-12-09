@@ -25,8 +25,8 @@ struct GeneralSettingsView: View {
                         }
                     }
                     .pickerStyle(.navigationLink)
-                    .onChange(of: selectedUnit) { _, newUnits in
-                        profileManager.profile?.measurementSystem = newUnits
+                    .onChange(of: selectedUnit) { _, newSystem in
+                        profileManager.update(withMeasurementSystem: newSystem)
                     }
                     .onAppear {
                         if let profileMeasurementSystem = profileManager.profile?.measurementSystem {
