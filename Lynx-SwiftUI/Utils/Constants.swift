@@ -7,10 +7,7 @@
 
 import Foundation
 
-enum Constants {
-    // Apollo
-    static let graphQLEndpoint = "https://nyw0w1k06b.execute-api.us-west-1.amazonaws.com/production/graphql"
-
+enum Constants { // TODO: Clean UP!
     // Settings
     static let twitter = "https://twitter.com/ErnstMatthew"
     static let github = "https://github.com/matthewfernst/Lynx"

@@ -12,12 +12,7 @@ struct Lynx_SwiftUIApp: App {
     
     var body: some Scene {
         WindowGroup {
-//            HomeView()
             LoginView()
-//            InvitationKeyView { key, b in
-//                print(key)
-//                b(false)
-//            }
         }
     }
 }

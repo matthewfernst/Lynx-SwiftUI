@@ -62,7 +62,7 @@ enum LeaderLogbooks {
 
 
 class ApolloLynxClient {
-    private static let graphQLEndpoint = Constants.graphQLEndpoint
+    private static let graphQLEndpoint = "https://nyw0w1k06b.execute-api.us-west-1.amazonaws.com/production/graphql"
     
     private static let apolloClient: ApolloClient = {
         // The cache is necessary to set up the store, which we're going

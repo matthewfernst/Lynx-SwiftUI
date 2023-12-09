@@ -8,9 +8,20 @@
 import SwiftUI
 
 struct LeaderboardView: View {
+    @State private var logbookStats = LogbookStats()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            VStack {
+                
+            }
+            .navigationTitle("Leaderboard")
+            
+            
+        }
     }
+    
+    
 }
 
 #Preview {

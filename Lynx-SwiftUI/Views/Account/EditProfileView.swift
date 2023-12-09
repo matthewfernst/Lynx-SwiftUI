@@ -13,7 +13,7 @@ struct EditProfileView: View {
     @Environment(\.dismiss) private var dismiss
     
     private var editProfileHandler = EditProfileHandler()
-
+    
     @State private var profilePictureItem: PhotosPickerItem?
     @State private var newProfilePictureData: Data?
     @State private var newProfilePicture: Image?
@@ -25,7 +25,7 @@ struct EditProfileView: View {
     @State private var showSavingChanges = false
     
     @State private var gotToLogin = false
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -41,37 +41,30 @@ struct EditProfileView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItemGroup(placement: .confirmationAction) {
-                    Button {
-                        showSavingChanges = true
-                        editProfileHandler.saveEdits(
-                            withFirstName: firstName,
-                            lastName: lastName,
-                            email: email,
-                            profilePictureData: newProfilePictureData
-                        ) {
-                            showSavingChanges = false
-                            dismiss()
+                    if showSavingChanges {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    } else {
+                        Button {
+                            showSavingChanges = true
+                            editProfileHandler.saveEdits(
+                                withFirstName: firstName,
+                                lastName: lastName,
+                                email: email,
+                                profilePictureData: newProfilePictureData
+                            ) {
+                                showSavingChanges = false
+                                dismiss()
+                            }
+                        } label: {
+                            Text("Save")
+                                .fontWeight(.bold)
                         }
-                    } label: {
-                        Text("Save")
-                            .fontWeight(.bold)
                     }
                 }
             }
-            .overlay(
-                ZStack {
-                    if showSavingChanges {
-                        ProgressView("Saving...")
-                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.black.opacity(0.5))
-                            .ignoresSafeArea(.all)
-                            .zIndex(100)
-                    }
-                }
-            )
         }
+        .disabled(showSavingChanges)
         .fullScreenCover(isPresented: $gotToLogin, content: LoginView.init)
         
     }
@@ -95,8 +88,6 @@ struct EditProfileView: View {
                 }
                 .frame(maxWidth: Constants.profilePictureWidth)
             }
-            
-            
             PhotosPicker("Change Profile Picture", selection: $profilePictureItem)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
@@ -142,7 +133,7 @@ struct EditProfileView: View {
                 LoginHandler.signOut()
                 gotToLogin = true
             } label: {
-                Label("Sign Out", systemImage: "door.right.hand.closed")
+                Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.forward")
             }
         }
     }

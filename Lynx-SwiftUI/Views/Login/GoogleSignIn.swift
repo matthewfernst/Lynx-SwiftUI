@@ -10,22 +10,21 @@ import SwiftUI
 import GoogleSignIn
 
 class GoogleSignIn: ObservableObject {
-    @Published var showErrorSigningIn = false
-    
-    func signIn(completion: @escaping (ProfileAttributes) -> Void) {
+    func signIn(showErrorSigningIn: Binding<Bool>, completion: @escaping (ProfileAttributes) -> Void) {
+        
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first,
            let rootViewController = window.rootViewController {
-            GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [weak self] signInResult, error in
+            GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
                 guard error == nil else {
-                    self?.showErrorSigningIn = true
+                    showErrorSigningIn.wrappedValue = true
                     return
                 }
                 
                 guard let googleId = signInResult?.user.userID,
                       let profile = signInResult?.user.profile,
                       let token = signInResult?.user.idToken?.tokenString else {
-                    self?.showErrorSigningIn = true
+                    showErrorSigningIn.wrappedValue = true
                     return
                 }
                 

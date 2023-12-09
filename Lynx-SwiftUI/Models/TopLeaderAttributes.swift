@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct TopLeaderAttributes {
+    let fullName: String
+    let profilePictureURL: URL?
+    let stat: String
+}

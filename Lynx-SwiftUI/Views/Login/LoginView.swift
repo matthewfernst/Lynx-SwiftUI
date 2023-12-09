@@ -25,7 +25,7 @@ struct LoginView: View {
                 signInProgressView
                 signLynxLogoAndSignInButtonStack
             }
-            .alert("Failed to Sign In", isPresented: $googleSignIn.showErrorSigningIn) {
+            .alert("Failed to Sign In", isPresented: $showSignInError) {
                 Button("OK") {
                     isSigningIn = false
                 }
@@ -84,7 +84,7 @@ struct LoginView: View {
             goToHome = true
             #endif
             isSigningIn = true
-            googleSignIn.signIn { profileAttributes in
+            googleSignIn.signIn(showErrorSigningIn: $showSignInError) { profileAttributes in
                 self.loginHandler.commonSignIn(
                     type: profileAttributes.type,
                     id: profileAttributes.id,
