@@ -33,19 +33,11 @@ struct EditProfileView: View {
                     mergeAndSignOutSection
                     deleteAccount
                 }
-                
                 Spacer()
             }
-            .navigationBarBackButtonHidden(true)
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItemGroup(placement: .cancellationAction){
-                    Button("Cancel", role: .cancel) {
-                        dismiss()
-                    }
-                }
-                
                 ToolbarItemGroup(placement: .confirmationAction) {
                     Button {
                         showSavingChanges = true

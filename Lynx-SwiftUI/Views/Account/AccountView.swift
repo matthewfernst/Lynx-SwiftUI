@@ -57,33 +57,30 @@ struct AccountView: View {
     
     private var profileInformation: some View {
         NavigationLink(destination: EditProfileView()) {
-            Section {
-                HStack {
-                    if let profilePic = profileManager.profilePicture {
-                        profilePic
-                            .resizable()
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .frame(maxWidth: Constants.ProfileInformation.imageWidth)
-                    } else {
-                        ProgressView()
-                            .padding()
-                    }
-                    VStack(alignment: .leading) {
-                        Text(profileManager.profile!.name)
-                            .font(.title2)
-                        Text("Edit Account & Profile")
-                            .font(.caption)
-                    }
-                    .padding(.horizontal)
+                if let profilePic = profileManager.profilePicture {
+                    profilePic
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(Circle())
+                        .frame(
+                            width: Constants.ProfileInformation.imageWidthHeight,
+                            height: Constants.ProfileInformation.imageWidthHeight
+                        )
+                } else {
+                    ProgressView()
+                        .padding()
                 }
-            }
+                VStack(alignment: .leading) {
+                    Text(profileManager.profile!.name)
+                        .font(.title2)
+                    Text("Edit Account & Profile")
+                        .font(.caption)
+                }
+                .padding(.horizontal)
         }
-        
     }
     
     private var settings: some View {
-        
         Section {
             NavigationLink(destination: GeneralSettingsView()) {
                 cell(withIconColor: .gray, andText: "General") {
@@ -217,7 +214,7 @@ struct AccountView: View {
     
     private struct Constants {
         struct ProfileInformation {
-            static let imageWidth: CGFloat = 70
+            static let imageWidthHeight: CGFloat = 70
         }
         
         struct Fonts {

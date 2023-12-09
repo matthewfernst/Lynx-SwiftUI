@@ -100,14 +100,14 @@ class EditProfileHandler {
         newProfilePictureURL: URL,
         completion: @escaping () -> Void
     ) {
-        // Define the interval and maximum number of attempts for polling
         let pollInterval: TimeInterval = 2.0
-        let maxAttempts = 30 // for example, polling for 1 minute (30 attempts at 2-second intervals)
+        let maxAttempts = 30
         
         var attempts = 0
         
         // Start the polling loop
         func poll() {
+            Logger.editProfileHandler.error("Polling attempt #\(attempts)")
             // Check if the profile picture has changed
             getDataAsync(from: newProfilePictureURL) { currentData in
                 if newData == currentData {
@@ -126,6 +126,7 @@ class EditProfileHandler {
                     } else {
                         // Maximum attempts reached, stop polling
                         DispatchQueue.main.async {
+                            ProfileManager.shared.update(withNewProfilePictureURL: newProfilePictureURL)
                             completion()
                         }
                     }
@@ -133,7 +134,7 @@ class EditProfileHandler {
             }
         }
         
-        // Start the initial poll
+        // Initial poll
         poll()
     }
     
