@@ -57,33 +57,6 @@ struct Profile: Identifiable {
         }
     }
     
-//    static func createProfile(
-//        type: String,
-//        oauthToken: String,
-//        id: String,
-//        firstName: String,
-//        lastName: String,
-//        email: String,
-//        profilePictureURL: String? = nil,
-//        completion: @escaping (Profile) -> Void
-//    ) {
-//        guard let profilePictureURL = URL(string: profilePictureURL ?? "") else {
-//            completion(Profile(type: type, oauthToken: oauthToken, id: id, firstName: firstName, lastName: lastName, email: email))
-//            return
-//        }
-//        
-//        ProfilePictureUtils.downloadProfilePicture(with: profilePictureURL) { profilePicture in
-//            let profile = Profile(type: type,
-//                                  oauthToken: oauthToken,
-//                                  id: id,
-//                                  firstName: firstName,
-//                                  lastName: lastName,
-//                                  email: email,
-//                                  profilePictureURL: profilePictureURL.absoluteString)
-//            completion(profile)
-//        }
-//    }
-    
     mutating func edit(newFirstName: String?, newLastName: String?, newEmail: String?) {
         self.firstName = newFirstName ?? self.firstName
         self.lastName = newLastName ?? self.lastName

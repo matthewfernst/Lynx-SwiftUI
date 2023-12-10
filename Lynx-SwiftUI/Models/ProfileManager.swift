@@ -74,7 +74,7 @@ class ProfileManager: ObservableObject {
 #endif
     }
     
-    private struct Constants {
+    struct Constants {
         static let defaultProfilePictureURL = URL(string: "https://thumbs.dreamstime.com/b/european-teenager-beanie-profile-portrait-male-cartoon-character-blonde-man-avatar-social-network-vector-flat-271205345.jpg")!
     }
 }

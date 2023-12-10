@@ -15,66 +15,88 @@ struct CategoryTopLeadersView: View {
     var headerSystemImage: String
     
     var body: some View {
-        Form {
-            Section {
-                List {
-                    ForEach(0..<3) { rank in
-                        topLeader(withAttributes: topLeaders[rank], rankedAt: rank + 1) // plus 1 to zero offset
-                            .listRowSeparator(.hidden)
-                    }
-                    NavigationLink("Show All Leaders") {
-                        Text("TODO")
-                    }
-                    
+        Section {
+            List {
+                ForEach(0..<3) { rank in
+                    topLeader(withAttributes: topLeaders[rank], rankedAt: rank + 1) // plus 1 to zero offset
                 }
-            } header: {
-                Label(headerLabelText.capitalized, systemImage: headerSystemImage)
+                
+                NavigationLink(destination: Text("TODO")) {
+                    Text("Show All Leaders")
+                }
+                
             }
-            .headerProminence(.increased)
+        } header: {
+            Label(headerLabelText.capitalized, systemImage: headerSystemImage)
         }
+        .headerProminence(.increased)
+        
     }
     
     @ViewBuilder
     private func topLeader(withAttributes attributes: TopLeaderAttributes, rankedAt rank: Int) -> some View {
-        let rankImageNameAndColor: [(String, Color, CGFloat)] = [
-            ("crown.fill", .gold, 12),
-            ("medal.fill", .silver, 10),
-            ("medal.fill", .bronze, 10)
-        ]
-        
-        let (rankImageName, rankColor, rankImageWidth) = rankImageNameAndColor[rank - 1]
-        
         HStack {
-            AsyncImage(url: attributes.profilePictureURL) { image in
-                GeometryReader { geometry in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .overlay(
-                                    Image(systemName: rankImageName)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: rankImageWidth)
-                                        .foregroundStyle(rankColor)
-                                )
-                                .frame(maxWidth: 15)
-                                .foregroundStyle(Color(uiColor: colorScheme == .light ? .tertiarySystemGroupedBackground : .systemBackground))
-                                .offset(x: geometry.size.width / 3, y: geometry.size.height / 4)
-                        )
-                }
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(maxWidth: 60)
-            
+            profilePicture(withURL: attributes.profilePictureURL!, rank: rank)
             VStack {
                 Text(attributes.fullName)
+                    .font(.system(size: Constants.Font.nameSize, weight: .medium))
                 Text(attributes.stat)
             }
             .frame(maxWidth: .infinity)
+        }
+    }
+    
+    @ViewBuilder
+    private func profilePicture(withURL url: URL, rank: Int) -> some View {
+        let (rankImageName, rankColor, rankImageWidth) = Constants.Rank.rankImageNameAndColor[rank - 1]
+        
+        AsyncImage(url: url) { image in
+            GeometryReader { geometry in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .overlay(
+                                Image(systemName: rankImageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: rankImageWidth)
+                                    .foregroundStyle(rankColor)
+                            )
+                            .frame(maxWidth: Constants.ProfilePicture.medalBackgroundWidth)
+                            .foregroundStyle(Color(uiColor: colorScheme == .light ? .tertiarySystemGroupedBackground : .systemBackground))
+                            .offset(
+                                x: geometry.size.width / Constants.ProfilePicture.xMedalOffsetDivisor,
+                                y: geometry.size.height / Constants.ProfilePicture.yMedalOffsetDivisor
+                            )
+                    )
+            }
+        } placeholder: {
+            ProgressView()
+        }
+        .frame(maxWidth: Constants.ProfilePicture.imageWidth)
+    }
+    
+    private struct Constants {
+        struct Rank {
+            static let rankImageNameAndColor: [(String, Color, CGFloat)] = [
+                ("crown.fill", .gold, 12),
+                ("medal.fill", .silver, 10),
+                ("medal.fill", .bronze, 10)
+            ]
+        }
+        
+        struct ProfilePicture {
+            static let imageWidth: CGFloat = 60
+            static let medalBackgroundWidth: CGFloat = 15
+            static let xMedalOffsetDivisor: CGFloat = 3
+            static let yMedalOffsetDivisor: CGFloat = 4
+        }
+        
+        struct Font {
+            static let nameSize: CGFloat = 20
         }
     }
 }
@@ -90,7 +112,7 @@ extension Color {
 
 
 #Preview {
-    let debugURL = URL(string: "https://thumbs.dreamstime.com/b/european-teenager-beanie-profile-portrait-male-cartoon-character-blonde-man-avatar-social-network-vector-flat-271205345.jpg")!
+    let debugURL = ProfileManager.Constants.defaultProfilePictureURL
     return CategoryTopLeadersView(
         topLeaders: [
             .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),

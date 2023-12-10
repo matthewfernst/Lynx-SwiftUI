@@ -21,20 +21,18 @@ struct LoginView: View {
     var body: some View {
         ZStack {
             backgroundLynxImage
-            Group {
-                signInProgressView
-                signLynxLogoAndSignInButtonStack
-            }
-            .alert("Failed to Sign In", isPresented: $showSignInError) {
-                Button("OK") {
-                    isSigningIn = false
-                }
-            } message: {
-                Text("""
+            signLynxLogoAndSignInButtonStack
+            
+                .alert("Failed to Sign In", isPresented: $showSignInError) {
+                    Button("OK") {
+                        isSigningIn = false
+                    }
+                } message: {
+                    Text("""
                           It looks like we weren't able to sign you in. Please try again. If the issue continues, please contact the developers.
                      """
-                )
-            }
+                    )
+                }
         }
         .sheet(isPresented: $showInvitationSheet, content: {
             InvitationKeyView(goToHome: $goToHome)
@@ -80,9 +78,10 @@ struct LoginView: View {
     
     private var signInWithGoogleButton: some View {
         Button {
-            #if DEBUG
+#if DEBUG
             goToHome = true
-            #endif
+            
+#endif
             isSigningIn = true
             googleSignIn.signIn(showErrorSigningIn: $showSignInError) { profileAttributes in
                 self.loginHandler.commonSignIn(
@@ -127,9 +126,16 @@ struct LoginView: View {
                 cornerRadius: Constants.signInButtonCornerRadius
             )
         )
-
     }
     
+    private var signInProgressView: some View {
+        ProgressView("Signing in...")
+            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+            .foregroundStyle(.white)
+            .padding(.bottom)
+    }
+    
+    @ViewBuilder
     private var signLynxLogoAndSignInButtonStack: some View {
         VStack {
             Spacer()
@@ -138,24 +144,17 @@ struct LoginView: View {
                 .scaledToFit()
                 .frame(width: 150)
                 .offset(x: -90, y: -40)
-            signInWithAppleButton
-            signInWithGoogleButton
+            if isSigningIn {
+                signInProgressView
+            } else {
+                signInWithAppleButton
+                signInWithGoogleButton
+            }
         }
         .padding()
     }
     
-    @ViewBuilder
-    private var signInProgressView: some View {
-        if isSigningIn {
-            ProgressView("Signing in...")
-                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.black.opacity(0.5))
-                .ignoresSafeArea(.all)
-                .zIndex(100)
-        }
-    }
+
     
     private struct Constants {
         static let signInButtonWidth: CGFloat = 300
