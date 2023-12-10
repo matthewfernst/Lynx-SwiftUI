@@ -14,7 +14,7 @@ struct LeaderboardView: View {
     var body: some View {
         NavigationStack {
             Form {
-                CategoryTopLeadersView(
+                TopLeadersForCategoryView(
                     topLeaders: [
                         .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
                         .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
@@ -24,7 +24,7 @@ struct LeaderboardView: View {
                     headerSystemImage: "arrow.right"
                 )
                 
-                CategoryTopLeadersView(
+                TopLeadersForCategoryView(
                     topLeaders: [
                         .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
                         .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
@@ -34,7 +34,7 @@ struct LeaderboardView: View {
                     headerSystemImage: "figure.skiing.downhill"
                 )
                 
-                CategoryTopLeadersView(
+                TopLeadersForCategoryView(
                     topLeaders: [
                         .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
                         .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
@@ -44,7 +44,7 @@ struct LeaderboardView: View {
                     headerSystemImage: "flame"
                 )
                 
-                CategoryTopLeadersView(
+                TopLeadersForCategoryView(
                     topLeaders: [
                         .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
                         .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),

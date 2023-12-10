@@ -7,29 +7,32 @@
 
 import SwiftUI
 
-struct CategoryTopLeadersView: View {
+struct TopLeadersForCategoryView: View {
     @Environment(\.colorScheme) private var colorScheme
+    
+    @State private var readyToNavigate = false
+    @State private var showProgressView = false
     
     var topLeaders: [TopLeaderAttributes]
     var headerLabelText: String
     var headerSystemImage: String
     
     var body: some View {
-        Section {
-            List {
-                ForEach(0..<3) { rank in
-                    topLeader(withAttributes: topLeaders[rank], rankedAt: rank + 1) // plus 1 to zero offset
+            Section {
+                List {
+                    ForEach(0..<3) { rank in
+                        topLeader(withAttributes: topLeaders[rank], rankedAt: rank + 1) // plus 1 to zero offset
+                    }
+                    showAllLeadersNavigationLink
+                }
+                .navigationDestination(isPresented: $readyToNavigate) {
+                    Text("TODO")
                 }
                 
-                NavigationLink(destination: Text("TODO")) {
-                    Text("Show All Leaders")
-                }
-                
+            } header: {
+                Label(headerLabelText.capitalized, systemImage: headerSystemImage)
             }
-        } header: {
-            Label(headerLabelText.capitalized, systemImage: headerSystemImage)
-        }
-        .headerProminence(.increased)
+            .headerProminence(.increased)
         
     }
     
@@ -37,13 +40,35 @@ struct CategoryTopLeadersView: View {
     private func topLeader(withAttributes attributes: TopLeaderAttributes, rankedAt rank: Int) -> some View {
         HStack {
             profilePicture(withURL: attributes.profilePictureURL!, rank: rank)
-            VStack {
+            VStack(spacing: Constants.Font.spacing) {
                 Text(attributes.fullName)
                     .font(.system(size: Constants.Font.nameSize, weight: .medium))
                 Text(attributes.stat)
             }
             .frame(maxWidth: .infinity)
         }
+    }
+    
+    private var showAllLeadersNavigationLink: some View {
+        Button {
+            showProgressView = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                showProgressView = false
+                readyToNavigate = true
+            }
+        } label: {
+            HStack {
+                Text("Show All Leaders")
+                Spacer()
+                if showProgressView {
+                    ProgressView()
+                } else {
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.gray)
+                }
+            }
+        }
+        .foregroundStyle(.primary)
     }
     
     @ViewBuilder
@@ -97,6 +122,7 @@ struct CategoryTopLeadersView: View {
         
         struct Font {
             static let nameSize: CGFloat = 20
+            static let spacing: CGFloat = 5
         }
     }
 }
@@ -113,7 +139,7 @@ extension Color {
 
 #Preview {
     let debugURL = ProfileManager.Constants.defaultProfilePictureURL
-    return CategoryTopLeadersView(
+    return TopLeadersForCategoryView(
         topLeaders: [
             .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
             .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
