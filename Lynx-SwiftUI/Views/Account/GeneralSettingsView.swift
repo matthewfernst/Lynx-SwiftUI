@@ -34,7 +34,7 @@ struct GeneralSettingsView: View {
                         }
                     }
                 } footer: {
-                    Text("Units changed are local to the Lynx App only and not Mountain-UI.")
+                    Text("Units changed are local to the Lynx App only and not MountainUI.")
                 }
             }
             .navigationTitle("General")

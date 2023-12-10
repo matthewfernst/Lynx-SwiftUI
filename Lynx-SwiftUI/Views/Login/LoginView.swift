@@ -22,7 +22,6 @@ struct LoginView: View {
         ZStack {
             backgroundLynxImage
             signLynxLogoAndSignInButtonStack
-            
                 .alert("Failed to Sign In", isPresented: $showSignInError) {
                     Button("OK") {
                         isSigningIn = false
@@ -65,13 +64,13 @@ struct LoginView: View {
         }
         .signInWithAppleButtonStyle(.white)
         .frame(
-            width: Constants.signInButtonWidth,
-            height: Constants.signInButtonHeight
+            width: Constants.SignInButton.width,
+            height: Constants.SignInButton.height
         )
         .padding()
         .clipShape(
             RoundedRectangle(
-                cornerRadius: Constants.signInButtonCornerRadius
+                cornerRadius: Constants.SignInButton.cornerRadius
             )
         )
     }
@@ -80,52 +79,36 @@ struct LoginView: View {
         Button {
 #if DEBUG
             goToHome = true
-            
 #endif
             isSigningIn = true
             googleSignIn.signIn(showErrorSigningIn: $showSignInError) { profileAttributes in
-                self.loginHandler.commonSignIn(
-                    type: profileAttributes.type,
-                    id: profileAttributes.id,
-                    token: profileAttributes.oauthToken,
-                    email: profileAttributes.email,
-                    firstName: profileAttributes.firstName,
-                    lastName: profileAttributes.lastName,
-                    profilePictureURL: profileAttributes.profilePictureURL
-                ) { result in
-                    switch result {
-                    case .success(let validatedInvite):
-                        if validatedInvite {
-                            goToHome = true
-                        } else {
-                            showInvitationSheet = true
-                        }
-                    case .failure(_):
-                        showSignInError = true
-                    }
-                }
+                login(withProfileAttributes: profileAttributes)
             }
         } label: {
-            HStack {
-                Image("GoogleLogo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 12)
-                Text("Sign in with Google")
-                    .foregroundStyle(.black)
-                    .fontWeight(.medium)
-            }
+            googleLogoAndText
         }
         .frame(
-            width: Constants.signInButtonWidth,
-            height: Constants.signInButtonHeight
+            width: Constants.SignInButton.width,
+            height: Constants.SignInButton.height
         )
         .background(.white)
         .clipShape(
             RoundedRectangle(
-                cornerRadius: Constants.signInButtonCornerRadius
+                cornerRadius: Constants.SignInButton.cornerRadius
             )
         )
+    }
+    
+    private var googleLogoAndText: some View {
+        HStack {
+            Image("GoogleLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: Constants.googleLogoWidth)
+            Text("Sign in with Google")
+                .foregroundStyle(.black)
+                .fontWeight(.medium)
+        }
     }
     
     private var signInProgressView: some View {
@@ -142,8 +125,8 @@ struct LoginView: View {
             Image("LynxLogo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 150)
-                .offset(x: -90, y: -40)
+                .frame(width: Constants.Logo.width)
+                .offset(x: Constants.Logo.xOffset, y: Constants.Logo.yOffset)
             if isSigningIn {
                 signInProgressView
             } else {
@@ -154,12 +137,45 @@ struct LoginView: View {
         .padding()
     }
     
-
+    // MARK: - Helpers
+    private func login(withProfileAttributes attributes: ProfileAttributes) {
+        self.loginHandler.commonSignIn(
+            type: attributes.type,
+            id: attributes.id,
+            token: attributes.oauthToken,
+            email: attributes.email,
+            firstName: attributes.firstName,
+            lastName: attributes.lastName,
+            profilePictureURL: attributes.profilePictureURL
+        ) { result in
+            switch result {
+            case .success(let validatedInvite):
+                if validatedInvite {
+                    goToHome = true
+                } else {
+                    showInvitationSheet = true
+                }
+            case .failure(_):
+                showSignInError = true
+            }
+        }
+    }
     
+    // MARK: - Constants
     private struct Constants {
-        static let signInButtonWidth: CGFloat = 300
-        static let signInButtonHeight: CGFloat = 44
-        static let signInButtonCornerRadius: CGFloat = 8
+        struct Logo {
+            static let width: CGFloat = 150
+            static let xOffset: CGFloat = -90
+            static let yOffset: CGFloat = -40
+        }
+        
+        struct SignInButton {
+            static let width: CGFloat = 300
+            static let height: CGFloat = 44
+            static let cornerRadius: CGFloat = 8
+        }
+        
+        static let googleLogoWidth: CGFloat = 12
     }
 }
 
