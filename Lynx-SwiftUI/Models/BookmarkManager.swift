@@ -9,13 +9,15 @@ import Foundation
 import OSLog
 
 class BookmarkManager {
+    static let shared = BookmarkManager()
+    
     private(set) var bookmark: (id: String, url: URL)?
     
-    private static func getAppSandboxDirectory() -> URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    private var appSandboxDirectory: URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
-    public func saveBookmark(for url: URL) {
+    func saveBookmark(for url: URL) {
         do {
             // Start accessing a security-scoped resource.
             guard url.startAccessingSecurityScopedResource() else {
@@ -32,41 +34,50 @@ class BookmarkManager {
             let id = UUID().uuidString
             
             // Convert URL to bookmark
-            let bookmarkData = try url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: nil, relativeTo: nil)
+            let bookmarkData = try url.bookmarkData(
+                options: .minimalBookmark,
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
             // Save the bookmark into a file (the name of the file is the UUID)
-            try bookmarkData.write(to: BookmarkManager.getAppSandboxDirectory().appendingPathComponent(id))
+            try bookmarkData.write(to: appSandboxDirectory.appendingPathComponent(id))
             
             // Add the URL and UUID to the urls
             bookmark = (id, url)
+            Logger.bookmarkManager.info("Successfully Saved Bookmarks")
         }
         catch {
             // Handle the error here.
-            Logger.bookmarkManager.debug("Error creating the bookmark: \(error)")
+            Logger.bookmarkManager.error("Error creating the bookmark: \(error)")
         }
     }
     
-    public func loadAllBookmarks() {
+    func loadAllBookmarks() {
         // Get all the bookmark files
-        let files = try? FileManager.default.contentsOfDirectory(at: BookmarkManager.getAppSandboxDirectory(), includingPropertiesForKeys: nil)
+        let files = try? FileManager.default.contentsOfDirectory(at: appSandboxDirectory, includingPropertiesForKeys: nil)
         // Map over the bookmark files
         let bookmarks = files?.compactMap { file in
             do {
                 let bookmarkData = try Data(contentsOf: file)
                 var isStale = false
                 // Get the URL from each bookmark
-                let url = try URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale)
+                let url = try URL(
+                    resolvingBookmarkData: bookmarkData,
+                    bookmarkDataIsStale: &isStale
+                )
                 
                 guard !isStale else {
                     // Handle stale data here.
                     return nil
                 }
                 
+                Logger.bookmarkManager.info("Successfully Saved Bookmarks")
                 // Return URL
                 return (file.lastPathComponent, url)
             }
             catch let error {
                 // Handle the error here.
-                print(error)
+                Logger.bookmarkManager.error("Error loading bookmarks: \(error)")
                 return nil
             }
         } ?? Array<(id: String, url: URL)>()
@@ -74,9 +85,8 @@ class BookmarkManager {
         self.bookmark = bookmarks.first
     }
     
-    static func removeAllBookmarks() {
+    func removeAllBookmarks() {
         let fileManager = FileManager.default
-        let appSandboxDirectory = BookmarkManager.getAppSandboxDirectory()
         
         do {
             let directoryContents = try fileManager.contentsOfDirectory(at: appSandboxDirectory, includingPropertiesForKeys: nil, options: [])
@@ -84,9 +94,9 @@ class BookmarkManager {
             for fileURL in directoryContents {
                 try? fileManager.removeItem(at: fileURL)
             }
+            Logger.bookmarkManager.info("Successfully Removed All Bookmarks")
         } catch {
-            print("Error removing bookmarks: \(error)")
+            Logger.bookmarkManager.error("Error removing bookmarks: \(error)")
         }
     }
-    
 }

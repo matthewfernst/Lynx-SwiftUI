@@ -18,6 +18,38 @@
             endingLineNumber = "28"
             landmarkName = "update(withNewProfile:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AE03F067-0E1F-4FF1-9A7E-150D4052BCEE - a48994b722b580eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Lynx_SwiftUI.ProfileManager.update(withNewProfile: Lynx_SwiftUI.Profile) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Models/ProfileManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "232">
+               </Location>
+               <Location
+                  uuid = "AE03F067-0E1F-4FF1-9A7E-150D4052BCEE - a48994b722b580eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Lynx_SwiftUI.ProfileManager.update(withNewProfile: Lynx_SwiftUI.Profile) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Models/ProfileManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "200">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

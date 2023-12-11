@@ -6,13 +6,23 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct LogbookView: View {
     @ObservedObject private var profileManager = ProfileManager.shared
     
     @State private var logbookStats = LogbookStats()
     @State private var showMoreInfo = false
+    
+    @ObservedObject private var folderConnectionHandler = FolderConnectionHandler()
     @State private var showUploadFilesSheet = false
+    @State private var showUploadProgress = false
+    
+    @State private var showSlopesFolderAlreadyConnected = false
+    
+    private var slopesFolderIsConnected: Bool {
+        BookmarkManager.shared.bookmark != nil
+    }
     
     var body: some View {
         NavigationStack {
@@ -24,7 +34,7 @@ struct LogbookView: View {
             .navigationTitle("Logbook")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    AnimatedActionButton(systemImage: "info.circle") {
+                    Button("More Info", systemImage: "info.circle") {
                         showMoreInfo = true
                     }
                     .confirmationDialog("Slopes Integration", isPresented: $showMoreInfo, titleVisibility: .visible) {
@@ -41,18 +51,37 @@ struct LogbookView: View {
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    AnimatedActionButton(systemImage: "folder.badge.plus") {
-                        showUploadFilesSheet = true
+                    if slopesFolderIsConnected {
+                        Button("Folder Already Connected", systemImage: "externaldrive.fill.badge.checkmark") {
+                            showSlopesFolderAlreadyConnected = true
+                        }
+                        .tint(.green)
+                    } else {
+                        Button("Connect Folder", systemImage: "folder.badge.plus") {
+                            showUploadFilesSheet = true
+                        }
                     }
                 }
             }
             .onAppear {
                 requestLogs()
+                BookmarkManager.shared.loadAllBookmarks()
             }
             .sheet(isPresented: $showUploadFilesSheet) {
-                FolderConnectionView()
+                FolderConnectionView(
+                    showUploadProgressView: $showUploadProgress,
+                    folderConnectionHandler: folderConnectionHandler
+                )
+                    
             }
-
+            .sheet(isPresented: $showUploadProgress) {
+                FileUploadProgressView(
+                    folderConnectionHandler: folderConnectionHandler
+                )
+            }
+            .alert("Slopes Folder Connected", isPresented: $showSlopesFolderAlreadyConnected) {} message: {
+                Text("When you open the app, we will automatically upload new files to propogate to MountainUI.")
+            }
         }
     }
     
@@ -69,7 +98,6 @@ struct LogbookView: View {
                     .padding(.top)
             }
             .headerProminence(.increased)
-  
             
             ForEach(logbookStats.logbooks.indices, id: \.self) { index in
                 if let configuredData = logbookStats.getConfiguredLogbookData(at: index) {
@@ -146,13 +174,14 @@ struct LogbookView: View {
                 switch result {
                 case .success(let logs):
                     logbookStats.logbooks = logs
-                case .failure(_):
-                    print("TODO")
+                case .failure(let error):
+                    Logger.logbook.error("Failed to get logs: \(error)")
                 }
             }
         }
     }
     
+    // MARK: - Constants
     private struct Constants {
         static let slopeIntegrationMessage = """
                            Lynx works together with the Slopes App by Breakpoint Studios. Slopes is able to track a skier or snowboarder while they shred it down the mountain. Slopes can track things such as average speed, total vertical feet, and more. Lynx uses the data stored by Slopes and links to your MountainUI display.
@@ -178,5 +207,4 @@ struct LogbookView: View {
 
 #Preview {
     LogbookView()
-    
 }

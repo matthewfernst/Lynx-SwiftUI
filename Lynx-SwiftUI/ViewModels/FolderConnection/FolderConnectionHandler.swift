@@ -15,6 +15,8 @@ class FolderConnectionHandler: ObservableObject {
         }
     }
     @Published var showError = false
+    @Published var uploadProgress = 0.0
+    @Published var currentFileBeingUploaded = ""
     
     func picker(didPickDocumentsAt url: URL) {
         guard url.startAccessingSecurityScopedResource() else {
@@ -49,6 +51,18 @@ class FolderConnectionHandler: ObservableObject {
                 let requestedPathsForUpload = fileList.compactMap { $0.lastPathComponent }
                 Logger.folderConnectionHandler.info("Requested Paths: \(requestedPathsForUpload)")
 
+                var currentFileNumberBeingUploaded = 0.0
+                for (index, path) in requestedPathsForUpload.enumerated() {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0 * Double(index)) { [unowned self] in
+                        currentFileNumberBeingUploaded += 1
+                        Logger.folderConnectionHandler.info("Uploading: \(path)")
+                        currentFileBeingUploaded = path
+                        self.uploadProgress = currentFileNumberBeingUploaded / Double(totalNumberOfFiles)   
+                    }
+                }
+                // TODO: Delete me from here
+                BookmarkManager.shared.saveBookmark(for: url)
+                return // TODO: To here
                 ApolloLynxClient.createUserRecordUploadUrl(filesToUpload: requestedPathsForUpload) { [unowned self] result in
                     switch result {
                     case .success(let urlsForUpload):
@@ -59,8 +73,7 @@ class FolderConnectionHandler: ObservableObject {
                         }
                         
                         guard let fileList = FolderConnectionHandler.getFileList(at: gpsLogsURL, includingPropertiesForKeys: keys) else { return }
-                        
-                        //                        setupSlopeFilesUploadingView()
+                         
                         var currentFileNumberBeingUploaded = 0
                         
                         for (fileURLEnumerator, uploadURL) in zip(fileList, urlsForUpload) {
@@ -86,7 +99,7 @@ class FolderConnectionHandler: ObservableObject {
                             }
                         }
                         url.stopAccessingSecurityScopedResource()
-                        //                        FolderConnectionHandler.bookmarkManager.saveBookmark(for: url)
+                        BookmarkManager.shared.saveBookmark(for: url)
                     case .failure(_):
                         self.showUploadError()
                         Logger.folderConnectionHandler.error("FAILURE")

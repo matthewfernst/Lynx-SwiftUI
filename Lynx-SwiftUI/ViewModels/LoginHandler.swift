@@ -88,7 +88,7 @@ class LoginHandler {
     static func signOut() {
         UserManager.shared.token = nil
         ApolloLynxClient.clearCache()
-        BookmarkManager.removeAllBookmarks()
+        BookmarkManager.shared.removeAllBookmarks()
     }
 }
 

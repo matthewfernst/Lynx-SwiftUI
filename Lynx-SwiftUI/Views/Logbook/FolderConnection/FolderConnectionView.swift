@@ -9,7 +9,10 @@ import SwiftUI
 import OSLog
 
 struct FolderConnectionView: View {
-    @ObservedObject private var folderConnectionHandler = FolderConnectionHandler()
+    @Binding var showUploadProgressView: Bool
+    @ObservedObject var folderConnectionHandler: FolderConnectionHandler
+    
+    @Environment(\.dismiss) private var dismiss
     @State private var showDocumentPicker = false
     
     var body: some View {
@@ -24,6 +27,11 @@ struct FolderConnectionView: View {
                     switch result {
                     case .success(let url):
                         folderConnectionHandler.picker(didPickDocumentsAt: url)
+                        dismiss()
+                        // Let a small amount of time pass for this view to dismiss
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showUploadProgressView = true
+                        }
                     case .failure(let error):
                         Logger.folderConnectionView.error(
                             "Failed in selecting folder with error: \(error)"
@@ -33,6 +41,7 @@ struct FolderConnectionView: View {
                 .alert(isPresented: $folderConnectionHandler.showError) {
                     folderConnectionHandler.errorAlert!
                 }
+     
         }
     }
     
@@ -55,39 +64,6 @@ struct FolderConnectionView: View {
         .padding()
     }
     
-    
-    // MARK: - Alert Actions
-//    @ViewBuilder
-//    private var uploadErrorActions: some View {
-//        Button("Try Again") {
-//            showDocumentPicker = true
-//            folderConnectionHandler.tracker.uploadError = false
-//        }
-//        Button("Cancel", role: .cancel) {
-//            folderConnectionHandler.tracker.uploadError = false
-//        }
-//    }
-//    
-//    @ViewBuilder
-//    private var fileAccessNotAllowedActions: some View {
-//        Button("Go to Settings") {
-//            guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
-//                return
-//            }
-//            
-//            if UIApplication.shared.canOpenURL(settingsURL) {
-//                UIApplication.shared.open(settingsURL) { success in
-//                    Logger.folderConnectionView.debug("Settings opened.")
-//                }
-//            }
-//            folderConnectionHandler.tracker.fileAccessNotAllowed = false
-//        }
-//        Button("Cancel", role: .cancel) {
-//            folderConnectionHandler.tracker.fileAccessNotAllowed = false
-//        }
-//    }
-    
-    
     private struct Constants {
         static let howToUploadInformation = """
                                             To upload, please follow the instructions illustrated below. When you are ready, click the 'Continue' button and select the correct directory
@@ -96,5 +72,8 @@ struct FolderConnectionView: View {
 }
 
 #Preview {
-    FolderConnectionView()
+    FolderConnectionView(
+        showUploadProgressView: .constant(false),
+        folderConnectionHandler: FolderConnectionHandler()
+    )
 }
