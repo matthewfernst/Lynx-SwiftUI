@@ -20,6 +20,8 @@
 		653404932B24E96800614C59 /* LeaderAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404922B24E96800614C59 /* LeaderAttributes.swift */; };
 		653404952B257E7700614C59 /* AllLeadersForCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404942B257E7700614C59 /* AllLeadersForCategoryView.swift */; };
 		653404972B26300600614C59 /* LeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404962B26300600614C59 /* LeaderView.swift */; };
+		6534049A2B26838D00614C59 /* FolderConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404992B26838D00614C59 /* FolderConnectionHandler.swift */; };
+		653404A22B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */; };
 		65B35E902B118C17002E99E4 /* Lynx_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */; };
 		65B35E942B118C18002E99E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E932B118C18002E99E4 /* Assets.xcassets */; };
 		65B35E972B118C18002E99E4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E962B118C18002E99E4 /* Preview Assets.xcassets */; };
@@ -115,6 +117,8 @@
 		653404922B24E96800614C59 /* LeaderAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderAttributes.swift; sourceTree = "<group>"; };
 		653404942B257E7700614C59 /* AllLeadersForCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLeadersForCategoryView.swift; sourceTree = "<group>"; };
 		653404962B26300600614C59 /* LeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderView.swift; sourceTree = "<group>"; };
+		653404992B26838D00614C59 /* FolderConnectionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderConnectionHandler.swift; sourceTree = "<group>"; };
+		653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderConnectionHandler+ErrorAlerts.swift"; sourceTree = "<group>"; };
 		65B35E8C2B118C17002E99E4 /* Lynx-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lynx-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lynx_SwiftUIApp.swift; sourceTree = "<group>"; };
 		65B35E932B118C18002E99E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -280,7 +284,6 @@
 		65B35E9E2B1192F3002E99E4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6529A8302B17859C00FF455E /* FolderConnection */,
 				65B35EB32B11AEA8002E99E4 /* Login */,
 				65B35EA82B1193D2002E99E4 /* Logbook */,
 				65B35EA92B1193E6002E99E4 /* Leaderboard */,
@@ -296,6 +299,8 @@
 				65F6CFD52B12EA2300E94E40 /* LoginHandler.swift */,
 				65B39A662B13FD0500948C9D /* LogbookStats.swift */,
 				6529A83D2B1AE5F500FF455E /* EditProfileHandler.swift */,
+				653404992B26838D00614C59 /* FolderConnectionHandler.swift */,
+				653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -303,6 +308,7 @@
 		65B35EA82B1193D2002E99E4 /* Logbook */ = {
 			isa = PBXGroup;
 			children = (
+				6529A8302B17859C00FF455E /* FolderConnection */,
 				65B35EA22B1193B7002E99E4 /* LogbookView.swift */,
 				65B35EAD2B1198B1002E99E4 /* ProfileSummaryView.swift */,
 				65B35EAF2B119BB8002E99E4 /* LifetimeDetailsView.swift */,
@@ -620,6 +626,7 @@
 				65B35F902B11C2A0002E99E4 /* BookmarkManager.swift in Sources */,
 				65B35E902B118C17002E99E4 /* Lynx_SwiftUIApp.swift in Sources */,
 				65B35EF42B11BE0B002E99E4 /* ResponseLoggingInterceptor.swift in Sources */,
+				6534049A2B26838D00614C59 /* FolderConnectionHandler.swift in Sources */,
 				65B35EB22B11A1C5002E99E4 /* LoginView.swift in Sources */,
 				65B35F322B11BF4B002E99E4 /* Extensions.swift in Sources */,
 				65B39A672B13FD0500948C9D /* LogbookStats.swift in Sources */,
@@ -662,6 +669,7 @@
 				65B35EA12B11931E002E99E4 /* HomeView.swift in Sources */,
 				65F6CFD62B12EA2300E94E40 /* LoginHandler.swift in Sources */,
 				65B35F8E2B11C1E0002E99E4 /* Profile.swift in Sources */,
+				653404A22B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift in Sources */,
 				653404932B24E96800614C59 /* LeaderAttributes.swift in Sources */,
 				65B35F6D2B11C129002E99E4 /* CreateInviteKeyMutation.graphql.swift in Sources */,
 				653404912B24E51D00614C59 /* TopLeadersForCategoryView.swift in Sources */,
