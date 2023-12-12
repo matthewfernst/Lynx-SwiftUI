@@ -74,7 +74,7 @@ struct AutoUploadView: View {
         HStack {
             Text(slopesFileName)
                 .font(.subheadline)
-                .transition(.rollDownInandOut)
+                .transition(progressValue < 1.0 ? .rollDownInandOut : .rollDownAndIdentity)
                 .id(UUID().uuidString + slopesFileName)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -158,6 +158,10 @@ extension AnyTransition {
     
     static var rollDownInandOut: AnyTransition {
         .asymmetric(insertion: .rollDownFromTop, removal: .rollDownOut)
+    }
+    
+    static var rollDownAndIdentity: AnyTransition {
+        .asymmetric(insertion: .rollDownFromTop, removal: .identity)
     }
 }
 
