@@ -46,7 +46,9 @@ struct LeaderView: View {
                                 .foregroundStyle(rankColor)
                         )
                         .frame(maxWidth: Constants.ProfilePicture.medalBackgroundWidth)
-                        .foregroundStyle(Color(uiColor: colorScheme == .light ? .tertiarySystemGroupedBackground : .systemBackground))
+                        .foregroundStyle(
+                            Color(uiColor: colorScheme == .light ? .tertiarySystemGroupedBackground : .systemBackground)
+                        )
                         .offset(
                             x: geometry.size.width / Constants.ProfilePicture.xMedalOffsetDivisor,
                             y: geometry.size.height / Constants.ProfilePicture.yMedalOffsetDivisor

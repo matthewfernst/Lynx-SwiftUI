@@ -23,6 +23,7 @@
 		6534049A2B26838D00614C59 /* FolderConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404992B26838D00614C59 /* FolderConnectionHandler.swift */; };
 		653404A22B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */; };
 		653404A52B26CFC100614C59 /* FileUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A42B26CFC100614C59 /* FileUploadProgressView.swift */; };
+		653404A92B27A86F00614C59 /* AutoUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A82B27A86F00614C59 /* AutoUploadView.swift */; };
 		65B35E902B118C17002E99E4 /* Lynx_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */; };
 		65B35E942B118C18002E99E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E932B118C18002E99E4 /* Assets.xcassets */; };
 		65B35E972B118C18002E99E4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E962B118C18002E99E4 /* Preview Assets.xcassets */; };
@@ -119,6 +120,7 @@
 		653404992B26838D00614C59 /* FolderConnectionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderConnectionHandler.swift; sourceTree = "<group>"; };
 		653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderConnectionHandler+ErrorAlerts.swift"; sourceTree = "<group>"; };
 		653404A42B26CFC100614C59 /* FileUploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadProgressView.swift; sourceTree = "<group>"; };
+		653404A82B27A86F00614C59 /* AutoUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoUploadView.swift; sourceTree = "<group>"; };
 		65B35E8C2B118C17002E99E4 /* Lynx-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lynx-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lynx_SwiftUIApp.swift; sourceTree = "<group>"; };
 		65B35E932B118C18002E99E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			children = (
 				6529A8312B1785DF00FF455E /* FolderConnectionView.swift */,
 				653404A42B26CFC100614C59 /* FileUploadProgressView.swift */,
+				653404A82B27A86F00614C59 /* AutoUploadView.swift */,
 			);
 			path = FolderConnection;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				65B35F842B11C129002E99E4 /* DeleteUserOptions.graphql.swift in Sources */,
 				65B35F822B11C129002E99E4 /* SchemaConfiguration.swift in Sources */,
 				65B35F7B2B11C129002E99E4 /* User.graphql.swift in Sources */,
+				653404A92B27A86F00614C59 /* AutoUploadView.swift in Sources */,
 				65B35F902B11C2A0002E99E4 /* BookmarkManager.swift in Sources */,
 				65B35E902B118C17002E99E4 /* Lynx_SwiftUIApp.swift in Sources */,
 				65B35EF42B11BE0B002E99E4 /* ResponseLoggingInterceptor.swift in Sources */,

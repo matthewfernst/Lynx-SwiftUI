@@ -20,67 +20,99 @@ struct LogbookView: View {
     
     @State private var showSlopesFolderAlreadyConnected = false
     
+    @State private var showAutoUpload = false
+    
     private var slopesFolderIsConnected: Bool {
         BookmarkManager.shared.bookmark != nil
     }
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                ProfileSummaryView(logbookStats: $logbookStats)
-                LifetimeDetailsView(logbookStats: $logbookStats)
-                scrollableSessionSummaries
-            }
-            .navigationTitle("Logbook")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("More Info", systemImage: "info.circle") {
-                        showMoreInfo = true
-                    }
-                    .confirmationDialog("Slopes Integration", isPresented: $showMoreInfo, titleVisibility: .visible) {
-                        Link(
-                            "What is Slopes?",
-                            destination: URL(string: Constants.slopesLink)!
-                        )
-                        Link(
-                            "What is MountainUI?",
-                            destination: URL(string: Constants.mountainUILink)!
-                        )
-                    } message:  {
-                        Text(Constants.slopeIntegrationMessage)
-                    }
+        ZStack {
+            autoUpload
+            NavigationStack {
+                VStack {
+                    ProfileSummaryView(logbookStats: $logbookStats)
+                    LifetimeDetailsView(logbookStats: $logbookStats)
+                    scrollableSessionSummaries
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    if slopesFolderIsConnected {
-                        Button("Folder Already Connected", systemImage: "externaldrive.fill.badge.checkmark") {
-                            showSlopesFolderAlreadyConnected = true
-                        }
-                        .tint(.green)
-                    } else {
-                        Button("Connect Folder", systemImage: "folder.badge.plus") {
-                            showUploadFilesSheet = true
-                        }
-                    }
+                .navigationTitle("Logbook")
+                .toolbar {
+                    moreInfoButton
+                    documentPickerAndConnectionButton
+                }
+                .onAppear {
+                    BookmarkManager.shared.loadAllBookmarks()
+                    requestLogs()
+                    showAutoUpload = true
+                }
+                .sheet(isPresented: $showUploadFilesSheet) {
+                    FolderConnectionView(
+                        showUploadProgressView: $showUploadProgress,
+                        folderConnectionHandler: folderConnectionHandler
+                    )
+                }
+                .sheet(isPresented: $showUploadProgress) {
+                    FileUploadProgressView(
+                        folderConnectionHandler: folderConnectionHandler
+                    )
+                }
+                .alert("Slopes Folder Connected", isPresented: $showSlopesFolderAlreadyConnected) {} message: {
+                    Text("When you open the app, we will automatically upload new files to propogate to MountainUI.")
                 }
             }
-            .onAppear {
-                requestLogs()
-                BookmarkManager.shared.loadAllBookmarks()
+        }
+    }
+    
+    // MARK: - Views
+    private var autoUpload: some View {
+        VStack {
+              Spacer()
+                  .frame(height: showAutoUpload ? 0 : 55)
+                  .animation(.easeInOut, value: showAutoUpload)
+
+            AutoUploadView(showAutoUpload: $showAutoUpload)
+                  .padding(.top, showAutoUpload ? 55 : 0)
+                  .offset(y: showAutoUpload ? 0 : -UIScreen.main.bounds.height)
+                  .animation(.easeInOut(duration: 1.25), value: showAutoUpload)
+              Spacer()
+          }
+          .ignoresSafeArea(.all)
+          .zIndex(1)
+          .opacity(showAutoUpload ? 1 : 0)
+          .animation(.easeInOut, value: showAutoUpload)
+    }
+    
+    private var moreInfoButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button("More Info", systemImage: "info.circle") {
+                showMoreInfo = true
             }
-            .sheet(isPresented: $showUploadFilesSheet) {
-                FolderConnectionView(
-                    showUploadProgressView: $showUploadProgress,
-                    folderConnectionHandler: folderConnectionHandler
+            .confirmationDialog("Slopes Integration", isPresented: $showMoreInfo, titleVisibility: .visible) {
+                Link(
+                    "What is Slopes?",
+                    destination: URL(string: Constants.slopesLink)!
                 )
-                    
-            }
-            .sheet(isPresented: $showUploadProgress) {
-                FileUploadProgressView(
-                    folderConnectionHandler: folderConnectionHandler
+                Link(
+                    "What is MountainUI?",
+                    destination: URL(string: Constants.mountainUILink)!
                 )
+            } message:  {
+                Text(Constants.slopeIntegrationMessage)
             }
-            .alert("Slopes Folder Connected", isPresented: $showSlopesFolderAlreadyConnected) {} message: {
-                Text("When you open the app, we will automatically upload new files to propogate to MountainUI.")
+        }
+    }
+    
+    private var documentPickerAndConnectionButton: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            if slopesFolderIsConnected {
+                Button("Folder Already Connected", systemImage: "externaldrive.fill.badge.checkmark") {
+                    showSlopesFolderAlreadyConnected = true
+                }
+                .tint(.green)
+            } else {
+                Button("Connect Folder", systemImage: "folder.badge.plus") {
+                    showUploadFilesSheet = true
+                }
             }
         }
     }
@@ -91,7 +123,7 @@ struct LogbookView: View {
                 NavigationLink {
                     FullLifetimeSummaryView(logbookStats: $logbookStats)
                 } label: {
-                    lifetimeSummaryLabel
+                    lifetimeSummary
                 }
             } header: {
                 Text(yearHeader)
@@ -110,15 +142,7 @@ struct LogbookView: View {
         }
     }
     
-    private var yearHeader: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy"
-        let currentYear = dateFormatter.string(from: .now)
-        let pastYear = String((Int(currentYear) ?? 0) - 1)
-        return "\(pastYear)/\(currentYear)"
-    }
-    
-    private var lifetimeSummaryLabel: some View {
+    private var lifetimeSummary: some View {
         VStack(alignment: .leading, spacing: Constants.Spacing.dateAndSummary) {
             Text("Lifetime Summary")
                 .font(.system(
@@ -165,6 +189,15 @@ struct LogbookView: View {
         }
     }
     
+    // MARK: - Helpers
+    private var yearHeader: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        let currentYear = dateFormatter.string(from: .now)
+        let pastYear = String((Int(currentYear) ?? 0) - 1)
+        return "\(pastYear)/\(currentYear)"
+    }
+    
     private func requestLogs() {
         ApolloLynxClient.clearCache()
         Task {
@@ -201,7 +234,6 @@ struct LogbookView: View {
             static let detailSize: CGFloat = 12
             static let detailWeight: Font.Weight = .medium
         }
-        
     }
 }
 
