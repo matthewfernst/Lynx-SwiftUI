@@ -169,6 +169,7 @@ class ApolloLynxClient {
         Error>) -> Void
     ) {
         
+#if DEBUG
         Logger.apollo.debug("Login in with following: type               -> \(type)")
         Logger.apollo.debug("                         id                 -> \(id)")
         Logger.apollo.debug("                         token              -> \(token)")
@@ -176,7 +177,7 @@ class ApolloLynxClient {
         Logger.apollo.debug("                         firstName          -> \(firstName ?? "nil")")
         Logger.apollo.debug("                         lastName           -> \(lastName ?? "nil")")
         Logger.apollo.debug("                         profilePictureUrl  -> \(profilePictureUrl?.absoluteString ?? "nil")")
-        
+#endif
         
         var userData: [ApolloGeneratedGraphQL.UserDataPair] = []
         var userDataNullable = GraphQLNullable<[ApolloGeneratedGraphQL.UserDataPair]>(nilLiteral: ())
@@ -584,20 +585,20 @@ class ApolloLynxClient {
 // MARK: - ProfileAttributes
 struct ProfileAttributes: CustomDebugStringConvertible {
     var type: String
-    var oauthToken: String
     var id: String
-    var email: String
-    var firstName: String
-    var lastName: String
-    var profilePictureURL: URL?
+    var oauthToken: String
+    var email: String? = nil
+    var firstName: String? = nil
+    var lastName: String? = nil
+    var profilePictureURL: URL? = nil
     
     init(
         type: String,
         oauthToken: String,
         id: String,
-        email: String,
-        firstName: String,
-        lastName: String,
+        email: String? = nil,
+        firstName: String? = nil,
+        lastName: String? = nil,
         profilePictureURL: URL? = nil
     ) {
         self.type = type
@@ -614,9 +615,9 @@ struct ProfileAttributes: CustomDebugStringConvertible {
        id: \(self.id)
        type: \(self.type)
        oauthToken: \(self.oauthToken)
-       firstName: \(self.firstName)
-       lastName: \(self.lastName)
-       email: \(self.email)
+       firstName: \(self.firstName ?? "Johnny")
+       lastName: \(self.lastName ?? "Appleseed")
+       email: \(self.email ?? "johnny.appleseed@email.com")
        profilePictureURL: \(String(describing: self.profilePictureURL))
        """
     }

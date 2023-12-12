@@ -11,12 +11,14 @@ import GoogleSignIn
 
 struct LoginView: View {
     private var loginHandler = LoginHandler()
+    private var googleSignInHandler = GoogleSignInHandler()
+    private var appleSignInHandler = AppleSignInHandler()
+    
+    
     @State private var goToHome = false
     @State private var showSignInError = false
     @State private var showInvitationSheet = false
     @State private var isSigningIn = false
-    @StateObject private var googleSignIn = GoogleSignIn()
-    
     
     var body: some View {
         ZStack {
@@ -24,12 +26,13 @@ struct LoginView: View {
             signLynxLogoAndSignInButtonStack
                 .alert("Failed to Sign In", isPresented: $showSignInError) {
                     Button("OK") {
-                        isSigningIn = false
+                        withAnimation {
+                            isSigningIn = false
+                        }
                     }
                 } message: {
-                    Text("""
-                          It looks like we weren't able to sign you in. Please try again. If the issue continues, please contact the developers.
-                     """
+                    Text(
+                        "It looks like we weren't able to sign you in. Please try again. If the issue continues, please contact the developers."
                     )
                 }
         }
@@ -41,6 +44,7 @@ struct LoginView: View {
         .fullScreenCover(isPresented: $goToHome, content: HomeView.init) // TODO: Better transition!
     }
     
+    // MARK: - Views
     private var backgroundLynxImage: some View {
         Image("LynxSignIn")
             .resizable()
@@ -58,9 +62,17 @@ struct LoginView: View {
     
     private var signInWithAppleButton: some View {
         SignInWithAppleButton(.signIn) { request in
-            
-        } onCompletion: { result in
-            
+            withAnimation {
+                isSigningIn = true
+            }
+            request.requestedScopes = [.fullName, .email]
+        }  onCompletion: { result in
+            appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes in
+#if DEBUG
+                goToHome = true
+#endif
+                login(withProfileAttributes: attributes)
+            }
         }
         .signInWithAppleButtonStyle(.white)
         .frame(
@@ -68,11 +80,6 @@ struct LoginView: View {
             height: Constants.SignInButton.height
         )
         .padding()
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: Constants.SignInButton.cornerRadius
-            )
-        )
     }
     
     private var signInWithGoogleButton: some View {
@@ -80,18 +87,20 @@ struct LoginView: View {
 #if DEBUG
             goToHome = true
 #endif
-            isSigningIn = true
-            googleSignIn.signIn(showErrorSigningIn: $showSignInError) { profileAttributes in
+            withAnimation {
+                isSigningIn = true
+            }
+            googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { profileAttributes in
                 login(withProfileAttributes: profileAttributes)
             }
         } label: {
             googleLogoAndText
         }
+        .buttonStyle(GoogleButtonStyle())
         .frame(
             width: Constants.SignInButton.width,
             height: Constants.SignInButton.height
         )
-        .background(.white)
         .clipShape(
             RoundedRectangle(
                 cornerRadius: Constants.SignInButton.cornerRadius
@@ -99,15 +108,29 @@ struct LoginView: View {
         )
     }
     
+    struct GoogleButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(configuration.isPressed ? .gray : .white)
+                .transition(.opacity)
+        }
+    }
+    
     private var googleLogoAndText: some View {
-        HStack {
+        HStack(spacing: Constants.SignInButton.spacing) {
             Image("GoogleLogo")
                 .resizable()
                 .scaledToFit()
                 .frame(width: Constants.googleLogoWidth)
+            
             Text("Sign in with Google")
                 .foregroundStyle(.black)
-                .fontWeight(.medium)
+                .font(
+                    .system(size: Constants.SignInButton.fontSize,
+                    weight: .medium)
+                )
         }
     }
     
@@ -120,33 +143,35 @@ struct LoginView: View {
     
     @ViewBuilder
     private var signLynxLogoAndSignInButtonStack: some View {
-        VStack {
-            Spacer()
-            Image("LynxLogo")
-                .resizable()
-                .scaledToFit()
-                .frame(width: Constants.Logo.width)
-                .offset(x: Constants.Logo.xOffset, y: Constants.Logo.yOffset)
-            if isSigningIn {
-                signInProgressView
-            } else {
-                signInWithAppleButton
-                signInWithGoogleButton
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                Image("LynxLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: Constants.Logo.width)
+                    .position(
+                        x: geometry.size.width / 10 - Constants.Logo.xOffset,
+                        y: geometry.size.height / 1.75 - Constants.Logo.yOffset
+                    )
+             
+                if isSigningIn {
+                    signInProgressView
+                } else {
+                    signInWithAppleButton
+                    signInWithGoogleButton
+                }
+                Spacer()
             }
+            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .padding()
     }
     
     // MARK: - Helpers
     private func login(withProfileAttributes attributes: ProfileAttributes) {
         self.loginHandler.commonSignIn(
-            type: attributes.type,
-            id: attributes.id,
-            token: attributes.oauthToken,
-            email: attributes.email,
-            firstName: attributes.firstName,
-            lastName: attributes.lastName,
-            profilePictureURL: attributes.profilePictureURL
+            withProfileAttributes: attributes
         ) { result in
             switch result {
             case .success(let validatedInvite):
@@ -170,9 +195,11 @@ struct LoginView: View {
         }
         
         struct SignInButton {
-            static let width: CGFloat = 300
-            static let height: CGFloat = 44
-            static let cornerRadius: CGFloat = 8
+            static let width: CGFloat = 280
+            static let height: CGFloat = 40
+            static let cornerRadius: CGFloat = 7
+            static let fontSize: CGFloat = 15
+            static let spacing: CGFloat = 4
         }
         
         static let googleLogoWidth: CGFloat = 12

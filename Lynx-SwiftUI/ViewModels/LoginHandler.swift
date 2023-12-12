@@ -14,24 +14,18 @@ enum ProfileError: Error {
 
 class LoginHandler {
     func commonSignIn(
-        type: String,
-        id: String,
-        token: String,
-        email: String? = nil,
-        firstName: String? = nil,
-        lastName: String? = nil,
-        profilePictureURL: URL? = nil,
+        withProfileAttributes attributes: ProfileAttributes,
         completion: @escaping (Result<Bool,
                                Error>) -> Void
     ) {
         ApolloLynxClient.loginOrCreateUser(
-            type: type,
-            id: id,
-            token: token,
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            profilePictureUrl: profilePictureURL
+            type: attributes.type,
+            id: attributes.id,
+            token: attributes.oauthToken,
+            email: attributes.email,
+            firstName: attributes.firstName,
+            lastName: attributes.lastName,
+            profilePictureUrl: attributes.profilePictureURL
         ) { result in
                 switch result {
                 case .success(let validatedInvite):
@@ -71,9 +65,9 @@ class LoginHandler {
                 type: profileAttributes.type,
                 oauthToken: profileAttributes.oauthToken,
                 id: profileAttributes.id,
-                firstName: profileAttributes.firstName,
-                lastName: profileAttributes.lastName,
-                email: profileAttributes.email,
+                firstName: profileAttributes.firstName!,
+                lastName: profileAttributes.lastName!,
+                email: profileAttributes.email!,
                 profilePictureURL: profileAttributes.profilePictureURL
             )
         )

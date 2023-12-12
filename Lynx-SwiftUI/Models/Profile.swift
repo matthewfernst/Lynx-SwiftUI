@@ -41,9 +41,9 @@ struct Profile: Identifiable {
             type: profileAttributes.type,
             oauthToken: profileAttributes.oauthToken,
             id: profileAttributes.id,
-            firstName: profileAttributes.firstName,
-            lastName: profileAttributes.lastName,
-            email: profileAttributes.email,
+            firstName: profileAttributes.firstName!,
+            lastName: profileAttributes.lastName!,
+            email: profileAttributes.email!,
             profilePictureURL: profileAttributes.profilePictureURL
         )
     }

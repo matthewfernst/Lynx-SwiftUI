@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import GoogleSignIn
 
-class GoogleSignIn: ObservableObject {
+class GoogleSignInHandler {
     func signIn(showErrorSigningIn: Binding<Bool>, completion: @escaping (ProfileAttributes) -> Void) {
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

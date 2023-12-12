@@ -13,6 +13,8 @@ extension Logger {
     
     static let apollo = Logger(subsystem: subsystem, category: "Apollo")
     
+    static let appleSignInHandler = Logger(subsystem: subsystem, category: "AppleSignInHandler")
+    
     static let bookmarkManager = Logger(subsystem: subsystem, category: "BookmarkManager")
     
     static let editProfileHandler = Logger(subsystem: subsystem, category: "EditProfileHandler")
