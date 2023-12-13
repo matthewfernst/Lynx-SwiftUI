@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct InvitationKeyView: View {
-    @Binding var goToHome: Bool
+    @Environment(\.dismiss) private var dismiss
+    private let completion: (()-> Void)
     
     @State private var key = ""
     @State private var showDontHaveInvitationAlert = false
     @State private var showInvalidKeyAlert = false
+    
+    init(completion: @escaping () -> Void) {
+            self.completion = completion
+    }
     
     var body: some View {
         VStack {
@@ -76,7 +81,8 @@ struct InvitationKeyView: View {
                 switch result {
                 case .success(_):
                     print("pin matched, go to next page, no action to perfrom here")
-                    goToHome = true
+                    dismiss()
+                    completion()
                 case .failure(_):
                     print("this has to called after showing toast why is the failure")
                     showInvalidKeyAlert = true
@@ -139,5 +145,7 @@ struct InvitationKeyView: View {
 }
 
 #Preview {
-    InvitationKeyView (goToHome: .constant(false))
+    InvitationKeyView {
+        
+    }
 }

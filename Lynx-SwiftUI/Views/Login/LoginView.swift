@@ -37,8 +37,17 @@ struct LoginView: View {
                 }
         }
         .sheet(isPresented: $showInvitationSheet, content: {
-            InvitationKeyView(goToHome: $goToHome)
-                .interactiveDismissDisabled()
+            InvitationKeyView {
+                loginHandler.loginUser { result in
+                    switch result {
+                    case .success(_):
+                        goToHome = true
+                    case .failure(_):
+                        showSignInError = true
+                    }
+                }
+            }
+            .interactiveDismissDisabled()
         })
         
         .fullScreenCover(isPresented: $goToHome, content: HomeView.init) // TODO: Better transition!
@@ -71,7 +80,13 @@ struct LoginView: View {
 #if DEBUG
                 goToHome = true
 #endif
-                login(withProfileAttributes: attributes)
+                loginHandler.commonSignIn(
+                    withProfileAttributes: attributes,
+                    goToHome: $goToHome,
+                    showInvitationSheet: $showInvitationSheet,
+                    showSignInError: $showSignInError
+                )
+                
             }
         }
         .signInWithAppleButtonStyle(.white)
@@ -90,8 +105,13 @@ struct LoginView: View {
             withAnimation {
                 isSigningIn = true
             }
-            googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { profileAttributes in
-                login(withProfileAttributes: profileAttributes)
+            googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { attributes in
+                loginHandler.commonSignIn(
+                    withProfileAttributes: attributes,
+                    goToHome: $goToHome,
+                    showInvitationSheet: $showInvitationSheet,
+                    showSignInError: $showSignInError
+                )
             }
         } label: {
             googleLogoAndText
@@ -129,7 +149,7 @@ struct LoginView: View {
                 .foregroundStyle(.black)
                 .font(
                     .system(size: Constants.SignInButton.fontSize,
-                    weight: .medium)
+                            weight: .medium)
                 )
         }
     }
@@ -154,7 +174,7 @@ struct LoginView: View {
                         x: geometry.size.width / 10 - Constants.Logo.xOffset,
                         y: geometry.size.height / 1.75 - Constants.Logo.yOffset
                     )
-             
+                
                 if isSigningIn {
                     signInProgressView
                 } else {
@@ -168,23 +188,6 @@ struct LoginView: View {
         }
     }
     
-    // MARK: - Helpers
-    private func login(withProfileAttributes attributes: ProfileAttributes) {
-        self.loginHandler.commonSignIn(
-            withProfileAttributes: attributes
-        ) { result in
-            switch result {
-            case .success(let validatedInvite):
-                if validatedInvite {
-                    goToHome = true
-                } else {
-                    showInvitationSheet = true
-                }
-            case .failure(_):
-                showSignInError = true
-            }
-        }
-    }
     
     // MARK: - Constants
     private struct Constants {

@@ -5,7 +5,7 @@
 //  Created by Matthew Ernst on 11/25/23.
 //
 
-import Foundation
+import SwiftUI
 import OSLog
 
 enum ProfileError: Error {
@@ -15,8 +15,9 @@ enum ProfileError: Error {
 class LoginHandler {
     func commonSignIn(
         withProfileAttributes attributes: ProfileAttributes,
-        completion: @escaping (Result<Bool,
-                               Error>) -> Void
+        goToHome: Binding<Bool>,
+        showInvitationSheet: Binding<Bool>,
+        showSignInError: Binding<Bool>
     ) {
         ApolloLynxClient.loginOrCreateUser(
             type: attributes.type,
@@ -31,19 +32,25 @@ class LoginHandler {
                 case .success(let validatedInvite):
                     Logger.loginHandler.info("Authorization Token successfully received.")
                     if validatedInvite {
-                        self.loginUser(completion: completion)
-                    } else {
-                        // Show Invitation Sheet
-                        completion(.success(validatedInvite))
+                        self.loginUser { result in
+                            switch result {
+                            case .success(_):
+                                goToHome.wrappedValue = true
+                            case .failure(_):
+                                showSignInError.wrappedValue = true
+                            }
+                        }
+                    } else { // Show Invitation Sheet
+                        showInvitationSheet.wrappedValue = true
                     }
                 case .failure:
-                    completion(.failure(UserError.noAuthorizationTokenReturned))
+                    showSignInError.wrappedValue = true
                 }
             }
     }
     
     
-    private func loginUser(completion: @escaping (Result<Bool, Error>) -> Void) {
+    func loginUser(completion: @escaping (Result<Bool, Error>) -> Void) {
         ApolloLynxClient.getProfileInformation() { result in
             switch result {
             case .success(let profileAttributes):

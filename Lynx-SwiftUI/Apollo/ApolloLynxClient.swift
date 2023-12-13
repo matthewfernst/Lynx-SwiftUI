@@ -169,7 +169,7 @@ class ApolloLynxClient {
         Error>) -> Void
     ) {
         
-#if DEBUG
+
         Logger.apollo.debug("Login in with following: type               -> \(type)")
         Logger.apollo.debug("                         id                 -> \(id)")
         Logger.apollo.debug("                         token              -> \(token)")
@@ -177,7 +177,7 @@ class ApolloLynxClient {
         Logger.apollo.debug("                         firstName          -> \(firstName ?? "nil")")
         Logger.apollo.debug("                         lastName           -> \(lastName ?? "nil")")
         Logger.apollo.debug("                         profilePictureUrl  -> \(profilePictureUrl?.absoluteString ?? "nil")")
-#endif
+
         
         var userData: [ApolloGeneratedGraphQL.UserDataPair] = []
         var userDataNullable = GraphQLNullable<[ApolloGeneratedGraphQL.UserDataPair]>(nilLiteral: ())
