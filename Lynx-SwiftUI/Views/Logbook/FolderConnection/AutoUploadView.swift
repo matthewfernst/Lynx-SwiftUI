@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct AutoUploadView: View {
-    @Environment(\.colorScheme) private var colorScheme
+    @ObservedObject var folderConnectionHandler: FolderConnectionHandler
     @Binding var showAutoUpload: Bool
     
-    @State private var progressValue: Double = 0.0
-    @State private var randomSlopes: [String] = ["Mountain Slopes", "Snowy Adventure", "Skiing Fun", "Powder Paradise"]
-    @State private var slopesFileName: String = ""
-
-    private let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+    @Environment(\.colorScheme) private var colorScheme
+    @State private var slopesFileUploading = ""
     
     var body: some View {
         backgroundCapsule
@@ -26,18 +23,18 @@ struct AutoUploadView: View {
                     slopeUploadText
                 }
             )
-            .onReceive(timer) { _ in
-                withAnimation {
-                    progressValue += 0.1 // Adjust the increment value as needed
-                    if progressValue > 1.0 {
-                        timer.upstream.connect().cancel()
-                        progressValue = 1.0
-                        slopesFileName = "All Done! "
+            .onChange(of: folderConnectionHandler.uploadProgress) { _, newProgress in
+                if newProgress >= 0.99 {
+                    withAnimation {
+                        slopesFileUploading = "All Done!"
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             showAutoUpload = false
+                            slopesFileUploading = ""
                         }
-                    } else {
-                        slopesFileName = randomSlopes.randomElement()!
+                    }
+                } else {
+                    withAnimation {
+                        slopesFileUploading = folderConnectionHandler.currentFileBeingUploaded
                     }
                 }
             }
@@ -58,8 +55,27 @@ struct AutoUploadView: View {
     
     private var progress: some View {
         HStack {
-            if progressValue < 1.0 {
-                CircularProgressView(progress: $progressValue)
+            if folderConnectionHandler.uploadProgress < 1.0 {
+                ZStack {
+                    Circle()
+                        .stroke(lineWidth: Constants.CircularProgress.lineWidth)
+                        .opacity(Constants.CircularProgress.backgroundOpacity)
+                        .foregroundColor(Color.secondary)
+                    
+                    Circle()
+                        .trim(from: 0.0, to: CGFloat(folderConnectionHandler.uploadProgress))
+                        .stroke(
+                            style: StrokeStyle(lineWidth: Constants.CircularProgress.lineWidth,
+                            lineCap: .round,
+                            lineJoin: .round))
+                        .foregroundColor(Color.lynx)
+                        .rotationEffect(Constants.CircularProgress.rotationAngle)
+                }
+                .frame(
+                    width: Constants.CircularProgress.widthHeight,
+                    height: Constants.CircularProgress.widthHeight
+                )
+                .transition(.identity)
             } else {
                 Image(systemName: "checkmark.circle.fill")
                     .resizable()
@@ -72,59 +88,35 @@ struct AutoUploadView: View {
     
     private var slopeUploadText: some View {
         HStack {
-            Text(slopesFileName)
+            Text(slopesFileUploading)
                 .font(.subheadline)
-                .transition(progressValue < 1.0 ? .rollDownInandOut : .rollDownAndIdentity)
-                .id(UUID().uuidString + slopesFileName)
+                .transition(
+                    folderConnectionHandler.uploadProgress < 1.0 ? .rollDownInandOut : .rollDownAndIdentity
+                )
+                .id(UUID().uuidString + slopesFileUploading) // id to replace this view even if the file name is the same
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
+    
     // MARK: - Constants For Main View
     private struct Constants {
         static let hstackSpacing: CGFloat = 10
+        
         struct BackgroundCapsule {
             static let cornerRadius: CGFloat = 25.0
             static let width: CGFloat = 300
             static let height: CGFloat = 65
             static let shadowRadius: CGFloat = 5
         }
-    }
-}
-
-struct CircularProgressView: View {
-    @Binding var progress: Double
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(lineWidth: Constants.lineWidth)
-                .opacity(Constants.backgroundOpacity)
-                .foregroundColor(Color.secondary)
-            
-            Circle()
-                .trim(from: 0.0, to: CGFloat(min(progress, 1.0)))
-                .stroke(
-                    style: StrokeStyle(lineWidth: Constants.lineWidth,
-                    lineCap: .round,
-                    lineJoin: .round))
-                .foregroundColor(Color.lynx)
-                .rotationEffect(Constants.rotationAngle)
-        }
-        .frame(
-            width: Constants.widthHeight,
-            height: Constants.widthHeight
-        )
-        .transition(.identity)
-    }
-    
-    
-    private struct Constants {
-        static let lineWidth: CGFloat = 5.0
-        static let backgroundOpacity: CGFloat = 0.3
         
-        static let rotationAngle: Angle = .degrees(270.0)
-        static let widthHeight: CGFloat = 25.0
+        struct CircularProgress {
+            static let lineWidth: CGFloat = 5.0
+            static let backgroundOpacity: CGFloat = 0.3
+            
+            static let rotationAngle: Angle = .degrees(270.0)
+            static let widthHeight: CGFloat = 25.0
+        }
     }
 }
 
@@ -166,5 +158,8 @@ extension AnyTransition {
 }
 
 #Preview {
-    AutoUploadView(showAutoUpload: .constant(true))
+    AutoUploadView(
+        folderConnectionHandler: FolderConnectionHandler(),
+        showAutoUpload: .constant(true)
+    )
 }

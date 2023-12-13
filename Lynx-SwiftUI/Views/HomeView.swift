@@ -11,10 +11,11 @@ import OSLog
 struct HomeView: View {
     @Environment(\.colorScheme) private var systemTheme
     @ObservedObject private var profileManager = ProfileManager.shared
+    @StateObject private var folderConnectionHandler = FolderConnectionHandler()
     
     var body: some View {
         TabView {
-            LogbookView()
+            LogbookView(folderConnectionHandler: folderConnectionHandler)
                 .tabItem {
                     Label("Logbook", systemImage: "book.pages")
                 }

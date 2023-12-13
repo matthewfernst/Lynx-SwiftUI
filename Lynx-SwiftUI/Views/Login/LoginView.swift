@@ -37,7 +37,7 @@ struct LoginView: View {
                 }
         }
         .sheet(isPresented: $showInvitationSheet, content: {
-            InvitationKeyView {
+            InvitationKeyView { // TODO: Some way to do this better??
                 loginHandler.loginUser { result in
                     switch result {
                     case .success(_):

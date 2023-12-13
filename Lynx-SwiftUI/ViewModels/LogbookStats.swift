@@ -10,7 +10,6 @@ struct LogbookStats {
     var logbooks: Logbooks = []
     
     // MARK: - Lifetime Stats
-    
     var feetOrMeters: String {
         switch ProfileManager.shared.profile?.measurementSystem {
         case .imperial:

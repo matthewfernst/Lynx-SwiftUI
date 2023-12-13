@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct InvitationKeyView: View {
     @Environment(\.dismiss) private var dismiss
@@ -80,11 +81,11 @@ struct InvitationKeyView: View {
             ApolloLynxClient.submitInviteKey(with: key) { result in
                 switch result {
                 case .success(_):
-                    print("pin matched, go to next page, no action to perfrom here")
+                    Logger.invitationKeySheet.info("Invitation successfully validated.")
                     dismiss()
                     completion()
                 case .failure(_):
-                    print("this has to called after showing toast why is the failure")
+                    Logger.invitationKeySheet.error("Invitation failed to validate.")
                     showInvalidKeyAlert = true
                 }
             }

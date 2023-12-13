@@ -9,12 +9,12 @@ import SwiftUI
 import OSLog
 
 struct LogbookView: View {
+    @StateObject var folderConnectionHandler: FolderConnectionHandler
     @ObservedObject private var profileManager = ProfileManager.shared
     
     @State private var logbookStats = LogbookStats()
     @State private var showMoreInfo = false
     
-    @ObservedObject private var folderConnectionHandler = FolderConnectionHandler()
     @State private var showUploadFilesSheet = false
     @State private var showUploadProgress = false
     
@@ -25,7 +25,7 @@ struct LogbookView: View {
     private var slopesFolderIsConnected: Bool {
         BookmarkManager.shared.bookmark != nil
     }
-    
+
     var body: some View {
         ZStack {
             autoUpload
@@ -43,7 +43,16 @@ struct LogbookView: View {
                 .onAppear {
                     BookmarkManager.shared.loadAllBookmarks()
                     requestLogs()
-                    showAutoUpload = true
+                    
+                    folderConnectionHandler.getNonUploadedSlopeFiles { files in
+                        if let files {
+                            showAutoUpload = true
+                            
+                            folderConnectionHandler.uploadNewFiles(files) {
+                                requestLogs()
+                            }
+                        }
+                    }
                 }
                 .sheet(isPresented: $showUploadFilesSheet) {
                     FolderConnectionView(
@@ -52,6 +61,8 @@ struct LogbookView: View {
                     )
                 }
                 .sheet(isPresented: $showUploadProgress) {
+                    requestLogs()
+                } content: {
                     FileUploadProgressView(
                         folderConnectionHandler: folderConnectionHandler
                     )
@@ -69,12 +80,16 @@ struct LogbookView: View {
               Spacer()
                   .frame(height: showAutoUpload ? 0 : 55)
                   .animation(.easeInOut, value: showAutoUpload)
+            
+            AutoUploadView(
+                folderConnectionHandler: folderConnectionHandler,
+                showAutoUpload: $showAutoUpload
+            )
+            .padding(.top, showAutoUpload ? 55 : 0)
+            .offset(y: showAutoUpload ? 0 : -UIScreen.main.bounds.height)
+            .animation(.easeInOut(duration: 1.25), value: showAutoUpload)
 
-            AutoUploadView(showAutoUpload: $showAutoUpload)
-                  .padding(.top, showAutoUpload ? 55 : 0)
-                  .offset(y: showAutoUpload ? 0 : -UIScreen.main.bounds.height)
-                  .animation(.easeInOut(duration: 1.25), value: showAutoUpload)
-              Spacer()
+            Spacer()
           }
           .ignoresSafeArea(.all)
           .zIndex(1)
@@ -238,5 +253,5 @@ struct LogbookView: View {
 }
 
 #Preview {
-    LogbookView()
+    LogbookView(folderConnectionHandler: FolderConnectionHandler())
 }

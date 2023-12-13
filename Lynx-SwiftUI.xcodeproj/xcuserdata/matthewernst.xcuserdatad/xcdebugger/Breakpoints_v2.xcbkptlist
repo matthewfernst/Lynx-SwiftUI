@@ -159,38 +159,6 @@
             endingLineNumber = "77"
             landmarkName = "signInWithAppleButton"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "16A834AA-D037-4346-AEA7-C43E9FA0FE11 - dec82542b98b9538"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.LoginView.signInWithAppleButton.getter : some"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Views/Login/LoginView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "77"
-                  endingLineNumber = "77"
-                  offsetFromSymbolStart = "412">
-               </Location>
-               <Location
-                  uuid = "16A834AA-D037-4346-AEA7-C43E9FA0FE11 - 2c6f5926247a3c21"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__C.ASAuthorizationAppleIDRequest) -&gt; () in Lynx_SwiftUI.LoginView.signInWithAppleButton.getter : some"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Views/Login/LoginView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "77"
-                  endingLineNumber = "77"
-                  offsetFromSymbolStart = "120">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -207,38 +175,6 @@
             endingLineNumber = "79"
             landmarkName = "signInWithAppleButton"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "CA711F87-18E0-479C-9D04-BE24AF7BB805 - dec82542b98b9566"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.LoginView.signInWithAppleButton.getter : some"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Views/Login/LoginView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "79"
-                  endingLineNumber = "79"
-                  offsetFromSymbolStart = "520">
-               </Location>
-               <Location
-                  uuid = "CA711F87-18E0-479C-9D04-BE24AF7BB805 - 1f77489be3660792"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.signInWithAppleButton.getter : some"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Views/Login/LoginView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "79"
-                  endingLineNumber = "79"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
