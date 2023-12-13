@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LifetimeDetailsView: View {
-    @Binding var logbookStats: LogbookStats
+    @ObservedObject var logbookStats: LogbookStats
     
     var body: some View {
         HStack {
@@ -37,5 +37,5 @@ struct LifetimeDetailsView: View {
 }
 
 #Preview {
-    LifetimeDetailsView(logbookStats: .constant(LogbookStats()))
+    LifetimeDetailsView(logbookStats: LogbookStats())
 }

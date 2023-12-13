@@ -13,7 +13,7 @@ struct AutoUploadView: View {
     
     @Environment(\.colorScheme) private var colorScheme
     @State private var slopesFileUploading = ""
-    
+    @State private var showAllDone = false
     var body: some View {
         backgroundCapsule
             .overlay(
@@ -24,12 +24,15 @@ struct AutoUploadView: View {
                 }
             )
             .onChange(of: folderConnectionHandler.uploadProgress) { _, newProgress in
-                if newProgress >= 0.99 {
-                    withAnimation {
-                        slopesFileUploading = "All Done!"
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            showAutoUpload = false
-                            slopesFileUploading = ""
+                if newProgress >= 1.0 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) { // wait for last timer shoot off
+                        withAnimation {
+                            slopesFileUploading = "All Done!"
+                            showAllDone = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                showAutoUpload = false
+                                slopesFileUploading = ""
+                            }
                         }
                     }
                 } else {
@@ -37,6 +40,10 @@ struct AutoUploadView: View {
                         slopesFileUploading = folderConnectionHandler.currentFileBeingUploaded
                     }
                 }
+            }
+            .onDisappear {
+                showAllDone = false
+                folderConnectionHandler.resetUploadProgressAndFilename()
             }
     }
     
@@ -55,7 +62,13 @@ struct AutoUploadView: View {
     
     private var progress: some View {
         HStack {
-            if folderConnectionHandler.uploadProgress < 1.0 {
+            if showAllDone {
+                Image(systemName: "checkmark.circle.fill")
+                    .resizable()
+                    .frame(width: 25, height: 25)
+                    .foregroundColor(.lynx)
+                    .transition(.scale)
+            } else {
                 ZStack {
                     Circle()
                         .stroke(lineWidth: Constants.CircularProgress.lineWidth)
@@ -76,12 +89,6 @@ struct AutoUploadView: View {
                     height: Constants.CircularProgress.widthHeight
                 )
                 .transition(.identity)
-            } else {
-                Image(systemName: "checkmark.circle.fill")
-                    .resizable()
-                    .frame(width: 25, height: 25)
-                    .foregroundColor(.lynx)
-                    .transition(.scale)
             }
         }
     }

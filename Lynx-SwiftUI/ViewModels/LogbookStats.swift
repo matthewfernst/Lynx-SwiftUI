@@ -6,8 +6,8 @@
 //
 import Foundation
 
-struct LogbookStats {
-    var logbooks: Logbooks = []
+class LogbookStats: ObservableObject {
+    @Published var logbooks: Logbooks = []
     
     // MARK: - Lifetime Stats
     var feetOrMeters: String {

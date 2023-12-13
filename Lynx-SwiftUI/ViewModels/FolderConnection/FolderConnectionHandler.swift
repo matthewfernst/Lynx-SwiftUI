@@ -184,10 +184,12 @@ class FolderConnectionHandler: ObservableObject {
         return !fileURL.hasDirectoryPath && fileURL.path.lowercased().contains("gpslogs") && fileURL.pathExtension == "slopes"
     }
     
-    func getNonUploadedSlopeFiles(completion: @escaping ([URL]?) -> Void) {
+    func resetUploadProgressAndFilename() {
         uploadProgress = 0.0
         currentFileBeingUploaded = ""
-        
+    }
+    
+    func getNonUploadedSlopeFiles(completion: @escaping ([URL]?) -> Void) {
         guard let bookmark = BookmarkManager.shared.bookmark else {
             Logger.folderConnectionHandler.info("No bookmark saved. Cannot check for nonUploadedFiles.")
             completion(nil)
@@ -234,12 +236,10 @@ class FolderConnectionHandler: ObservableObject {
         }
     }
     
-    func uploadNewFiles(_ nonUploadedSlopeFiles: [URL], completion: (() -> Void)?) {
+    func uploadNewFiles(_ nonUploadedSlopeFiles: [URL], completion: @escaping (() -> Void)) {
         guard let gpsLogsURL = BookmarkManager.shared.bookmark?.url else {
             return
         }
-        currentFileBeingUploaded = ""
-        uploadProgress = 0.0
         
         guard let contents = try? FileManager.default.contentsOfDirectory(at: gpsLogsURL, includingPropertiesForKeys: nil) else {
             // Failed to access the directory
@@ -264,6 +264,7 @@ class FolderConnectionHandler: ObservableObject {
                     self.uploadTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
                         guard currentFileNumberBeingUploaded < totalNumberOfFiles else {
                             timer.invalidate()
+                            completion()
                             return
                         }
                         

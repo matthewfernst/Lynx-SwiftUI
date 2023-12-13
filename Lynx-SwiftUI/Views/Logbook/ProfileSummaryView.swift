@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileSummaryView: View {
     @ObservedObject private var profileManager = ProfileManager.shared
-    @Binding var logbookStats: LogbookStats
+    @ObservedObject var logbookStats: LogbookStats
     
     var body: some View {
         HStack {
@@ -58,5 +58,5 @@ struct ProfileSummaryView: View {
 }
 
 #Preview {
-    ProfileSummaryView(logbookStats: .constant(LogbookStats()))
+    ProfileSummaryView(logbookStats: LogbookStats())
 }

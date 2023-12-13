@@ -10,9 +10,9 @@ import OSLog
 
 struct LogbookView: View {
     @StateObject var folderConnectionHandler: FolderConnectionHandler
+    @StateObject private var logbookStats = LogbookStats()
     @ObservedObject private var profileManager = ProfileManager.shared
     
-    @State private var logbookStats = LogbookStats()
     @State private var showMoreInfo = false
     
     @State private var showUploadFilesSheet = false
@@ -31,8 +31,8 @@ struct LogbookView: View {
             autoUpload
             NavigationStack {
                 VStack {
-                    ProfileSummaryView(logbookStats: $logbookStats)
-                    LifetimeDetailsView(logbookStats: $logbookStats)
+                    ProfileSummaryView(logbookStats: logbookStats)
+                    LifetimeDetailsView(logbookStats: logbookStats)
                     scrollableSessionSummaries
                 }
                 .navigationTitle("Logbook")
@@ -49,7 +49,9 @@ struct LogbookView: View {
                             showAutoUpload = true
                             
                             folderConnectionHandler.uploadNewFiles(files) {
-                                requestLogs()
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // give time for Lambda's to fire
+                                    requestLogs()
+                                }
                             }
                         }
                     }
@@ -136,7 +138,7 @@ struct LogbookView: View {
         List {
             Section {
                 NavigationLink {
-                    FullLifetimeSummaryView(logbookStats: $logbookStats)
+                    FullLifetimeSummaryView(logbookStats: logbookStats)
                 } label: {
                     lifetimeSummary
                 }
@@ -221,6 +223,7 @@ struct LogbookView: View {
             ) { result in
                 switch result {
                 case .success(let logs):
+                    Logger.logbook.debug("Found new logs")
                     logbookStats.logbooks = logs
                 case .failure(let error):
                     Logger.logbook.error("Failed to get logs: \(error)")

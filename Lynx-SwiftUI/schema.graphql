@@ -74,7 +74,7 @@ type OAuthTypeCorrelation {
 input OAuthTypeCorrelationInput {
     type: OAuthType!
     id: ID!
-    token: ID
+    token: ID!
 }
 
 input UserDataPair {

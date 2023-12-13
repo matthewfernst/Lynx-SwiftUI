@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FullLifetimeSummaryView: View {
-    @Binding var logbookStats: LogbookStats
+    @ObservedObject var logbookStats: LogbookStats
     
     var body: some View {
         Form {
@@ -66,5 +66,5 @@ struct FullLifetimeSummaryView: View {
 
 
 #Preview {
-    FullLifetimeSummaryView(logbookStats: .constant(LogbookStats()))
+    FullLifetimeSummaryView(logbookStats: LogbookStats())
 }
