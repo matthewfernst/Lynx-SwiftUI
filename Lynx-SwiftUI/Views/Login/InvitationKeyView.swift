@@ -9,6 +9,7 @@ import SwiftUI
 import OSLog
 
 struct InvitationKeyView: View {
+    @Binding var isSigningIn: Bool
     @Environment(\.dismiss) private var dismiss
     private let completion: (()-> Void)
     
@@ -16,48 +17,60 @@ struct InvitationKeyView: View {
     @State private var showDontHaveInvitationAlert = false
     @State private var showInvalidKeyAlert = false
     
-    init(completion: @escaping () -> Void) {
-            self.completion = completion
+    @State private var showPaste = true
+    init(isSigningIn: Binding<Bool>, completion: @escaping () -> Void) {
+        self._isSigningIn = isSigningIn
+        self.completion = completion
     }
     
     var body: some View {
-        VStack {
-            Text("Invitation Key")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .padding(.bottom)
-            
+        NavigationStack {
+            VStack {
+                Text("Invitation Key")
+                    .font(.largeTitle)
+                    .fontWeight(.semibold)
+                    .padding(.top)
 
-            Spacer()
-            ZStack {
-                keyInput
-                backgroundField
+                Spacer()
+                
+                Text(Constants.explanation)
+                    .multilineTextAlignment(.center)
+                
+                ZStack {
+                    keyInput
+                    backgroundField
+                }
+                .padding()
+                Button {
+                    showDontHaveInvitationAlert = true
+                } label: {
+                    Text("Don't have an invitation key?")
+                        .font(.callout)
+                }
+                Spacer()
             }
-            Text(Constants.explanation)
-                .multilineTextAlignment(.center)
-                .lineLimit(Constants.explanationLineLimit)
-                .padding(.bottom)
-            Button {
-                showDontHaveInvitationAlert = true
-            } label: {
-                Text("Don't have an invitation key?")
-                    .font(.callout)
+            .padding()
+            .alert("Need an Invitation Key?", isPresented: $showDontHaveInvitationAlert) {} message: {
+                Text(Constants.howToGetInviteKey)
             }
-            Spacer()
-            
-        }
-        .padding()
-        .alert("Need an Invitation Key?", isPresented: $showDontHaveInvitationAlert) {} message: {
-            Text(Constants.howToGetInviteKey)
-        }
-        .alert("Invalid Key", isPresented: $showInvalidKeyAlert) {
-            Button {
-                key = ""
-            } label: {
-                Text("Dismiss")
+            .alert("Invalid Key", isPresented: $showInvalidKeyAlert) {
+                Button {
+                    key = ""
+                } label: {
+                    Text("Dismiss")
+                }
+            } message: {
+                Text(Constants.invalidKeyExplanation)
             }
-        } message: {
-            Text(Constants.invalidKeyExplanation)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        isSigningIn = false
+                        dismiss()
+                    }
+                }
+            }
+
         }
     }
     
@@ -71,7 +84,7 @@ struct InvitationKeyView: View {
             .keyboardType(.numberPad)
             .foregroundStyle(.clear)
             .tint(.clear)
-        
+            
     }
     
     private func submitKey() {
@@ -91,33 +104,43 @@ struct InvitationKeyView: View {
             }
         }
         
-        // this code is never reached under  normal circumstances. If the user pastes a text with count higher than the
-        // max digits, we remove the additional characters and make a recursive call.
+        // If the user pastes in a code, we truncate the string to the first inputLength characters
         if key.count > Constants.KeyInput.inputLength {
             key = String(key.prefix(Constants.KeyInput.inputLength))
             submitKey()
         }
     }
     
-    private func getCharacter(forKeyIndex index: Int) -> String {
+    private func getDigit(forKeyIndex index: Int) -> String? {
         if !key.isEmpty,
            let currentIndex = key.index(key.startIndex, offsetBy: index, limitedBy: key.index(before: key.endIndex)) {
             return String(key[currentIndex])
         }
-        return "–"
+        return nil
         
     }
     
     private var keyInput: some View {
         HStack {
             ForEach(0..<Constants.KeyInput.inputLength, id: \.self) { index in
-                Text(getCharacter(forKeyIndex: index))
-                    .font(.system(size: 28, weight: .semibold))
-                    .padding(.horizontal)
-                    .frame(maxWidth: .infinity)
-                    
+                if let digit = getDigit(forKeyIndex: index) {
+                    Text(digit)
+                        .font(.system(size: Constants.KeyInput.Font.size, weight: .semibold))
+                        .frame(width: Constants.KeyInput.inputFrameWidth)
+                        .padding(.horizontal, Constants.KeyInput.horizontalPadding)
+                } else {
+                    RoundedRectangle(cornerRadius: Constants.KeyInput.cornerRadius)
+                        .frame(
+                            width: Constants.KeyInput.inputFrameWidth,
+                            height: Constants.KeyInput.inputFrameHeight
+                        )
+                        .padding(.horizontal, Constants.KeyInput.horizontalPadding)
+                        .padding(.vertical, Constants.KeyInput.verticalPadding)
+                }
+                
                 if index == (Constants.KeyInput.inputLength / 2) - 1 {
                     Spacer()
+                        .frame(width: Constants.KeyInput.separationWidth)
                 }
             }
         }
@@ -127,7 +150,6 @@ struct InvitationKeyView: View {
         static let explanation = """
                                  An invitation key is needed to create an account. Enter your key to continue.
                                  """
-        static let explanationLineLimit = 6
         
         static let howToGetInviteKey = """
                                        Invitation keys are required to create an account with Lynx. If you don't have an invitation key, you can request one from a friend who already has an account.
@@ -139,6 +161,20 @@ struct InvitationKeyView: View {
         
         struct KeyInput {
             static let inputLength: Int = 6
+            
+            static let inputFrameWidth: CGFloat = 20
+            static let inputFrameHeight: CGFloat = 5
+            
+            static let cornerRadius: CGFloat = 25
+            
+            static let horizontalPadding: CGFloat = 8
+            static let verticalPadding: CGFloat = 18
+            
+            static let separationWidth: CGFloat = 30
+            
+            struct Font {
+                static let size: CGFloat = 28
+            }
         }
     }
     
@@ -146,7 +182,7 @@ struct InvitationKeyView: View {
 }
 
 #Preview {
-    InvitationKeyView {
+    InvitationKeyView(isSigningIn: .constant(true)) {
         
     }
 }

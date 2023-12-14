@@ -35,6 +35,7 @@ struct NotificationSettingsView: View {
                 primaryButton: .default(Text("Settings"), action: openSettings),
                 secondaryButton: .cancel()
             )
+            
         }
     }
 

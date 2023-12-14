@@ -37,7 +37,7 @@ struct LoginView: View {
                 }
         }
         .sheet(isPresented: $showInvitationSheet, content: {
-            InvitationKeyView { // TODO: Some way to do this better??
+            InvitationKeyView(isSigningIn: $isSigningIn) { // TODO: Some way to do this better??
                 loginHandler.loginUser { result in
                     switch result {
                     case .success(_):
@@ -75,7 +75,9 @@ struct LoginView: View {
                 isSigningIn = true
             }
             request.requestedScopes = [.fullName, .email]
+            
         }  onCompletion: { result in
+            print("HERE!!!")
             appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes in
 #if DEBUG
                 goToHome = true

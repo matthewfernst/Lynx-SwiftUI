@@ -49,7 +49,7 @@ struct LogbookView: View {
                             showAutoUpload = true
                             
                             folderConnectionHandler.uploadNewFiles(files) {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // give time for Lambda's to fire
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.25) { // give time for Lambda's to fire and animation to end
                                     requestLogs()
                                 }
                             }
@@ -216,17 +216,19 @@ struct LogbookView: View {
     }
     
     private func requestLogs() {
-        ApolloLynxClient.clearCache()
-        Task {
-            ApolloLynxClient.getLogs(
-                measurementSystem: profileManager.profile!.measurementSystem
-            ) { result in
-                switch result {
-                case .success(let logs):
-                    Logger.logbook.debug("Found new logs")
-                    logbookStats.logbooks = logs
-                case .failure(let error):
-                    Logger.logbook.error("Failed to get logs: \(error)")
+        if !showAutoUpload { // only allow upload if we aren't currently uploading
+            ApolloLynxClient.clearCache()
+            Task {
+                ApolloLynxClient.getLogs(
+                    measurementSystem: profileManager.profile!.measurementSystem
+                ) { result in
+                    switch result {
+                    case .success(let logs):
+                        Logger.logbook.debug("Updating new logbook stats")
+                        logbookStats.logbooks = logs
+                    case .failure(let error):
+                        Logger.logbook.error("Failed to get logs: \(error)")
+                    }
                 }
             }
         }
