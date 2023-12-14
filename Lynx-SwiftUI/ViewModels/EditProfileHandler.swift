@@ -75,18 +75,18 @@ class EditProfileHandler {
                     request.setValue(contentType, forHTTPHeaderField: "Content-Type")
                     
                     request.httpBody = data
-                    
-                    URLSession.shared.dataTask(with: request) { data, response, error in
-                        if let error = error {
-                            Logger.editProfileHandler.error("Failed to upload new profile picture to S3: \(error)")
-                            return
-                        }
-                        
-                        if let response = response as? HTTPURLResponse {
-                            Logger.editProfileHandler.info("Response status code: \(response.statusCode)")
-                        }
-                    }.resume()
-                    
+                    URLSession.shared.reset { [request] in
+                        URLSession.shared.dataTask(with: request) { data, response, error in
+                            if let error = error {
+                                Logger.editProfileHandler.error("Failed to upload new profile picture to S3: \(error)")
+                                return
+                            }
+                            
+                            if let response = response as? HTTPURLResponse {
+                                Logger.editProfileHandler.info("Response status code: \(response.statusCode)")
+                            }
+                        }.resume()
+                    }
                 case .failure(_):
                     Logger.editProfileHandler.error("Failed to retrieve URL.")
                 }
@@ -100,7 +100,7 @@ class EditProfileHandler {
         completion: @escaping () -> Void
     ) {
         let pollInterval: TimeInterval = 2.0
-        let maxAttempts = 30
+        let maxAttempts = 10
         
         var attempts = 0
         

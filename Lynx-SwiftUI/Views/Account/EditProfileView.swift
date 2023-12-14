@@ -39,6 +39,7 @@ struct EditProfileView: View {
             }
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(showSavingChanges)
             .toolbar {
                 ToolbarItemGroup(placement: .confirmationAction) {
                     if showSavingChanges {
