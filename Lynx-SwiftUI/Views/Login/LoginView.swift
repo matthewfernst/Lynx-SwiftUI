@@ -20,6 +20,11 @@ struct LoginView: View {
     @State private var showInvitationSheet = false
     @State private var isSigningIn = false
     
+    // Aniamtion States
+    @State private var moveInLogo = false
+    @State private var moveInApple = false
+    @State private var moveInGoogle = false
+    
     var body: some View {
         ZStack {
             backgroundLynxImage
@@ -49,7 +54,19 @@ struct LoginView: View {
             }
             .interactiveDismissDisabled()
         })
-        
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.75).delay(0.5)) {
+                moveInLogo = true
+            } completion: {
+                withAnimation {
+                    moveInApple = true
+                } completion: {
+                    withAnimation {
+                        moveInGoogle = true
+                    }
+                }
+            }
+        }
         .fullScreenCover(isPresented: $goToHome, content: HomeView.init) // TODO: Better transition!
     }
     
@@ -157,7 +174,7 @@ struct LoginView: View {
     }
     
     private var signInProgressView: some View {
-        ProgressView("Signing in...")
+        ProgressView("Signing in≈")
             .progressViewStyle(CircularProgressViewStyle(tint: .white))
             .foregroundStyle(.white)
             .padding(.bottom)
@@ -176,12 +193,15 @@ struct LoginView: View {
                         x: geometry.size.width / 10 - Constants.Logo.xOffset,
                         y: geometry.size.height / 1.75 - Constants.Logo.yOffset
                     )
+                    .offset(x: moveInLogo ? 0 : -200)
                 
                 if isSigningIn {
                     signInProgressView
                 } else {
                     signInWithAppleButton
+                        .offset(y: moveInApple ? 0 : 200)
                     signInWithGoogleButton
+                        .offset(y: moveInGoogle ? 0 : 100)
                 }
                 Spacer()
             }
@@ -194,7 +214,7 @@ struct LoginView: View {
     // MARK: - Constants
     private struct Constants {
         struct Logo {
-            static let width: CGFloat = 150
+            static let width: CGFloat = 130
             static let xOffset: CGFloat = -90
             static let yOffset: CGFloat = -40
         }

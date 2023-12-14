@@ -19,6 +19,8 @@ extension Logger {
     
     static let editProfileHandler = Logger(subsystem: subsystem, category: "EditProfileHandler")
     
+    static let editProfileView = Logger(subsystem: subsystem, category: "EditProfileView")
+    
     static let folderConnectionHandler = Logger(subsystem: subsystem, category: "FolderConnectionHandler")
     
     static let folderConnectionView = Logger(subsystem: subsystem, category: "FolderConnectionView")

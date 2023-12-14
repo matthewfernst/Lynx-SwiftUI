@@ -148,6 +148,15 @@ class EditProfileHandler {
         }
         task.resume()
     }
+    
+    
+    func deleteAccount(completion: @escaping ((Result<Void, Error>) -> Void)) {
+        ApolloLynxClient.deleteAccount(
+            token: ProfileManager.shared.profile!.oauthToken,
+            type: .init(rawValue: ProfileManager.shared.profile!.type)!,
+            completion: completion
+        )
+    }
 }
 
 enum ProfileChangesKeys: String {

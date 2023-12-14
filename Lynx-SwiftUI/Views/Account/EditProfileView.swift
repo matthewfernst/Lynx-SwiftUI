@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import OSLog
 
 struct EditProfileView: View {
     @ObservedObject private var profileManager = ProfileManager.shared
@@ -25,6 +26,8 @@ struct EditProfileView: View {
     @State private var showSavingChanges = false
     
     @State private var gotToLogin = false
+    @State private var showDeleteAccountConfirmation = false
+    @State private var showFailedToDeleteAccount = false
     
     var body: some View {
         NavigationStack {
@@ -40,6 +43,27 @@ struct EditProfileView: View {
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(showSavingChanges)
+            .confirmationDialog("Confirm Deletion of Account", isPresented: $showDeleteAccountConfirmation) {
+                Button("Cancel", role: .cancel) {
+                    showDeleteAccountConfirmation = false
+                }
+                Button("Delete Account", role: .destructive) {
+                    showSavingChanges = true
+                    editProfileHandler.deleteAccount { result in
+                        switch result {
+                        case .success(_):
+                            LoginHandler.signOut()
+                            gotToLogin = true
+                        case .failure(let error):
+                            Logger.editProfileView.error("Failed to delete account: \(error)")
+                        }
+                        showSavingChanges = false
+                    }
+                }
+            } message: {
+                Text("Are you sure you want to proceed with deleting your account? This action cannot be undone.")
+            }
+            .alert("Failed to Delete Account", isPresented: $showFailedToDeleteAccount) { }
             .toolbar {
                 ToolbarItemGroup(placement: .confirmationAction) {
                     if showSavingChanges {
@@ -140,13 +164,11 @@ struct EditProfileView: View {
     }
     
     private var deleteAccount: some View {
-        Section {
-            Button(role: .destructive) {
-                
-            } label: {
-                Label("Delete Account", systemImage: "trash.fill")
-                    .foregroundStyle(.red)
-            }
+        Button {
+            showDeleteAccountConfirmation = true
+        } label: {
+            Label("Delete Account", systemImage: "trash.fill")
+                .foregroundStyle(showSavingChanges ? .gray : .red)
         }
     }
     
