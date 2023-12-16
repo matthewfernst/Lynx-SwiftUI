@@ -6,13 +6,35 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
-struct Lynx_SwiftUIApp: App {
+    struct Lynx_SwiftUIApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var profileManager = ProfileManager()
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if profileManager.profile != nil {
+                HomeView()
+            } else {
+                LoginView()
+            }
+        }
+        .modelContainer(for: Profile.self) { result in
+            switch result {
+            case .success(let container):
+                profileManager.modelContext = container.mainContext
+            case .failure(let error):
+                print("Failed in setup of model container: \(error)")
+            }
+        }
+        .environment(profileManager)
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background {
+                // Save profile if the app goes in the background
+                profileManager.saveProfile()
+            }
         }
     }
 }

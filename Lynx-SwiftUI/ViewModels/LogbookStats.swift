@@ -5,34 +5,36 @@
 //  Created by Matthew Ernst on 6/16/23.
 //
 import Foundation
+import SwiftUI
 
-class LogbookStats: ObservableObject {
-    @Published var logbooks: Logbooks = []
+@Observable final class LogbookStats {
+    private var measurementSystem: MeasurementSystem
+    var logbooks: Logbooks = []
+    
+    init(measurementSystem: MeasurementSystem) {
+        self.measurementSystem = measurementSystem
+    }
     
     // MARK: - Lifetime Stats
     var feetOrMeters: String {
-        switch ProfileManager.shared.profile?.measurementSystem {
+        switch measurementSystem {
         case .imperial:
             return "FT"
         case .metric:
             return "M"
-        case .none:
-            return ""
         }
     }
     
     var milesPerHourOrKilometersPerHour: String {
-        switch ProfileManager.shared.profile?.measurementSystem {
+        switch measurementSystem {
         case .imperial:
             return "MPH"
         case .metric:
             return "KPH"
-        case .none:
-            return ""
         }
     }
     
-    public static func getDistanceFormatted(distance: Double) -> String {
+    func getDistanceFormatted(distance: Double) -> String {
         if distance >= 1000 {
             return String(format: "%.1fk", Double(distance) / 1000)
         }
@@ -44,7 +46,7 @@ class LogbookStats: ObservableObject {
         
         if totalVerticalFeet == 0 { return "--" }
         
-        return Self.getDistanceFormatted(distance: totalVerticalFeet)
+        return getDistanceFormatted(distance: totalVerticalFeet)
     }
     
     var lifetimeDaysOnMountain: String {
@@ -183,13 +185,11 @@ class LogbookStats: ObservableObject {
         let averageDistance = logbooks.map { $0.distance }.reduce(0.0) {
             return $0 + $1/Double(logbooks.count)
         }
-        switch ProfileManager.shared.profile?.measurementSystem {
+        switch measurementSystem {
         case .imperial:
             return String(format: "%.1f MI", averageDistance.feetToMiles)
         case .metric:
             return String(format: "%.1f KM", averageDistance.metersToKilometers)
-        case .none:
-            return ""
         }
     }
     
@@ -210,13 +210,11 @@ class LogbookStats: ObservableObject {
     }
     
     private func calculateBestLongestRun() -> String {
-        switch ProfileManager.shared.profile?.measurementSystem {
+        switch measurementSystem {
         case .imperial:
             return String(format: "%.1f MI", (logbooks.map { $0.distance }.max() ?? 0.0).feetToMiles)
         case .metric:
             return String(format: "%.1f KM", (logbooks.map { $0.distance }.max() ?? 0.0).metersToKilometers)
-        case .none:
-            return ""
         }
     }
 }

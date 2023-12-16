@@ -62,9 +62,7 @@ class UserManagementInterceptor: ApolloInterceptor {
         if token.isExpired {
             // Call an async method to renew the token
             UserManager.shared.renewToken { [weak self] tokenRenewResult in
-                guard let self = self else {
-                    return
-                }
+                guard let self = self else { return }
                 
                 switch tokenRenewResult {
                 case .failure(let error):

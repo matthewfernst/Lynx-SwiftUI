@@ -6,29 +6,50 @@
 //
 
 import SwiftUI
+import SwiftData
+import OSLog
 
-class ProfileManager: ObservableObject {
-    @Published private(set) var profile: Profile?
+@Observable final class ProfileManager {
+    var modelContext: ModelContext? = nil {
+        didSet {
+            if modelContext != nil {
+                fetchProfile()
+            }
+        }
+    }
     
-    @Published private(set) var profilePicture: Image?
+    private(set) var profile: Profile? {
+        didSet {
+            if profile != nil {
+                downloadProfilePicture(
+                    withURL: profile?.profilePictureURL ?? Constants.defaultProfilePictureURL
+                )
+            }
+        }
+    }
     
-    static let shared = ProfileManager()
+    private(set) var profilePicture: Image?
     
     
     // MARK: - Intent's
+    func fetchProfile() {
+        let fetchDescriptor = FetchDescriptor<Profile>()
+        profile = try? modelContext?.fetch(fetchDescriptor).first
+    }
+    
     func edit(newFirstName: String, newLastName: String, newEmail: String) {
         profile?.edit(
             newFirstName: newFirstName,
             newLastName: newLastName,
             newEmail: newEmail
         )
+        saveProfile()
     }
     
     func update(withNewProfile newProfile: Profile) {
-        profile = newProfile
-        downloadProfilePicture(
-            withURL: newProfile.profilePictureURL ?? Constants.defaultProfilePictureURL
-        )
+        deleteProfile()
+        modelContext?.insert(newProfile)
+        fetchProfile()
     }
     
     func update(withNewProfilePictureURL newURL: URL) {
@@ -44,6 +65,23 @@ class ProfileManager: ObservableObject {
         profile?.notificationsAllowed = allowed
     }
     
+    func deleteProfile() {
+        if let profile {
+            modelContext?.delete(profile)
+            Logger.profileManager.info("Successfully deleted profile.")
+        }
+    }
+    
+    func saveProfile() {
+        do {            
+            try modelContext?.save()
+            Logger.profileManager.debug("Successfully saved profile.")
+        } catch {
+            // Handle the error appropriately (e.g., print or log it)
+            Logger.profileManager.error("Error saving changes: \(error)")
+        }
+    }
+    
     // MARK: - Helpers
     private func downloadProfilePicture(withURL url: URL) {
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -52,26 +90,11 @@ class ProfileManager: ObservableObject {
                 let image = Image(uiImage: uiImage)
                 
                 // Update the profilePicture property on the main thread
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     self.profilePicture = image
                 }
             }
         }.resume()
-    }
-    
-    
-    private init() {
-#if DEBUG
-        profile = Profile(
-            type: SignInType.google.rawValue,
-            oauthToken: "123456890",
-            id: "123456890",
-            firstName: "Matthew",
-            lastName: "Ernst",
-            email: "matthew.f.ernst@gmail.com",
-            profilePictureURL: Constants.defaultProfilePictureURL
-        )
-#endif
     }
     
     struct Constants {

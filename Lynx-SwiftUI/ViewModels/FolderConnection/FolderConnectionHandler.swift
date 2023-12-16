@@ -8,15 +8,15 @@
 import SwiftUI
 import OSLog
 
-class FolderConnectionHandler: ObservableObject {
-    @Published var errorAlert: Alert? = nil {
+@Observable final class FolderConnectionHandler: ObservableObject {
+    var errorAlert: Alert? = nil {
         didSet {
             showError = true
         }
     }
-    @Published var showError = false
-    @Published var uploadProgress = 0.0
-    @Published var currentFileBeingUploaded = ""
+    var showError = false
+    var uploadProgress = 0.0
+    var currentFileBeingUploaded = ""
     private var uploadTimer: Timer?
     
     func picker(didPickDocumentsAt url: URL) {

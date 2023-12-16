@@ -26,6 +26,7 @@
 		653404A92B27A86F00614C59 /* AutoUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A82B27A86F00614C59 /* AutoUploadView.swift */; };
 		653404AB2B27F2D600614C59 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404AA2B27F2D600614C59 /* NotificationsHandler.swift */; };
 		6573BA1B2B282B8D00381085 /* AppleSignInHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573BA1A2B282B8D00381085 /* AppleSignInHandler.swift */; };
+		65A518CF2B2D38BF00A06014 /* PreviewSampleProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A518CE2B2D38BF00A06014 /* PreviewSampleProfile.swift */; };
 		65B35E902B118C17002E99E4 /* Lynx_SwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */; };
 		65B35E942B118C18002E99E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E932B118C18002E99E4 /* Assets.xcassets */; };
 		65B35E972B118C18002E99E4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65B35E962B118C18002E99E4 /* Preview Assets.xcassets */; };
@@ -126,6 +127,7 @@
 		653404AA2B27F2D600614C59 /* NotificationsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
 		6573BA1A2B282B8D00381085 /* AppleSignInHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInHandler.swift; sourceTree = "<group>"; };
 		6573BA1C2B28312000381085 /* Lynx-SwiftUI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Lynx-SwiftUI.entitlements"; sourceTree = "<group>"; };
+		65A518CE2B2D38BF00A06014 /* PreviewSampleProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleProfile.swift; sourceTree = "<group>"; };
 		65B35E8C2B118C17002E99E4 /* Lynx-SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lynx-SwiftUI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lynx_SwiftUIApp.swift; sourceTree = "<group>"; };
 		65B35E932B118C18002E99E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -241,6 +243,14 @@
 			path = FolderConnection;
 			sourceTree = "<group>";
 		};
+		65A518CD2B2D386C00A06014 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				65A518CE2B2D38BF00A06014 /* PreviewSampleProfile.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		65B35E832B118C17002E99E4 = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +282,7 @@
 				65B35E9E2B1192F3002E99E4 /* Views */,
 				65B35E9F2B1192FD002E99E4 /* ViewModels */,
 				65B35F2C2B11BEFF002E99E4 /* Utils */,
+				65A518CD2B2D386C00A06014 /* Support */,
 				65B35E8F2B118C17002E99E4 /* Lynx_SwiftUIApp.swift */,
 				65B35E932B118C18002E99E4 /* Assets.xcassets */,
 				65B35E952B118C18002E99E4 /* Preview Content */,
@@ -675,6 +686,7 @@
 				653404AB2B27F2D600614C59 /* NotificationsHandler.swift in Sources */,
 				6529A83E2B1AE5F500FF455E /* EditProfileHandler.swift in Sources */,
 				653404972B26300600614C59 /* LeaderView.swift in Sources */,
+				65A518CF2B2D38BF00A06014 /* PreviewSampleProfile.swift in Sources */,
 				65B39A652B13E61100948C9D /* ProfileManager.swift in Sources */,
 				65B35F712B11C129002E99E4 /* GetUploadedLogsQuery.graphql.swift in Sources */,
 				65B35F742B11C129002E99E4 /* GetSelectedLeaderboardQuery.graphql.swift in Sources */,
@@ -843,6 +855,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Lynx-SwiftUI/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Lynx;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -852,7 +866,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewfernst.Lynx-SwiftUI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -874,6 +888,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Lynx-SwiftUI/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Lynx;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -883,7 +899,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.matthewfernst.Lynx-SwiftUI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

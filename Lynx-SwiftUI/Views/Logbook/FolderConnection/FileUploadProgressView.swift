@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FileUploadProgressView: View {
-    @ObservedObject var folderConnectionHandler: FolderConnectionHandler
+    @Bindable var folderConnectionHandler: FolderConnectionHandler
     
     @Environment(\.dismiss) private var dismiss
     @State private var showThumbsUp = false

@@ -10,6 +10,8 @@ import AuthenticationServices
 import GoogleSignIn
 
 struct LoginView: View {
+    @Environment(ProfileManager.self) private var profileManager
+    
     private var loginHandler = LoginHandler()
     private var googleSignInHandler = GoogleSignInHandler()
     private var appleSignInHandler = AppleSignInHandler()
@@ -43,7 +45,7 @@ struct LoginView: View {
         }
         .sheet(isPresented: $showInvitationSheet, content: {
             InvitationKeyView(isSigningIn: $isSigningIn) { // TODO: Some way to do this better??
-                loginHandler.loginUser { result in
+                loginHandler.loginUser(profileManager: profileManager) { result in
                     switch result {
                     case .success(_):
                         goToHome = true
@@ -94,12 +96,13 @@ struct LoginView: View {
             request.requestedScopes = [.fullName, .email]
             
         }  onCompletion: { result in
-            print("HERE!!!")
+            print("APPLE SIGN IN")
             appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes in
 #if DEBUG
                 goToHome = true
 #endif
                 loginHandler.commonSignIn(
+                    profileManager: profileManager,
                     withProfileAttributes: attributes,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,
@@ -118,14 +121,12 @@ struct LoginView: View {
     
     private var signInWithGoogleButton: some View {
         Button {
-#if DEBUG
-            goToHome = true
-#endif
             withAnimation {
                 isSigningIn = true
             }
             googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { attributes in
                 loginHandler.commonSignIn(
+                    profileManager: profileManager,
                     withProfileAttributes: attributes,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,
@@ -174,7 +175,7 @@ struct LoginView: View {
     }
     
     private var signInProgressView: some View {
-        ProgressView("Signing in≈")
+        ProgressView("Signing in...")
             .progressViewStyle(CircularProgressViewStyle(tint: .white))
             .foregroundStyle(.white)
             .padding(.bottom)

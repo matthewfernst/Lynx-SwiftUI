@@ -17,7 +17,6 @@ struct InvitationKeyView: View {
     @State private var showDontHaveInvitationAlert = false
     @State private var showInvalidKeyAlert = false
     
-    @State private var showPaste = true
     init(isSigningIn: Binding<Bool>, completion: @escaping () -> Void) {
         self._isSigningIn = isSigningIn
         self.completion = completion
@@ -47,6 +46,11 @@ struct InvitationKeyView: View {
                     Text("Don't have an invitation key?")
                         .font(.callout)
                 }
+                .padding(.bottom)
+                
+                ProgressView("Verifying...")
+                    .opacity(keyLengthEqualToInputLength ? 1 : 0)
+                
                 Spacer()
             }
             .padding()
@@ -90,7 +94,7 @@ struct InvitationKeyView: View {
     private func submitKey() {
         guard !key.isEmpty else { return }
         
-        if key.count == Constants.KeyInput.inputLength {
+        if keyLengthEqualToInputLength {
             ApolloLynxClient.submitInviteKey(with: key) { result in
                 switch result {
                 case .success(_):
@@ -110,16 +114,7 @@ struct InvitationKeyView: View {
             submitKey()
         }
     }
-    
-    private func getDigit(forKeyIndex index: Int) -> String? {
-        if !key.isEmpty,
-           let currentIndex = key.index(key.startIndex, offsetBy: index, limitedBy: key.index(before: key.endIndex)) {
-            return String(key[currentIndex])
-        }
-        return nil
-        
-    }
-    
+
     private var keyInput: some View {
         HStack {
             ForEach(0..<Constants.KeyInput.inputLength, id: \.self) { index in
@@ -145,6 +140,23 @@ struct InvitationKeyView: View {
             }
         }
     }
+    
+    // MARK: - Helpers
+    private var keyLengthEqualToInputLength: Bool {
+        withAnimation {
+            key.count == Constants.KeyInput.inputLength
+        }
+    }
+    
+    private func getDigit(forKeyIndex index: Int) -> String? {
+        if !key.isEmpty,
+           let currentIndex = key.index(key.startIndex, offsetBy: index, limitedBy: key.index(before: key.endIndex)) {
+            return String(key[currentIndex])
+        }
+        return nil
+        
+    }
+    
     
     private struct Constants {
         static let explanation = """
@@ -177,8 +189,6 @@ struct InvitationKeyView: View {
             }
         }
     }
-    
-    
 }
 
 #Preview {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AutoUploadView: View {
-    @ObservedObject var folderConnectionHandler: FolderConnectionHandler
+    @Bindable var folderConnectionHandler: FolderConnectionHandler
     @Binding var showAutoUpload: Bool
     
     @Environment(\.colorScheme) private var colorScheme

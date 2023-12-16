@@ -8,6 +8,7 @@
 import SwiftUI
 
 class UserManager {
+    @Environment(ProfileManager.self) private var profileManager
     static let shared = UserManager()
     
     private init() {}
@@ -17,7 +18,6 @@ class UserManager {
             guard let savedAuthorizationToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.authorizationToken),
                   let savedExpireDate = UserDefaults.standard.object(forKey: UserDefaultsKeys.authorizationTokenExpirationDate) as? Date,
                   let savedOauthToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.oauthToken) else {
-                UserDefaults.standard.set(false, forKey: UserDefaultsKeys.isSignedIn)
                 return nil
             }
             return ExpirableAuthorizationToken(authorizationToken: savedAuthorizationToken, expirationDate: savedExpireDate, oauthToken: savedOauthToken)
@@ -26,18 +26,16 @@ class UserManager {
             UserDefaults.standard.set(newValue?.authorizationToken, forKey: UserDefaultsKeys.authorizationToken)
             UserDefaults.standard.set(newValue?.expirationDate, forKey: UserDefaultsKeys.authorizationTokenExpirationDate)
             UserDefaults.standard.set(newValue?.oauthToken, forKey: UserDefaultsKeys.oauthToken)
-            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.isSignedIn)
         }
     }
     
     func renewToken(completion: @escaping (Result<String, Error>) -> Void) {
-        enum RenewTokenErrors: Error
-        {
+        enum RenewTokenErrors: Error {
             case noProfileSaved
             case noOauthTokenSaved
         }
         
-        guard let profile = ProfileManager.shared.profile else {
+        guard let profile = profileManager.profile else { // TODO: Once backend hooked up, probably need a static func to get the profile?
             return completion(.failure(RenewTokenErrors.noProfileSaved))
         }
         
@@ -45,13 +43,15 @@ class UserManager {
             return completion(.failure(RenewTokenErrors.noOauthTokenSaved))
         }
         
-        ApolloLynxClient.loginOrCreateUser(type: profile.type,
-                                           id: profile.id,
-                                           token: oauthToken,
-                                           email: profile.email,
-                                           firstName: profile.firstName,
-                                           lastName: profile.lastName,
-                                           profilePictureUrl: profile.profilePictureURL) { result in
+        ApolloLynxClient.loginOrCreateUser(
+            type: profile.type,
+            id: profile.id,
+            token: oauthToken,
+            email: profile.email,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            profilePictureUrl: profile.profilePictureURL
+        ) { result in
             switch result {
             case .success:
                 completion(.success((UserManager.shared.token!.authorizationTokenValue)))

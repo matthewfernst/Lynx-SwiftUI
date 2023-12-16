@@ -9,7 +9,7 @@ import SwiftUI
 import MessageUI
 
 struct AccountView: View {
-    @ObservedObject private var profileManager = ProfileManager.shared
+    @Environment(ProfileManager.self) private var profileManager
     @State private var refreshView = false
 
     @State private var showMessagesNotAvailable = false
@@ -326,7 +326,7 @@ extension AccountView {
     private func presentMessageCompose() {
         // TODO: Hook up to Apollo, update 'errorAlertMessage'
         let message = """
-                      \(ProfileManager.shared.profile!.name) has shared an invitation key to Lynx. Open the app and enter the key below. This invitation key will expire in 24 hours.
+                      \(profileManager.profile!.name) has shared an invitation key to Lynx. Open the app and enter the key below. This invitation key will expire in 24 hours.
                       
                       Invitation Key: 123456
                       """

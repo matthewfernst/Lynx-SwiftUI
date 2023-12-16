@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LeaderboardView: View {
-    @State private var logbookStats = LogbookStats()
+    var logbookStats: LogbookStats
     let debugURL = ProfileManager.Constants.defaultProfilePictureURL
     
     var body: some View {
@@ -56,13 +56,10 @@ struct LeaderboardView: View {
                 
             }
             .navigationTitle("Leaderboard")
-            
         }
     }
-    
-    
 }
 
 #Preview {
-    LeaderboardView()
+    LeaderboardView(logbookStats: LogbookStats(measurementSystem: .imperial))
 }

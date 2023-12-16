@@ -9,9 +9,10 @@ import SwiftUI
 import OSLog
 
 struct LogbookView: View {
-    @StateObject var folderConnectionHandler: FolderConnectionHandler
-    @StateObject private var logbookStats = LogbookStats()
-    @ObservedObject private var profileManager = ProfileManager.shared
+    @Bindable var folderConnectionHandler: FolderConnectionHandler
+    @Environment(ProfileManager.self) private var profileManager
+    
+    var logbookStats: LogbookStats
     
     @State private var showMoreInfo = false
     
@@ -137,10 +138,15 @@ struct LogbookView: View {
     private var scrollableSessionSummaries: some View {
         List {
             Section {
-                NavigationLink {
-                    FullLifetimeSummaryView(logbookStats: logbookStats)
-                } label: {
-                    lifetimeSummary
+                if logbookStats.logbooks.isEmpty {
+                    Text(Constants.uploadFilesForLogbooksMessage)
+                        .multilineTextAlignment(.center)
+                } else {
+                    NavigationLink {
+                        FullLifetimeSummaryView(logbookStats: logbookStats)
+                    } label: {
+                        lifetimeSummary
+                    }
                 }
             } header: {
                 Text(yearHeader)
@@ -242,6 +248,14 @@ struct LogbookView: View {
         static let mountainUILink = "https://github.com/matthewfernst/Mountain-UI"
         static let slopesLink = "https://getslopes.com"
         
+        static let uploadFilesForLogbooksMessage = """
+                                                   Upload files to see run statistics, leaderboards, and all other information.
+                                                   
+                                                   To get started, press the folder button in the top right of this screen and connect to your Slopes folder.
+                                                   
+                                                   Happy Shreading! 🏂
+                                                   """
+        
         struct Spacing {
             static let mainTitleAndDetails: CGFloat = 20
             static let dateAndSummary: CGFloat = 4
@@ -258,5 +272,5 @@ struct LogbookView: View {
 }
 
 #Preview {
-    LogbookView(folderConnectionHandler: FolderConnectionHandler())
+    LogbookView(folderConnectionHandler: FolderConnectionHandler(), logbookStats: LogbookStats(measurementSystem: .imperial))
 }

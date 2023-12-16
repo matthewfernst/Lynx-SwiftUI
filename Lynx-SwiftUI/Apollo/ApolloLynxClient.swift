@@ -9,6 +9,8 @@ import Foundation
 import Apollo
 import OSLog
 
+
+// MARK: - Apollo Typealiases
 typealias Logbook = ApolloGeneratedGraphQL.GetLogsQuery.Data.SelfLookup.Logbook
 typealias Logbooks = [Logbook]
 
@@ -16,6 +18,7 @@ typealias MeasurementSystem = ApolloGeneratedGraphQL.MeasurementSystem
 
 typealias OAuthLoginIds = [ApolloGeneratedGraphQL.GetProfileInformationQuery.Data.SelfLookup.OauthLoginId]
 typealias OAuthType = ApolloGeneratedGraphQL.OAuthType
+
 protocol Leaderboard {
     var firstName: String { get }
     var lastName: String { get }
@@ -62,7 +65,7 @@ enum LeaderLogbooks {
 
 
 class ApolloLynxClient {
-    private static let graphQLEndpoint = "https://notgko3y22.execute-api.us-west-1.amazonaws.com/production/graphql"
+    private static let graphQLEndpoint = "https://jwn946zhj0.execute-api.us-west-1.amazonaws.com/production/graphql"
     
     private static let apolloClient: ApolloClient = {
         // The cache is necessary to set up the store, which we're going
@@ -84,11 +87,11 @@ class ApolloLynxClient {
         return ApolloClient(networkTransport: requestChainTransport, store: store)
     }()
     
-    public static func clearCache() {
+    static func clearCache() {
         apolloClient.store.clearCache()
     }
     
-    public static func getProfileInformation(completion: @escaping (Result<ProfileAttributes, Error>) -> Void) {
+    static func getProfileInformation(completion: @escaping (Result<ProfileAttributes, Error>) -> Void) {
         
         apolloClient.fetch(query: ApolloGeneratedGraphQL.GetProfileInformationQuery()) { result in
             switch result {
@@ -138,7 +141,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func getOAuthLoginTypes(completion: @escaping (Result<[String], Error>) -> Void) {
+    static func getOAuthLoginTypes(completion: @escaping (Result<[String], Error>) -> Void) {
         
         apolloClient.fetch(query: ApolloGeneratedGraphQL.GetOAuthLoginsQuery()) { result in
             switch result {
@@ -221,7 +224,11 @@ class ApolloLynxClient {
                 
                 let expirationDate = Date(timeIntervalSince1970: expiryInMilliseconds / 1000)
                 
-                UserManager.shared.token = ExpirableAuthorizationToken(authorizationToken: authorizationToken, expirationDate: expirationDate, oauthToken: token)
+                UserManager.shared.token = ExpirableAuthorizationToken(
+                    authorizationToken: authorizationToken,
+                    expirationDate: expirationDate,
+                    oauthToken: token
+                )
                 
                 completion(.success((data.validatedInvite)))
                 
@@ -232,7 +239,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func createInviteKey(completion: @escaping ((Result<String, Error>) -> Void)) {
+    static func createInviteKey(completion: @escaping ((Result<String, Error>) -> Void)) {
         enum CreateInviteKeyError: Error {
             case failedToUnwrapData
         }
@@ -254,7 +261,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func submitInviteKey(with invitationKey: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
+    static func submitInviteKey(with invitationKey: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
         enum InviteKeyError: Error {
             case failedValidateInvite
         }
@@ -272,7 +279,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func editUser(profileChanges: [String: Any], completion: @escaping ((Result<String, Error>) -> Void)) {
+    static func editUser(profileChanges: [String: Any], completion: @escaping ((Result<String, Error>) -> Void)) {
         
         enum EditUserErrors: Error {
             case editUserNil
@@ -311,7 +318,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func createUserProfilePictureUploadUrl(completion: @escaping ((Result<String, Error>) -> Void)) {
+    static func createUserProfilePictureUploadUrl(completion: @escaping ((Result<String, Error>) -> Void)) {
         
         apolloClient.perform(mutation: ApolloGeneratedGraphQL.CreateUserProfilePictureUploadUrlMutation()) { result in
             switch result {
@@ -331,7 +338,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func createUserRecordUploadUrl(filesToUpload: [String], completion: @escaping ((Result<[String], Error>) -> Void)) {
+    static func createUserRecordUploadUrl(filesToUpload: [String], completion: @escaping ((Result<[String], Error>) -> Void)) {
         
         enum RunRecordURLErrors: Error {
             case nilURLs
@@ -369,7 +376,7 @@ class ApolloLynxClient {
         case queryFailed
     }
     
-    public static func getUploadedLogs(completion: @escaping ((Result<Set<String>, Error>) -> Void)) {
+    static func getUploadedLogs(completion: @escaping ((Result<Set<String>, Error>) -> Void)) {
         
         apolloClient.fetch(query: ApolloGeneratedGraphQL.GetUploadedLogsQuery()) { result in
             switch result {
@@ -391,7 +398,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func getLogs(measurementSystem: MeasurementSystem, completion: @escaping ((Result<Logbooks, Error>) -> Void)) {
+    static func getLogs(measurementSystem: MeasurementSystem, completion: @escaping ((Result<Logbooks, Error>) -> Void)) {
         
         let system = GraphQLEnum<ApolloGeneratedGraphQL.MeasurementSystem>(rawValue: measurementSystem.rawValue)
         
@@ -423,7 +430,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func deleteAccount(token: String, type: ApolloGeneratedGraphQL.OAuthType, completion: @escaping ((Result<Void, Error>) -> Void)) {
+    static func deleteAccount(token: String, type: ApolloGeneratedGraphQL.OAuthType, completion: @escaping ((Result<Void, Error>) -> Void)) {
         enum DeleteAccountErrors: Error {
             case UnwrapOfReturnedUserFailed
             case BackendCouldntDelete
@@ -450,7 +457,7 @@ class ApolloLynxClient {
         }
     }
     
-    public static func mergeAccount(with account: ApolloGeneratedGraphQL.OAuthTypeCorrelationInput, completion: @escaping ((Result<Void, Error>) -> Void)) {
+    static func mergeAccount(with account: ApolloGeneratedGraphQL.OAuthTypeCorrelationInput, completion: @escaping ((Result<Void, Error>) -> Void)) {
         enum MergeAccountErrors: Error {
             case UnwrapOfReturnedUserFailed
             case BackendCouldntMerge
@@ -474,8 +481,8 @@ class ApolloLynxClient {
         }
     }
 
-    // TODO: FIX ME
-//    public static func getAllLeaderboards(limit: Int?, inMeasurementSystem system: MeasurementSystem, completion: @escaping ((Result<[LeaderboardSort: [LeaderboardAttributes]], Error>) -> Void)) {
+    // TODO: FIX ME -> When Max has Leaderboard done.
+//    static func getAllLeaderboards(limit: Int?, inMeasurementSystem system: MeasurementSystem, completion: @escaping ((Result<[LeaderboardSort: [LeaderboardAttributes]], Error>) -> Void)) {
 //        enum GetAllLeadersErrors: Error {
 //            case unableToUnwrap
 //        }
@@ -537,7 +544,7 @@ class ApolloLynxClient {
 //    }
 //
 //    
-//    public static func getSelectedLeaderboard(_ leaderboard: LeaderboardSort, limit: Int?, inMeasurementSystem system: MeasurementSystem, completion: @escaping ((Result<[LeaderboardAttributes], Error>) -> Void)) {
+//    static func getSelectedLeaderboard(_ leaderboard: LeaderboardSort, limit: Int?, inMeasurementSystem system: MeasurementSystem, completion: @escaping ((Result<[LeaderboardAttributes], Error>) -> Void)) {
 //        
 //        enum SelectedLeaderboardError: Error
 //        {
@@ -622,3 +629,7 @@ struct ProfileAttributes: CustomDebugStringConvertible {
        """
     }
 }
+
+// MARK: - Extension for SwiftData
+
+extension MeasurementSystem: Codable { }

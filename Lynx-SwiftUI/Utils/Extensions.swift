@@ -34,6 +34,8 @@ extension Logger {
     static let loginHandler = Logger(subsystem: subsystem, category: "LoginHandler")
     
     static let notifications = Logger(subsystem: subsystem, category: "Notifications")
+    
+    static let profileManager = Logger(subsystem: subsystem, category: "ProfileManager")
 }
 
 extension String {

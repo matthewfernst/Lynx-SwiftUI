@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ProfileSummaryView: View {
-    @ObservedObject private var profileManager = ProfileManager.shared
-    @ObservedObject var logbookStats: LogbookStats
+    @Environment(ProfileManager.self) private var profileManager
+    var logbookStats: LogbookStats
     
     var body: some View {
         HStack {
@@ -58,5 +58,5 @@ struct ProfileSummaryView: View {
 }
 
 #Preview {
-    ProfileSummaryView(logbookStats: LogbookStats())
+    ProfileSummaryView(logbookStats: LogbookStats(measurementSystem: .imperial))
 }

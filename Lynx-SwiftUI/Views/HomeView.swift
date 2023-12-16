@@ -6,21 +6,28 @@
 //
 
 import SwiftUI
+import SwiftData
 import OSLog
 
 struct HomeView: View {
     @Environment(\.colorScheme) private var systemTheme
-    @ObservedObject private var profileManager = ProfileManager.shared
-    @StateObject private var folderConnectionHandler = FolderConnectionHandler()
+    @Environment(ProfileManager.self) private var profileManager
+    
+    @State private var folderConnectionHandler = FolderConnectionHandler()
+    @State private var logbookStats = LogbookStats(measurementSystem: .imperial)
+    
     
     var body: some View {
         TabView {
-            LogbookView(folderConnectionHandler: folderConnectionHandler)
-                .tabItem {
-                    Label("Logbook", systemImage: "book.pages")
-                }
+            LogbookView(
+                folderConnectionHandler: folderConnectionHandler,
+                logbookStats: logbookStats
+            )
+            .tabItem {
+                Label("Logbook", systemImage: "book.pages")
+            }
             
-            LeaderboardView()
+            LeaderboardView(logbookStats: logbookStats)
                 .tabItem {
                     Label("Leaderboard", systemImage: "trophy")
                 }

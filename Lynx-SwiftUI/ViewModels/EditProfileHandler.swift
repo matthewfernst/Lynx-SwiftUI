@@ -10,18 +10,23 @@ import PhotosUI
 import OSLog
 
 class EditProfileHandler {
+    
     func saveEdits(
+        profileManager: ProfileManager,
         withFirstName firstName: String,
         lastName: String,
         email: String,
         profilePictureData: Data? = nil,
         completion: @escaping () -> Void
     ) {
-        ProfileManager.shared.edit(
+        profileManager.edit(
             newFirstName: firstName,
             newLastName: lastName,
             newEmail: email
         )
+#if DEBUG
+        completion()
+#else
         var profileChanges: [String: Any] = [:]
         profileChanges[ProfileChangesKeys.firstName.rawValue]  = firstName
         profileChanges[ProfileChangesKeys.lastName.rawValue] = lastName
@@ -54,6 +59,7 @@ class EditProfileHandler {
                 completion() // Dismiss view and stops ProgressView
             }
         }
+#endif
     }
     
     private func putRequest(newProfilePictureData data: Data) {
@@ -95,6 +101,7 @@ class EditProfileHandler {
     }
     
     private func pollProfilePictureChange(
+        profileManager: ProfileManager,
         newProfilePictureData newData: Data,
         newProfilePictureURL: URL,
         completion: @escaping () -> Void
@@ -111,7 +118,7 @@ class EditProfileHandler {
             getDataAsync(from: newProfilePictureURL) { currentData in
                 if newData == currentData {
                     DispatchQueue.main.async {
-                        ProfileManager.shared.update(withNewProfilePictureURL: newProfilePictureURL)
+                        profileManager.update(withNewProfilePictureURL: newProfilePictureURL)
                         completion() // Dismiss view and stop ProgressView
                     }
                 } else {
@@ -125,7 +132,7 @@ class EditProfileHandler {
                     } else {
                         // Maximum attempts reached, stop polling
                         DispatchQueue.main.async {
-                            ProfileManager.shared.update(withNewProfilePictureURL: newProfilePictureURL)
+                            profileManager.update(withNewProfilePictureURL: newProfilePictureURL)
                             completion()
                         }
                     }
@@ -150,10 +157,14 @@ class EditProfileHandler {
     }
     
     
-    func deleteAccount(completion: @escaping ((Result<Void, Error>) -> Void)) {
+    func deleteAccount(
+        profileManager: ProfileManager,
+        completion: @escaping ((Result<Void,
+                                Error>) -> Void)
+    ) {
         ApolloLynxClient.deleteAccount(
-            token: ProfileManager.shared.profile!.oauthToken,
-            type: .init(rawValue: ProfileManager.shared.profile!.type)!,
+            token: profileManager.profile!.oauthToken,
+            type: .init(rawValue: profileManager.profile!.type)!,
             completion: completion
         )
     }

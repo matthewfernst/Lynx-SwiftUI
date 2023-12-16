@@ -8,15 +8,8 @@
 import Foundation
 
 struct UserDefaultsKeys {
-    // TabViewController
-    static let theme = "theme"
-    
     // Profile
-    static let isSignedIn = "isSignedIn"
     static let appleOrGoogleId = "appleOrGoogleId"
-    
-    // NotificationSettingsTableViewController
-    static let notificationsTurnedOnOrOff = "notificationsAllowed"
     
     // Apollo Authorization Token
     static let authorizationToken = "authorizationToken"
@@ -26,13 +19,17 @@ struct UserDefaultsKeys {
     
     // All Keys
     static let allKeys: [String] = [
-        theme,
-        isSignedIn,
         appleOrGoogleId,
-        notificationsTurnedOnOrOff,
         authorizationToken,
         authorizationTokenExpirationDate,
         oauthToken,
         loginType
     ]
+    
+    static func removeAllObjectsForAllKeys() {
+        let defaults = UserDefaults.standard
+        for key in UserDefaultsKeys.allKeys {
+            defaults.removeObject(forKey: key)
+        }
+    }
 }

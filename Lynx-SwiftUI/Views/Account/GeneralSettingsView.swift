@@ -9,8 +9,7 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
     @Environment(\.colorScheme) private var systemTheme
-    
-    @ObservedObject private var profileManager = ProfileManager.shared
+    @Environment(ProfileManager.self) private var profileManager
     
     @State private var selectedUnit: MeasurementSystem = .imperial
     private let availableUnits = MeasurementSystem.allCases

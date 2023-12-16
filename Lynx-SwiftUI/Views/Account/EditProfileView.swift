@@ -10,7 +10,7 @@ import PhotosUI
 import OSLog
 
 struct EditProfileView: View {
-    @ObservedObject private var profileManager = ProfileManager.shared
+    @Environment(ProfileManager.self) private var profileManager
     @Environment(\.dismiss) private var dismiss
     
     private var editProfileHandler = EditProfileHandler()
@@ -19,15 +19,16 @@ struct EditProfileView: View {
     @State private var newProfilePictureData: Data?
     @State private var newProfilePicture: Image?
     
-    @State private var firstName = ProfileManager.shared.profile!.firstName
-    @State private var lastName = ProfileManager.shared.profile!.lastName
-    @State private var email = ProfileManager.shared.profile!.email
+    @State private var firstName = ""
+    @State private var lastName = ""
+    @State private var email = ""
     
     @State private var showSavingChanges = false
     
     @State private var gotToLogin = false
     @State private var showDeleteAccountConfirmation = false
     @State private var showFailedToDeleteAccount = false
+    @State private var showMergeAccountsNotAvailable = false
     
     var body: some View {
         NavigationStack {
@@ -49,21 +50,29 @@ struct EditProfileView: View {
                 }
                 Button("Delete Account", role: .destructive) {
                     showSavingChanges = true
-                    editProfileHandler.deleteAccount { result in
+                    #if DEBUG
+                    LoginHandler.signOut(profileManager: profileManager)
+                    gotToLogin = true
+                    #else
+                    editProfileHandler.deleteAccount(profileManager: profileManager) { result in
                         switch result {
                         case .success(_):
-                            LoginHandler.signOut()
+                            LoginHandler.signOut(profileManager: profileManager)
                             gotToLogin = true
                         case .failure(let error):
                             Logger.editProfileView.error("Failed to delete account: \(error)")
                         }
                         showSavingChanges = false
                     }
+                    #endif
                 }
             } message: {
                 Text("Are you sure you want to proceed with deleting your account? This action cannot be undone.")
             }
             .alert("Failed to Delete Account", isPresented: $showFailedToDeleteAccount) { }
+            .alert("Feature Not Available", isPresented: $showMergeAccountsNotAvailable) { } message: {
+                Text("Merging your Google or Apple accounts together is not yet available. Stay tuned for updates!")
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .confirmationAction) {
                     if showSavingChanges {
@@ -73,6 +82,7 @@ struct EditProfileView: View {
                         Button {
                             showSavingChanges = true
                             editProfileHandler.saveEdits(
+                                profileManager: profileManager,
                                 withFirstName: firstName,
                                 lastName: lastName,
                                 email: email,
@@ -87,6 +97,13 @@ struct EditProfileView: View {
                         }
                     }
                 }
+            }
+        }
+        .onAppear {
+            if let profile = profileManager.profile {
+                firstName = profile.firstName
+                lastName = profile.lastName
+                email = profile.email
             }
         }
         .disabled(showSavingChanges)
@@ -136,26 +153,28 @@ struct EditProfileView: View {
                     .bold()
                     .padding(.trailing)
                 
-                TextField(firstName, text: $firstName)
-                TextField(lastName, text: $lastName)
+                TextField("First Name", text: $firstName)
+                TextField("Last Name", text: $lastName)
             }
             HStack {
                 Text("Email")
                     .bold()
                     .padding(.trailing)
                 
-                TextField(email, text: $email)
+                TextField("Email", text: $email)
             }
         }
     }
     
     private var mergeAndSignOutSection: some View {
         Section {
-            NavigationLink(destination: Text("TODO")) {
+            Button {
+                showMergeAccountsNotAvailable = true
+            } label: {
                 Label("Merge Accounts", systemImage: "shared.with.you")
             }
             Button {
-                LoginHandler.signOut()
+                LoginHandler.signOut(profileManager: profileManager)
                 gotToLogin = true
             } label: {
                 Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.forward")

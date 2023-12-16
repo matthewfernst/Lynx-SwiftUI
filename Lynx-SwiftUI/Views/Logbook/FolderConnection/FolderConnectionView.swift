@@ -10,7 +10,7 @@ import OSLog
 
 struct FolderConnectionView: View {
     @Binding var showUploadProgressView: Bool
-    @ObservedObject var folderConnectionHandler: FolderConnectionHandler
+    @Bindable var folderConnectionHandler: FolderConnectionHandler
     
     @Environment(\.dismiss) private var dismiss
     @State private var showDocumentPicker = false

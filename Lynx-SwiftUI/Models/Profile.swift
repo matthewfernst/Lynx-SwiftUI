@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Profile: Identifiable {
+@Model
+final class Profile {
     private(set) var id: String
     private(set) var type: String
     private(set) var oauthToken: String
-    private(set) var firstName, lastName: String
+    private(set) var firstName: String
+    private(set) var lastName: String
     var name: String { firstName + " " + lastName }
     private(set) var email: String
     var profilePictureURL: URL?
@@ -36,7 +39,7 @@ struct Profile: Identifiable {
         self.profilePictureURL = profilePictureURL
     }
     
-    init(profileAttributes: ProfileAttributes) {
+    convenience init(profileAttributes: ProfileAttributes) {
         self.init(
             type: profileAttributes.type,
             oauthToken: profileAttributes.oauthToken,
@@ -57,17 +60,30 @@ struct Profile: Identifiable {
         }
     }
     
-    mutating func edit(newFirstName: String?, newLastName: String?, newEmail: String?) {
+    func edit(newFirstName: String?, newLastName: String?, newEmail: String?) {
         self.firstName = newFirstName ?? self.firstName
         self.lastName = newLastName ?? self.lastName
         self.email = newEmail ?? self.email
     }
+    
+#if DEBUG
+    static let debugProfile = Profile(
+        type: SignInType.apple.rawValue,
+        oauthToken: "123456890",
+        id: "123456890",
+        firstName: "Johnny",
+        lastName: "Appleseed",
+        email: "johnnyappleseed@apple.com",
+        profilePictureURL: ProfileManager.Constants.defaultProfilePictureURL
+    )
+#endif
 }
+
+extension Profile: Identifiable { }
 
 // MARK: - Extensions for Debugging
 #if DEBUG
-extension Profile: CustomDebugStringConvertible
-{
+extension Profile: CustomDebugStringConvertible {
     var debugDescription: String {
         """
         id: \(self.id)
