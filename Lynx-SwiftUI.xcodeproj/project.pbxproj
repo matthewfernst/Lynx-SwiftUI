@@ -302,7 +302,6 @@
 			isa = PBXGroup;
 			children = (
 				65B35F8D2B11C1E0002E99E4 /* Profile.swift */,
-				65B39A642B13E61100948C9D /* ProfileManager.swift */,
 				65B35F8F2B11C2A0002E99E4 /* BookmarkManager.swift */,
 				653404922B24E96800614C59 /* LeaderAttributes.swift */,
 			);
@@ -331,6 +330,7 @@
 				6529A83D2B1AE5F500FF455E /* EditProfileHandler.swift */,
 				653404AA2B27F2D600614C59 /* NotificationsHandler.swift */,
 				6573BA1A2B282B8D00381085 /* AppleSignInHandler.swift */,
+				65B39A642B13E61100948C9D /* ProfileManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";

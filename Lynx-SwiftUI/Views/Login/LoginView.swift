@@ -7,7 +7,7 @@
 
 import SwiftUI
 import AuthenticationServices
-import GoogleSignIn
+import GoogleSignInSwift
 
 struct LoginView: View {
     @Environment(ProfileManager.self) private var profileManager
@@ -97,13 +97,14 @@ struct LoginView: View {
             
         }  onCompletion: { result in
             print("APPLE SIGN IN")
-            appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes in
+            appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes, oauthToken in
 #if DEBUG
                 goToHome = true
 #endif
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
                     withProfileAttributes: attributes,
+                    oauthToken: oauthToken,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,
                     showSignInError: $showSignInError
@@ -124,10 +125,11 @@ struct LoginView: View {
             withAnimation {
                 isSigningIn = true
             }
-            googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { attributes in
+            googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { attributes, oauthToken in
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
                     withProfileAttributes: attributes,
+                    oauthToken: oauthToken,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,
                     showSignInError: $showSignInError

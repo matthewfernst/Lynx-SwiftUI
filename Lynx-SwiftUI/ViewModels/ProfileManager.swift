@@ -18,6 +18,8 @@ import OSLog
         }
     }
     
+    static var shared: ProfileManager = ProfileManager()
+    
     private(set) var profile: Profile? {
         didSet {
             if profile != nil {
@@ -29,7 +31,6 @@ import OSLog
     }
     
     private(set) var profilePicture: Image?
-    
     
     // MARK: - Intent's
     func fetchProfile() {

@@ -6,9 +6,9 @@
 //
 
 import SwiftUI
+import GoogleSignIn
 
 class UserManager {
-    @Environment(ProfileManager.self) private var profileManager
     static let shared = UserManager()
     
     private init() {}
@@ -16,16 +16,17 @@ class UserManager {
     var token: ExpirableAuthorizationToken? {
         get {
             guard let savedAuthorizationToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.authorizationToken),
-                  let savedExpireDate = UserDefaults.standard.object(forKey: UserDefaultsKeys.authorizationTokenExpirationDate) as? Date,
-                  let savedOauthToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.oauthToken) else {
+                  let savedExpireDate = UserDefaults.standard.object(forKey: UserDefaultsKeys.authorizationTokenExpirationDate) as? Date else {
                 return nil
             }
-            return ExpirableAuthorizationToken(authorizationToken: savedAuthorizationToken, expirationDate: savedExpireDate, oauthToken: savedOauthToken)
+            return ExpirableAuthorizationToken(
+                authorizationToken: savedAuthorizationToken,
+                expirationDate: savedExpireDate
+            )
         }
         set {
             UserDefaults.standard.set(newValue?.authorizationToken, forKey: UserDefaultsKeys.authorizationToken)
             UserDefaults.standard.set(newValue?.expirationDate, forKey: UserDefaultsKeys.authorizationTokenExpirationDate)
-            UserDefaults.standard.set(newValue?.oauthToken, forKey: UserDefaultsKeys.oauthToken)
         }
     }
     
@@ -35,48 +36,56 @@ class UserManager {
             case noOauthTokenSaved
         }
         
-        guard let profile = profileManager.profile else { // TODO: Once backend hooked up, probably need a static func to get the profile?
+        guard let profile = ProfileManager.shared.profile else { // TODO: Once backend hooked up, probably need a static func to get the profile?
             return completion(.failure(RenewTokenErrors.noProfileSaved))
         }
         
-        guard let oauthToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.oauthToken) else {
-            return completion(.failure(RenewTokenErrors.noOauthTokenSaved))
+        func handleLoginOrCreateUser(oauthToken: String) {
+            ApolloLynxClient.loginOrCreateUser(
+                id: profile.id,
+                oauthType: profile.oauthType,
+                oauthToken: oauthToken,
+                email: profile.email,
+                firstName: profile.firstName,
+                lastName: profile.lastName,
+                profilePictureUrl: profile.profilePictureURL
+            ) { result in
+                switch result {
+                case .success:
+                    completion(.success((UserManager.shared.token!.authorizationToken)))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
         }
         
-        ApolloLynxClient.loginOrCreateUser(
-            type: profile.type,
-            id: profile.id,
-            token: oauthToken,
-            email: profile.email,
-            firstName: profile.firstName,
-            lastName: profile.lastName,
-            profilePictureUrl: profile.profilePictureURL
-        ) { result in
-            switch result {
-            case .success:
-                completion(.success((UserManager.shared.token!.authorizationTokenValue)))
-                
-            case .failure(let error):
-                completion(.failure(error))
+        if profile.oauthType == OAuthType.google.rawValue {
+            GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+                // Check if `user` exists; otherwise, do something with `error`
+                if error != nil {
+                    print("Deleted profile as Google restore failed")
+                    return
+                }
+                if let oauthToken = user?.idToken?.tokenString {
+                    handleLoginOrCreateUser(oauthToken: oauthToken)
+                }
             }
+        } else if profile.oauthType == OAuthType.apple.rawValue {
+            handleLoginOrCreateUser(oauthToken: "1234")
+            
+        } else {
+            fatalError("Could not get OAuth Token")
         }
     }
 }
 
+
 struct ExpirableAuthorizationToken {
     let authorizationToken: String
     let expirationDate: Date
-    let oauthToken: String
     
     var isExpired: Bool {
         return Date().timeIntervalSince1970 >= expirationDate.timeIntervalSince1970
-    }
-    
-    var authorizationTokenValue: String {
-        return authorizationToken
-    }
-    
-    var oauthTokenValue: String {
-        return oauthToken
     }
 }

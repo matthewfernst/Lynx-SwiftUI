@@ -12,10 +12,16 @@ import OSLog
 
 class AppleSignInHandler {
     
-    func onCompletion(_ result: Result<ASAuthorization, Error>, showErrorSigningIn: Binding<Bool>, completion: @escaping (ProfileAttributes) -> Void) {
+    func onCompletion(
+        _ result: Result<ASAuthorization,
+        Error>,
+        showErrorSigningIn: Binding<Bool>,
+        completion: @escaping (ProfileAttributes,
+        String) -> Void
+    ) {
 #if DEBUG
         completion(
-            ProfileAttributes(type: SignInType.apple.rawValue, oauthToken: "1234567", id: "123456")
+            ProfileAttributes( id: "123456", oauthType: SignInType.apple.rawValue), "1234"
         )
 #endif
         switch result {
@@ -31,13 +37,13 @@ class AppleSignInHandler {
                 Logger.appleSignInHandler.info("Successfully authorized Apple ID credentials.")
                 completion(
                     .init(
-                        type: SignInType.apple.rawValue,
-                        oauthToken: appleJWT,
                         id: appleIDCredential.user,
+                        oauthType: SignInType.apple.rawValue,
                         email: appleIDCredential.email,
                         firstName: appleIDCredential.fullName?.givenName,
                         lastName: appleIDCredential.fullName?.familyName
-                    )
+                    ),
+                    appleJWT
                 )
                 
             default:

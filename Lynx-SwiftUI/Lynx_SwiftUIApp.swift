@@ -7,18 +7,21 @@
 
 import SwiftUI
 import SwiftData
+import GoogleSignIn
 
 @main
-    struct Lynx_SwiftUIApp: App {
+struct Lynx_SwiftUIApp: App {
     @Environment(\.scenePhase) private var scenePhase
-    @State private var profileManager = ProfileManager()
+    @State private var profileManager = ProfileManager.shared
     
     var body: some Scene {
         WindowGroup {
-            if profileManager.profile != nil {
-                HomeView()
-            } else {
-                LoginView()
+            Group {
+                if profileManager.profile != nil {
+                    HomeView()
+                } else {
+                    LoginView()
+                }
             }
         }
         .modelContainer(for: Profile.self) { result in
@@ -36,5 +39,6 @@ import SwiftData
                 profileManager.saveProfile()
             }
         }
+        
     }
 }

@@ -16,6 +16,7 @@ class LoginHandler {
     func commonSignIn(
         profileManager: ProfileManager,
         withProfileAttributes attributes: ProfileAttributes,
+        oauthToken: String,
         goToHome: Binding<Bool>,
         showInvitationSheet: Binding<Bool>,
         showSignInError: Binding<Bool>
@@ -26,9 +27,9 @@ class LoginHandler {
         goToHome.wrappedValue = true
 #else
         ApolloLynxClient.loginOrCreateUser(
-            type: attributes.type,
             id: attributes.id,
-            token: attributes.oauthToken,
+            oauthType: attributes.oauthType,
+            oauthToken: oauthToken,
             email: attributes.email,
             firstName: attributes.firstName,
             lastName: attributes.lastName,
@@ -38,7 +39,7 @@ class LoginHandler {
             case .success(let validatedInvite):
                 Logger.loginHandler.info("Authorization Token successfully received.")
                 if validatedInvite {
-                    self.loginUser { result in
+                    self.loginUser(profileManager: profileManager) { result in
                         switch result {
                         case .success(_):
                             goToHome.wrappedValue = true
@@ -58,7 +59,7 @@ class LoginHandler {
     }
     
     func loginUser(profileManager: ProfileManager, completion: @escaping (Result<Bool, Error>) -> Void) {
-        ApolloLynxClient.getProfileInformation() { result in
+        ApolloLynxClient.getProfileInformation { result in
             switch result {
             case .success(let profileAttributes):
                 self.signInUser(
@@ -80,16 +81,10 @@ class LoginHandler {
         completion: @escaping (Result<Bool,
         Error>) -> Void
     ) {
-        let defaults = UserDefaults.standard
-        defaults.setValue(profileAttributes.type, forKey: UserDefaultsKeys.loginType)
-        defaults.setValue(profileAttributes.id, forKey: UserDefaultsKeys.appleOrGoogleId)
-        
-        
         profileManager.update(
             withNewProfile: Profile(
-                type: profileAttributes.type,
-                oauthToken: profileAttributes.oauthToken,
                 id: profileAttributes.id,
+                oauthType: profileAttributes.oauthType,
                 firstName: profileAttributes.firstName!,
                 lastName: profileAttributes.lastName!,
                 email: profileAttributes.email!,

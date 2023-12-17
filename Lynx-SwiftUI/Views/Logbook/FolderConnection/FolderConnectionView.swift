@@ -41,7 +41,13 @@ struct FolderConnectionView: View {
                 .alert(isPresented: $folderConnectionHandler.showError) {
                     folderConnectionHandler.errorAlert!
                 }
-     
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            dismiss()
+                        }
+                    }
+                }
         }
     }
     

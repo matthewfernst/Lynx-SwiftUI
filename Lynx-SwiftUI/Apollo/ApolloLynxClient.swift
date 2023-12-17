@@ -65,7 +65,7 @@ enum LeaderLogbooks {
 
 
 class ApolloLynxClient {
-    private static let graphQLEndpoint = "https://jwn946zhj0.execute-api.us-west-1.amazonaws.com/production/graphql"
+    private static let graphQLEndpoint = "https://kozguryvij.execute-api.us-west-1.amazonaws.com/prod/graphql"
     
     private static let apolloClient: ApolloClient = {
         // The cache is necessary to set up the store, which we're going
@@ -105,7 +105,7 @@ class ApolloLynxClient {
                 // TODO: First okay?
                 let oauthIds = selfLookup.oauthLoginIds
 
-                guard let type = oauthIds.first?.type else {
+                guard let oauthType = oauthIds.first?.type else {
                     Logger.apollo.error("oauthLoginIds failed to unwrap type.")
                     return
                 }
@@ -115,25 +115,23 @@ class ApolloLynxClient {
                     return
                 }
                 
-                guard let oauthToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.oauthToken) else {
-                    Logger.apollo.error("oauthToken not found in UserDefaults.")
-                    return
-                }
-                
-                
                 var pictureURL: URL? = nil
                 if let urlString = selfLookup.profilePictureUrl {
                     pictureURL = URL(string: urlString)
                 }
-                let profileAttributes = ProfileAttributes(type: type.rawValue,
-                                                          oauthToken: oauthToken,
-                                                          id: id,
-                                                          email: selfLookup.email,
-                                                          firstName: selfLookup.firstName,
-                                                          lastName: selfLookup.lastName,
-                                                          profilePictureURL: pictureURL)
+                
+                let profileAttributes = ProfileAttributes(
+                    id: id,
+                    oauthType: oauthType.rawValue,
+                    email: selfLookup.email,
+                    firstName: selfLookup.firstName,
+                    lastName: selfLookup.lastName,
+                    profilePictureURL: pictureURL
+                )
+                
                 Logger.apollo.debug("ProfileAttributes being returned:\n \(profileAttributes.debugDescription)")
                 completion(.success(profileAttributes))
+                
             case .failure(let error):
                 Logger.apollo.error("\(error)")
                 completion(.failure(error))
@@ -161,9 +159,9 @@ class ApolloLynxClient {
     }
     
     static func loginOrCreateUser(
-        type: String,
         id: String,
-        token: String,
+        oauthType: String,
+        oauthToken: String,
         email: String?,
         firstName: String?,
         lastName: String?,
@@ -173,9 +171,9 @@ class ApolloLynxClient {
     ) {
         
 
-        Logger.apollo.debug("Login in with following: type               -> \(type)")
+        Logger.apollo.debug("Login in with following: type               -> \(oauthType)")
         Logger.apollo.debug("                         id                 -> \(id)")
-        Logger.apollo.debug("                         token              -> \(token)")
+        Logger.apollo.debug("                         token              -> \(oauthToken)")
         Logger.apollo.debug("                         email              -> \(email ?? "nil")")
         Logger.apollo.debug("                         firstName          -> \(firstName ?? "nil")")
         Logger.apollo.debug("                         lastName           -> \(lastName ?? "nil")")
@@ -192,8 +190,8 @@ class ApolloLynxClient {
             userDataNullable = GraphQLNullable<[ApolloGeneratedGraphQL.UserDataPair]>(arrayLiteral: userData[0], userData[1], userData[2])
         }
         
-        let type = GraphQLEnum<ApolloGeneratedGraphQL.OAuthType>(rawValue: type)
-        let tokenWrappedInGraphQL = GraphQLNullable<ApolloGeneratedGraphQL.ID>(stringLiteral: token)
+        let type = GraphQLEnum<ApolloGeneratedGraphQL.OAuthType>(rawValue: oauthType)
+        let tokenWrappedInGraphQL = GraphQLNullable<ApolloGeneratedGraphQL.ID>(stringLiteral: oauthToken)
         let oauthLoginId = ApolloGeneratedGraphQL.OAuthTypeCorrelationInput(type: type, id: id, token: tokenWrappedInGraphQL)
         
         
@@ -204,9 +202,10 @@ class ApolloLynxClient {
             emailNullable = GraphQLNullable<String>(stringLiteral: email!)
         }
         
-        apolloClient.perform(mutation: ApolloGeneratedGraphQL.LoginOrCreateUserMutation(oauthLoginId: oauthLoginId,
-                                                                                        email: emailNullable,
-                                                                                        userData: userDataNullable)) { result in
+        apolloClient.perform(mutation: ApolloGeneratedGraphQL.LoginOrCreateUserMutation(
+            oauthLoginId: oauthLoginId,
+            email: emailNullable,
+            userData: userDataNullable)) { result in
             switch result {
             case .success(let graphQLResult):
                 guard let data = graphQLResult.data?.createUserOrSignIn else {
@@ -226,8 +225,7 @@ class ApolloLynxClient {
                 
                 UserManager.shared.token = ExpirableAuthorizationToken(
                     authorizationToken: authorizationToken,
-                    expirationDate: expirationDate,
-                    oauthToken: token
+                    expirationDate: expirationDate
                 )
                 
                 completion(.success((data.validatedInvite)))
@@ -591,26 +589,23 @@ class ApolloLynxClient {
 
 // MARK: - ProfileAttributes
 struct ProfileAttributes: CustomDebugStringConvertible {
-    var type: String
     var id: String
-    var oauthToken: String
+    var oauthType: String
     var email: String? = nil
     var firstName: String? = nil
     var lastName: String? = nil
     var profilePictureURL: URL? = nil
     
     init(
-        type: String,
-        oauthToken: String,
         id: String,
+        oauthType: String,
         email: String? = nil,
         firstName: String? = nil,
         lastName: String? = nil,
         profilePictureURL: URL? = nil
     ) {
-        self.type = type
-        self.oauthToken = oauthToken
         self.id = id
+        self.oauthType = oauthType
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -620,8 +615,7 @@ struct ProfileAttributes: CustomDebugStringConvertible {
     var debugDescription: String {
        """
        id: \(self.id)
-       type: \(self.type)
-       oauthToken: \(self.oauthToken)
+       oauthType: \(self.oauthType)
        firstName: \(self.firstName ?? "Johnny")
        lastName: \(self.lastName ?? "Appleseed")
        email: \(self.email ?? "johnny.appleseed@email.com")

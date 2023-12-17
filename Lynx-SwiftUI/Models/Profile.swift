@@ -11,8 +11,7 @@ import SwiftData
 @Model
 final class Profile {
     private(set) var id: String
-    private(set) var type: String
-    private(set) var oauthToken: String
+    private(set) var oauthType: String
     private(set) var firstName: String
     private(set) var lastName: String
     var name: String { firstName + " " + lastName }
@@ -22,16 +21,14 @@ final class Profile {
     var notificationsAllowed: Bool?
     
     init(
-        type: String,
-        oauthToken: String,
         id: String,
+        oauthType: String,
         firstName: String,
         lastName: String,
         email: String,
         profilePictureURL: URL? = nil
     ) {
-        self.type = type
-        self.oauthToken = oauthToken
+        self.oauthType = oauthType
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
@@ -41,9 +38,8 @@ final class Profile {
     
     convenience init(profileAttributes: ProfileAttributes) {
         self.init(
-            type: profileAttributes.type,
-            oauthToken: profileAttributes.oauthToken,
             id: profileAttributes.id,
+            oauthType: profileAttributes.oauthType,
             firstName: profileAttributes.firstName!,
             lastName: profileAttributes.lastName!,
             email: profileAttributes.email!,
@@ -68,9 +64,8 @@ final class Profile {
     
 #if DEBUG
     static let debugProfile = Profile(
-        type: SignInType.apple.rawValue,
-        oauthToken: "123456890",
         id: "123456890",
+        oauthType: SignInType.apple.rawValue,
         firstName: "Johnny",
         lastName: "Appleseed",
         email: "johnnyappleseed@apple.com",

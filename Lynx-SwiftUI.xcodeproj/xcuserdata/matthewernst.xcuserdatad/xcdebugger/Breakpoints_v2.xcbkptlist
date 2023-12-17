@@ -14,8 +14,8 @@
             filePath = "Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
             landmarkName = "onCompletion(_:showErrorSigningIn:completion:)"
             landmarkType = "7">
             <Locations>
@@ -64,53 +64,35 @@
                   endingLineNumber = "23"
                   offsetFromSymbolStart = "452">
                </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A27DD834-4CF6-4017-8ECE-8678E341AF50"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "RenewTokenErrors"
-            landmarkType = "13">
-            <Locations>
                <Location
-                  uuid = "A27DD834-4CF6-4017-8ECE-8678E341AF50 - 6d257803a2188994"
+                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - efc926e792b300c4"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.UserManager.renewToken(completion: (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
                   moduleName = "Lynx-SwiftUI"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/UserManager.swift"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "40"
-                  endingLineNumber = "40"
-                  offsetFromSymbolStart = "140">
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "340">
                </Location>
                <Location
-                  uuid = "A27DD834-4CF6-4017-8ECE-8678E341AF50 - 6d257803a2188956"
+                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - cb3c036ab788cbc9"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.UserManager.renewToken(completion: (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
                   moduleName = "Lynx-SwiftUI"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/UserManager.swift"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "38"
-                  endingLineNumber = "38"
-                  offsetFromSymbolStart = "140">
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "1252">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -118,177 +100,109 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD0AFB68-BC55-46D5-A047-287BF71FDA01"
+            uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
+            filePath = "Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "11"
-            endingLineNumber = "11"
-            landmarkName = "UserManager"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2600BB38-F388-4E08-8616-DB96D07D274B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManagementInterceptor.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "interceptAsync(chain:request:response:completion:)"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "getProfileInformation(completion:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "2600BB38-F388-4E08-8616-DB96D07D274B - b416efb31550fd5f"
+                  uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2 - 47e35c2f2c61d42e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.UserManagementInterceptor.interceptAsync&lt;&#x3c4;_0_0 where &#x3c4;_0_0: ApolloAPI.GraphQLOperation&gt;(chain: Apollo.RequestChain, request: Apollo.HTTPRequest&lt;&#x3c4;_0_0&gt;, response: Swift.Optional&lt;Apollo.HTTPResponse&lt;&#x3c4;_0_0&gt;&gt;, completion: (Swift.Result&lt;Apollo.GraphQLResult&lt;&#x3c4;_0_0.Data&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Lynx_SwiftUI.ApolloGeneratedGraphQL.GetProfileInformationQuery.Data&gt;, Swift.Error&gt;) -&gt; () in static Lynx_SwiftUI.ApolloLynxClient.getProfileInformation(completion: (Swift.Result&lt;Lynx_SwiftUI.ProfileAttributes, Swift.Error&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "Lynx-SwiftUI"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/UserManagementInterceptor.swift"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "764">
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "260">
                </Location>
                <Location
-                  uuid = "2600BB38-F388-4E08-8616-DB96D07D274B - 9f54a85b77549fe7"
+                  uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2 - 47e35c2f2c61d42e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.UserManagementInterceptor.interceptAsync&lt;&#x3c4;_0_0 where &#x3c4;_0_0: ApolloAPI.GraphQLOperation&gt;(chain: Apollo.RequestChain, request: Apollo.HTTPRequest&lt;&#x3c4;_0_0&gt;, response: Swift.Optional&lt;Apollo.HTTPResponse&lt;&#x3c4;_0_0&gt;&gt;, completion: (Swift.Result&lt;Apollo.GraphQLResult&lt;&#x3c4;_0_0.Data&gt;, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Lynx_SwiftUI.ApolloGeneratedGraphQL.GetProfileInformationQuery.Data&gt;, Swift.Error&gt;) -&gt; () in static Lynx_SwiftUI.ApolloLynxClient.getProfileInformation(completion: (Swift.Result&lt;Lynx_SwiftUI.ProfileAttributes, Swift.Error&gt;) -&gt; ()) -&gt; ()"
                   moduleName = "Lynx-SwiftUI"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/UserManagementInterceptor.swift"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "140">
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "284">
+               </Location>
+               <Location
+                  uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2 - 47e35c2f2c61d42e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Lynx_SwiftUI.ApolloGeneratedGraphQL.GetProfileInformationQuery.Data&gt;, Swift.Error&gt;) -&gt; () in static Lynx_SwiftUI.ApolloLynxClient.getProfileInformation(completion: (Swift.Result&lt;Lynx_SwiftUI.ProfileAttributes, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "564">
+               </Location>
+               <Location
+                  uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2 - 47e35c2f2c61d42e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Lynx_SwiftUI.ApolloGeneratedGraphQL.GetProfileInformationQuery.Data&gt;, Swift.Error&gt;) -&gt; () in static Lynx_SwiftUI.ApolloLynxClient.getProfileInformation(completion: (Swift.Result&lt;Lynx_SwiftUI.ProfileAttributes, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "736">
+               </Location>
+               <Location
+                  uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2 - 47e35c2f2c61d42e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Lynx_SwiftUI.ApolloGeneratedGraphQL.GetProfileInformationQuery.Data&gt;, Swift.Error&gt;) -&gt; () in static Lynx_SwiftUI.ApolloLynxClient.getProfileInformation(completion: (Swift.Result&lt;Lynx_SwiftUI.ProfileAttributes, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "772">
+               </Location>
+               <Location
+                  uuid = "5B970596-BAD0-4EC5-9373-14BDC8ADE7B2 - 47e35c2f2c61d42e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;Apollo.GraphQLResult&lt;Lynx_SwiftUI.ApolloGeneratedGraphQL.GetProfileInformationQuery.Data&gt;, Swift.Error&gt;) -&gt; () in static Lynx_SwiftUI.ApolloLynxClient.getProfileInformation(completion: (Swift.Result&lt;Lynx_SwiftUI.ProfileAttributes, Swift.Error&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/ApolloLynxClient.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "98"
+                  endingLineNumber = "98"
+                  offsetFromSymbolStart = "5492">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7537D5BA-AF35-4938-9AF8-556E04183A0F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManagementInterceptor.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "interceptAsync(chain:request:response:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "79E6B731-4769-4B23-AFA1-19F9199172F9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManagementInterceptor.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "interceptAsync(chain:request:response:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "46747202-F882-43FF-BC22-84A8A2D476C0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "token"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F5734F27-1387-408A-85D2-6099E2A3FA37"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "token"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B54DB0D9-CDED-4D5F-B9A6-DE1D67FE5CDA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "token"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0429197F-DC1D-4FBC-A32D-4880EAAF4925"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManagementInterceptor.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "interceptAsync(chain:request:response:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "725C90F0-6143-4BFA-8242-1E501AACAC67"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "renewToken(completion:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

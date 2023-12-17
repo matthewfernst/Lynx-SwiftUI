@@ -8,22 +8,14 @@
 import Foundation
 
 struct UserDefaultsKeys {
-    // Profile
-    static let appleOrGoogleId = "appleOrGoogleId"
-    
     // Apollo Authorization Token
     static let authorizationToken = "authorizationToken"
     static let authorizationTokenExpirationDate = "authorizationTokenExpirationDate"
-    static let oauthToken = "oauthToken"
-    static let loginType = "loginType"
     
     // All Keys
     static let allKeys: [String] = [
-        appleOrGoogleId,
         authorizationToken,
         authorizationTokenExpirationDate,
-        oauthToken,
-        loginType
     ]
     
     static func removeAllObjectsForAllKeys() {

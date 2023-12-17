@@ -46,6 +46,7 @@ class EditProfileHandler {
                     // Poll profile pic until it's different or time limit is up
                     if waitForPicturePropogate {
                         self.pollProfilePictureChange(
+                            profileManager: profileManager,
                             newProfilePictureData: profilePictureData!,
                             newProfilePictureURL: newURL,
                             completion: completion
@@ -162,11 +163,11 @@ class EditProfileHandler {
         completion: @escaping ((Result<Void,
                                 Error>) -> Void)
     ) {
-        ApolloLynxClient.deleteAccount(
-            token: profileManager.profile!.oauthToken,
-            type: .init(rawValue: profileManager.profile!.type)!,
-            completion: completion
-        )
+//        ApolloLynxClient.deleteAccount(
+//            token: profileManager.profile!.oauthToken,
+//            type: .init(rawValue: profileManager.profile!.oauthType)!,
+//            completion: completion
+//        )
     }
 }
 

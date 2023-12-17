@@ -10,7 +10,7 @@ import SwiftUI
 import GoogleSignIn
 
 class GoogleSignInHandler {
-    func signIn(showErrorSigningIn: Binding<Bool>, completion: @escaping (ProfileAttributes) -> Void) {
+    func signIn(showErrorSigningIn: Binding<Bool>, completion: @escaping (ProfileAttributes, String) -> Void) {
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first,
@@ -23,7 +23,7 @@ class GoogleSignInHandler {
                 
                 guard let googleId = signInResult?.user.userID,
                       let profile = signInResult?.user.profile,
-                      let token = signInResult?.user.idToken?.tokenString else {
+                      let oauthToken = signInResult?.user.idToken?.tokenString else {
                     showErrorSigningIn.wrappedValue = true
                     return
                 }
@@ -39,14 +39,14 @@ class GoogleSignInHandler {
                 
                 completion(
                     ProfileAttributes(
-                        type: SignInType.google.rawValue,
-                        oauthToken: token,
                         id: googleId,
+                        oauthType: SignInType.google.rawValue,
                         email: email,
                         firstName: firstName,
                         lastName: lastName,
                         profilePictureURL: pictureURL
-                    )
+                    ),
+                    oauthToken
                 )
             }
         }

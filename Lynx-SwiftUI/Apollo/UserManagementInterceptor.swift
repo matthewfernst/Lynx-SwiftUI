@@ -32,7 +32,7 @@ class UserManagementInterceptor: ApolloInterceptor {
     
     func interceptAsync<Operation: GraphQLOperation>(
         chain: RequestChain,
-        request: HTTPRequest<Operation>,
+        request: HTTPRequest<Operation>, 
         response: HTTPResponse<Operation>?,
         completion: @escaping (Result<GraphQLResult<Operation.Data>, Error>) -> Void
     ) {
