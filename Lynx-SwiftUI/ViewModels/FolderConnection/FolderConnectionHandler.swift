@@ -230,7 +230,8 @@ import OSLog
                     completion(nonUploadedSlopeFiles)
                 }
                 
-            case .failure(_):
+            case .failure(let error):
+                Logger.folderConnectionHandler.error("Error in trying to find non uploaded slope files: \(error)")
                 completion(nil)
             }
         }

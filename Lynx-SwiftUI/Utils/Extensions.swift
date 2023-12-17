@@ -29,6 +29,8 @@ extension Logger {
     
     static let invitationKeySheet = Logger(subsystem: subsystem, category: "InvitationKeySheet")
     
+    static let keychainManager = Logger(subsystem: subsystem, category: "KeychainManager")
+    
     static let logbook = Logger(subsystem: subsystem, category: "LogbookView")
     
     static let loginHandler = Logger(subsystem: subsystem, category: "LoginHandler")
@@ -36,6 +38,8 @@ extension Logger {
     static let notifications = Logger(subsystem: subsystem, category: "Notifications")
     
     static let profileManager = Logger(subsystem: subsystem, category: "ProfileManager")
+    
+    static let userManager = Logger(subsystem: subsystem, category: "UserManager")
 }
 
 extension String {

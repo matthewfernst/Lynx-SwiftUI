@@ -7,26 +7,25 @@
 
 import SwiftUI
 import GoogleSignIn
+import OSLog
 
 class UserManager {
     static let shared = UserManager()
-    
-    private init() {}
-    
+        
     var token: ExpirableAuthorizationToken? {
         get {
-            guard let savedAuthorizationToken = UserDefaults.standard.string(forKey: UserDefaultsKeys.authorizationToken),
-                  let savedExpireDate = UserDefaults.standard.object(forKey: UserDefaultsKeys.authorizationTokenExpirationDate) as? Date else {
-                return nil
+            do {
+                return try KeychainManager.get() // will return nil if no token is available
+            } catch {
+                fatalError("KeychainManager failed to handle getting the ExpirableToken. Please check the logs.")
             }
-            return ExpirableAuthorizationToken(
-                authorizationToken: savedAuthorizationToken,
-                expirationDate: savedExpireDate
-            )
         }
-        set {
-            UserDefaults.standard.set(newValue?.authorizationToken, forKey: UserDefaultsKeys.authorizationToken)
-            UserDefaults.standard.set(newValue?.expirationDate, forKey: UserDefaultsKeys.authorizationTokenExpirationDate)
+        set { // if we do UserManager.shared.token = nil -> we want to delete the token
+            do {
+                try (newValue == nil ? KeychainManager.delete() : KeychainManager.save(token: newValue!))
+            } catch {
+                fatalError("KeychainManager failed to handle setting the ExpirableToken. Please check the logs.")
+            }
         }
     }
     
@@ -64,7 +63,7 @@ class UserManager {
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                 // Check if `user` exists; otherwise, do something with `error`
                 if error != nil {
-                    print("Deleted profile as Google restore failed")
+                    Logger.userManager.error("Restore of previous Google Sign in failed with: \(error)")
                     return
                 }
                 if let oauthToken = user?.idToken?.tokenString {
@@ -72,16 +71,16 @@ class UserManager {
                 }
             }
         } else if profile.oauthType == OAuthType.apple.rawValue {
+            // TODO: Setup
             handleLoginOrCreateUser(oauthToken: "1234")
-            
         } else {
-            fatalError("Could not get OAuth Token")
+            fatalError("OAuth type is not supported. Got: \(profile.oauthType)")
         }
     }
 }
 
 
-struct ExpirableAuthorizationToken {
+struct ExpirableAuthorizationToken: Codable {
     let authorizationToken: String
     let expirationDate: Date
     
