@@ -65,7 +65,7 @@ final class Profile {
 #if DEBUG
     static let debugProfile = Profile(
         id: "123456890",
-        oauthType: SignInType.apple.rawValue,
+        oauthType: OAuthType.apple.rawValue,
         firstName: "Johnny",
         lastName: "Appleseed",
         email: "johnnyappleseed@apple.com",

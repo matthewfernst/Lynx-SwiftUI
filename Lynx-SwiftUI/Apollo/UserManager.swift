@@ -35,7 +35,7 @@ class UserManager {
             case noOauthTokenSaved
         }
         
-        guard let profile = ProfileManager.shared.profile else { // TODO: Once backend hooked up, probably need a static func to get the profile?
+        guard let profile = ProfileManager.shared.profile else {
             return completion(.failure(RenewTokenErrors.noProfileSaved))
         }
         
@@ -51,6 +51,7 @@ class UserManager {
             ) { result in
                 switch result {
                 case .success:
+                    Logger.userManager.info("Successfully re-authorized authorization token.")
                     completion(.success((UserManager.shared.token!.authorizationToken)))
                     
                 case .failure(let error):
@@ -59,11 +60,16 @@ class UserManager {
             }
         }
         
+        func cleanUpFailedReAuth() {
+            ProfileManager.shared.deleteProfile()
+        }
+        
         if profile.oauthType == OAuthType.google.rawValue {
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                 // Check if `user` exists; otherwise, do something with `error`
                 if error != nil {
                     Logger.userManager.error("Restore of previous Google Sign in failed with: \(error)")
+                    cleanUpFailedReAuth()
                     return
                 }
                 if let oauthToken = user?.idToken?.tokenString {
@@ -74,6 +80,7 @@ class UserManager {
             // TODO: Setup
             handleLoginOrCreateUser(oauthToken: "1234")
         } else {
+            cleanUpFailedReAuth()
             fatalError("OAuth type is not supported. Got: \(profile.oauthType)")
         }
     }

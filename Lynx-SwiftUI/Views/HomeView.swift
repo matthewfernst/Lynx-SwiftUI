@@ -15,8 +15,7 @@ struct HomeView: View {
     
     @State private var folderConnectionHandler = FolderConnectionHandler()
     @State private var logbookStats = LogbookStats(measurementSystem: .imperial)
-    
-    
+        
     var body: some View {
         TabView {
             LogbookView(

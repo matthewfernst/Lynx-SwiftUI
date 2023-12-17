@@ -23,6 +23,9 @@ struct Lynx_SwiftUIApp: App {
                     LoginView()
                 }
             }
+            .onOpenURL { url in
+                GIDSignIn.sharedInstance.handle(url)
+            }
         }
         .modelContainer(for: Profile.self) { result in
             switch result {
@@ -39,6 +42,7 @@ struct Lynx_SwiftUIApp: App {
                 profileManager.saveProfile()
             }
         }
+        
         
     }
 }

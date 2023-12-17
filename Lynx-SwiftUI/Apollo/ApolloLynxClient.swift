@@ -221,11 +221,9 @@ class ApolloLynxClient {
                     return
                 }
                 
-                let expirationDate = Date(timeIntervalSince1970: expiryInMilliseconds / 1000)
-                
                 UserManager.shared.token = ExpirableAuthorizationToken(
                     authorizationToken: authorizationToken,
-                    expirationDate: expirationDate
+                    expirationDate: Date(timeIntervalSince1970: expiryInMilliseconds / 1000)
                 )
                 
                 completion(.success((data.validatedInvite)))

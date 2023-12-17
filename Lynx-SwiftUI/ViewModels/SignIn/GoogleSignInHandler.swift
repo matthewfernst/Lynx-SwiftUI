@@ -40,7 +40,7 @@ class GoogleSignInHandler {
                 completion(
                     ProfileAttributes(
                         id: googleId,
-                        oauthType: SignInType.google.rawValue,
+                        oauthType: OAuthType.google.rawValue,
                         email: email,
                         firstName: firstName,
                         lastName: lastName,

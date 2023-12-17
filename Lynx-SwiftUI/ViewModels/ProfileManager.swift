@@ -71,6 +71,7 @@ import OSLog
             modelContext?.delete(profile)
             Logger.profileManager.info("Successfully deleted profile.")
         }
+        profile = nil
     }
     
     func saveProfile() {

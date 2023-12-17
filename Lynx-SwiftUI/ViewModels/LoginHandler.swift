@@ -7,6 +7,7 @@
 
 import SwiftUI
 import OSLog
+import GoogleSignIn
 
 enum ProfileError: Error {
     case profileCreationFailed
@@ -102,14 +103,11 @@ class LoginHandler {
     
     static func signOut(profileManager: ProfileManager) {
         UserManager.shared.token = nil
-        UserDefaultsKeys.removeAllObjectsForAllKeys()
+        if profileManager.profile?.oauthType == OAuthType.google.rawValue {
+            GIDSignIn.sharedInstance.signOut()
+        }
         profileManager.deleteProfile()
         ApolloLynxClient.clearCache()
         BookmarkManager.shared.removeAllBookmarks()
     }
-}
-
-enum SignInType: String, CaseIterable {
-    case google = "GOOGLE"
-    case apple = "APPLE"
 }
