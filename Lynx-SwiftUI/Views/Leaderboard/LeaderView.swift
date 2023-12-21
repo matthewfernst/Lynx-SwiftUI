@@ -8,18 +8,28 @@
 import SwiftUI
 /// To be honest, no idea why this looks wack here, but it works :)
 struct LeaderView: View {
+    @Environment(ProfileManager.self) private var profileManager
     @Environment(\.colorScheme) private var colorScheme
     
+    let category: LeaderboardCategory
     let attributes: LeaderAttributes
     let rank: Int?
-    
+    private var measurementSystem: MeasurementSystem {
+        profileManager.profile?.measurementSystem ?? .imperial
+    }
     var body: some View {
         HStack {
             profilePicture
             VStack(spacing: Constants.Font.spacing) {
                 Text(attributes.fullName)
                     .font(.system(size: Constants.Font.nameSize, weight: .medium))
-                Text(attributes.stat)
+                Text(
+                    LeaderAttributes.formattedStatLabel(
+                        attributes.stat,
+                        forCategory: category,
+                        withMeasurementSystem: measurementSystem
+                    )
+                )
             }
             .frame(maxWidth: .infinity)
         }
@@ -92,9 +102,12 @@ extension Color {
 
 #Preview {
     LeaderView(
-        attributes: .init(fullName: "Sully Sullivian",
-                          profilePictureURL: ProfileManager.Constants.defaultProfilePictureURL,
-                          stat: "123.45k FT"),
+        category: .distance(),
+        attributes: .init(
+            fullName: "Sully Sullivian",
+            profilePictureURL: ProfileManager.Constants.defaultProfilePictureURL,
+            stat: 123_450
+        ),
         rank: 1
     )
 }

@@ -51,13 +51,16 @@ class KeychainManager {
         
         guard status == errSecSuccess else {
             if status == errSecItemNotFound {
+                Logger.keychainManager.error("Error in getting ExpirableToken: Item Not Found")
                 throw KeychainError.itemNotFound
             } else {
+                Logger.keychainManager.error("Error in getting ExpirableToken OSStatus: \(status)")
                 throw KeychainError.unknown(status)
             }
         }
         
         guard let tokenData = result as? Data else {
+            Logger.keychainManager.error("Error in getting ExpirableToken: Data conversion error")
             throw KeychainError.dataConversionError
         }
         
@@ -65,6 +68,7 @@ class KeychainManager {
             let token = try JSONDecoder().decode(ExpirableAuthorizationToken.self, from: tokenData)
             return token
         } catch {
+            Logger.keychainManager.error("Error in getting ExpirableToken: Data conversion error")
             throw KeychainError.dataConversionError
         }
     }

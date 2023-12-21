@@ -8,58 +8,96 @@
 import SwiftUI
 
 struct LeaderboardView: View {
-    var logbookStats: LogbookStats
     let debugURL = ProfileManager.Constants.defaultProfilePictureURL
+    
+    @State private var timeframe: Timeframe = .sevenDays
     
     var body: some View {
         NavigationStack {
-            Form {
+            ScrollView {
+                Picker("Timeframe", selection: $timeframe) {
+                    Text("7 Days").tag(Timeframe.sevenDays)
+                    Text("30 Days").tag(Timeframe.thirtyDays)
+                    Text("All time").tag(Timeframe.alltime)
+                }
+                .pickerStyle(.segmented)
                 TopLeadersForCategoryView(
-                    topLeaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: "50.4k FT")
+                    leaders: [
+                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_600),
+                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_713),
+                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_421)
                     ],
-                    headerLabelText: "Distance",
-                    headerSystemImage: "arrow.right"
+                    category: .distance()
+                )
+                
+                
+                TopLeadersForCategoryView(
+                    leaders: [
+                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 5),
+                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 4),
+                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 2)
+                    ],
+                    category: .runCount()
                 )
                 
                 TopLeadersForCategoryView(
-                    topLeaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: "50.4k FT")
+                    leaders: [
+                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 33),
+                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 12),
+                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 5)
                     ],
-                    headerLabelText: "Run Count",
-                    headerSystemImage: "figure.skiing.downhill"
+                    category: .topSpeed()
                 )
                 
                 TopLeadersForCategoryView(
-                    topLeaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: "50.4k FT")
+                    leaders: [
+                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 30_120),
+                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 12_123),
+                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 4_532)
                     ],
-                    headerLabelText: "Top Speed",
-                    headerSystemImage: "flame"
+                    category: .verticalDistance()
                 )
-                
-                TopLeadersForCategoryView(
-                    topLeaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: "50.4k FT")
-                    ],
-                    headerLabelText: "Vertical Distance",
-                    headerSystemImage: "arrow.down"
-                )
-                
             }
+            .padding()
             .navigationTitle("Leaderboard")
+            .scrollContentBackground(.hidden)
         }
     }
 }
 
+private enum Timeframe {
+    case sevenDays, thirtyDays, alltime
+}
+
+enum LeaderboardCategory {
+    case distance(headerLabelText: String = "Distance", headerSystemImage: String = "arrow.right")
+    case runCount(headerLabelText: String = "Run Count", headerSystemImage: String = "figure.skiing.downhill")
+    case topSpeed(headerLabelText: String = "Top Speed", headerSystemImage: String = "flame")
+    case verticalDistance(headerLabelText: String = "Vertical Distance", headerSystemImage: String = "arrow.down")
+    
+    var headerLabelText: String {
+        switch self {
+        case .distance(let labelText, _),
+                .runCount(let labelText, _),
+                .topSpeed(let labelText, _),
+                .verticalDistance(let labelText, _):
+            return labelText
+        }
+    }
+    
+    var headerSystemImage: String {
+        switch self {
+        case .distance(_, let systemImage),
+                .runCount(_, let systemImage),
+                .topSpeed(_, let systemImage),
+                .verticalDistance(_, let systemImage):
+            return systemImage
+        }
+    }
+}
+
+
+
 #Preview {
-    LeaderboardView(logbookStats: LogbookStats(measurementSystem: .imperial))
+    LeaderboardView()
 }

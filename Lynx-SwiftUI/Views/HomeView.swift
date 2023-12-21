@@ -26,7 +26,7 @@ struct HomeView: View {
                 Label("Logbook", systemImage: "book.pages")
             }
             
-            LeaderboardView(logbookStats: logbookStats)
+            LeaderboardView()
                 .tabItem {
                     Label("Leaderboard", systemImage: "trophy")
                 }

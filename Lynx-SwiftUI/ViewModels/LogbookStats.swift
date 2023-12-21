@@ -8,7 +8,7 @@ import Foundation
 import SwiftUI
 
 @Observable final class LogbookStats {
-    private var measurementSystem: MeasurementSystem
+    private(set) var measurementSystem: MeasurementSystem
     var logbooks: Logbooks = []
     
     init(measurementSystem: MeasurementSystem) {
@@ -16,24 +16,6 @@ import SwiftUI
     }
     
     // MARK: - Lifetime Stats
-    var feetOrMeters: String {
-        switch measurementSystem {
-        case .imperial:
-            return "FT"
-        case .metric:
-            return "M"
-        }
-    }
-    
-    var milesPerHourOrKilometersPerHour: String {
-        switch measurementSystem {
-        case .imperial:
-            return "MPH"
-        case .metric:
-            return "KPH"
-        }
-    }
-    
     func getDistanceFormatted(distance: Double) -> String {
         if distance >= 1000 {
             return String(format: "%.1fk", Double(distance) / 1000)
@@ -122,7 +104,7 @@ import SwiftUI
     }
     
     func logbookTopSpeed(at index: Int) -> String {
-        return String(format: "%.1f\(milesPerHourOrKilometersPerHour)", logbook(at: index)?.topSpeed ?? 0.0)
+        return String(format: "%.1f\(measurementSystem.milesOrKilometersPerHour)", logbook(at: index)?.topSpeed ?? 0.0)
     }
     
     func getConfiguredLogbookData(at index: Int) -> ConfiguredLogbookData? {
@@ -175,10 +157,10 @@ import SwiftUI
         }
         
         if averageVerticalFeet >= 1000 {
-            return String(format: "%.1fk \(feetOrMeters)", averageVerticalFeet / 1000)
+            return String(format: "%.1fk \(measurementSystem.feetOrMeters)", averageVerticalFeet / 1000)
         }
         
-        return String(format: "%.0f \(feetOrMeters)", averageVerticalFeet)
+        return String(format: "%.0f \(measurementSystem.feetOrMeters)", averageVerticalFeet)
     }
     
     private func calculateAverageDistance() -> String {
@@ -198,15 +180,15 @@ import SwiftUI
             return $0 + $1/Double(logbooks.count)
         }
         
-        return String(format: "%.1f \(milesPerHourOrKilometersPerHour)", averageSpeed)
+        return String(format: "%.1f \(measurementSystem.milesOrKilometersPerHour)", averageSpeed)
     }
     
     private func calculateBestTopSpeed() -> String {
-        return String(format: "%.1f \(milesPerHourOrKilometersPerHour)", logbooks.map { $0.topSpeed }.max() ?? 0.0)
+        return String(format: "%.1f \(measurementSystem.milesOrKilometersPerHour)", logbooks.map { $0.topSpeed }.max() ?? 0.0)
     }
     
     private func calculateBestTallestRun() -> String {
-        return String(format: "%.1f \(feetOrMeters)", logbooks.map { $0.verticalDistance }.max() ?? 0.0)
+        return String(format: "%.1f \(measurementSystem.feetOrMeters)", logbooks.map { $0.verticalDistance }.max() ?? 0.0)
     }
     
     private func calculateBestLongestRun() -> String {

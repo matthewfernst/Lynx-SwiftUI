@@ -98,9 +98,6 @@ struct LoginView: View {
         }  onCompletion: { result in
             print("APPLE SIGN IN")
             appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes, oauthToken in
-#if DEBUG
-                goToHome = true
-#endif
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
                     withProfileAttributes: attributes,
@@ -109,7 +106,6 @@ struct LoginView: View {
                     showInvitationSheet: $showInvitationSheet,
                     showSignInError: $showSignInError
                 )
-                
             }
         }
         .signInWithAppleButtonStyle(.white)

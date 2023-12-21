@@ -8,31 +8,35 @@
 import SwiftUI
 
 struct AllLeadersForCategoryView: View {
-    let category: String
+    let category: LeaderboardCategory
     let leaders: [LeaderAttributes]
     
     var body: some View {
         List {
             ForEach(leaders.indices, id: \.self) { index in
                 let rank = index < 3 ? index + 1 : nil
-                LeaderView(attributes: leaders[index], rank: rank)
+                LeaderView(
+                    category: category,
+                    attributes: leaders[index],
+                    rank: rank
+                )
             }
         }
-        .navigationTitle(category)
+        .navigationTitle(category.headerLabelText)
     }
 }
 
 #Preview {
     let debugURL = ProfileManager.Constants.defaultProfilePictureURL
     return AllLeadersForCategoryView(
-        category: "Distance",
+        category: .distance(),
         leaders: [
-            .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: "240.6k FT"),
-            .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: "154.7k FT"),
-            .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: "50.4k FT"),
-            .init(fullName: "Sully Sullivian", profilePictureURL: debugURL, stat: "5.4k FT"),
-            .init(fullName: "Matthew Ernst", profilePictureURL: debugURL, stat: "4.2k FT"),
-            .init(fullName: "Christine Perich", profilePictureURL: debugURL, stat: "0k FT"),
+            .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_609),
+            .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_712),
+            .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_409),
+            .init(fullName: "Sully Sullivian", profilePictureURL: debugURL, stat: 5_431),
+            .init(fullName: "Matthew Ernst", profilePictureURL: debugURL, stat: 4_212),
+            .init(fullName: "Christine Perich", profilePictureURL: debugURL, stat: 0),
         ]
     )
 }

@@ -63,7 +63,6 @@ enum LeaderLogbooks {
 }
 
 
-
 class ApolloLynxClient {
     private static let graphQLEndpoint = "https://production.lynx-api.com/graphql"
     
@@ -619,6 +618,27 @@ struct ProfileAttributes: CustomDebugStringConvertible {
        email: \(self.email ?? "johnny.appleseed@email.com")
        profilePictureURL: \(String(describing: self.profilePictureURL))
        """
+    }
+}
+
+// MARK: - Extensions of ApolloGraphQL 
+extension MeasurementSystem {
+    var feetOrMeters: String {
+        switch self {
+        case .imperial:
+            return "FT"
+        case .metric:
+            return "M"
+        }
+    }
+    
+    var milesOrKilometersPerHour: String {
+        switch self {
+        case .imperial:
+            return "MPH"
+        case .metric:
+            return "KPH"
+        }
     }
 }
 

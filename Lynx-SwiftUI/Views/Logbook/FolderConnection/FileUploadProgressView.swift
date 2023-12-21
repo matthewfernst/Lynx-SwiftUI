@@ -75,7 +75,6 @@ struct FileUploadProgressView: View {
             Circle()
                 .trim(from: 0.0, to: folderConnectionHandler.uploadProgress)
                 .stroke(style: StrokeStyle(lineWidth: Constants.CircularProgress.lineWidth, lineCap: .round, lineJoin: .round))
-                .foregroundStyle(Color.lynx)
                 .rotationEffect(.degrees(Constants.CircularProgress.fontCircleRotationDegree))
                 .opacity(showIfNotThumbsUp)
                 .animation(.easeInOut, value: folderConnectionHandler.uploadProgress)
@@ -85,7 +84,6 @@ struct FileUploadProgressView: View {
     private var thumbsUp: some View {
         Image(systemName: "hand.thumbsup.fill")
             .resizable()
-            .foregroundStyle(.lynx)
             .frame(
                 width: Constants.ThumbsUp.widthHeight,
                 height: Constants.ThumbsUp.widthHeight
