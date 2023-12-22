@@ -19,7 +19,6 @@
 		653404912B24E51D00614C59 /* TopLeadersForCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404902B24E51D00614C59 /* TopLeadersForCategoryView.swift */; };
 		653404932B24E96800614C59 /* LeaderAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404922B24E96800614C59 /* LeaderAttributes.swift */; };
 		653404952B257E7700614C59 /* AllLeadersForCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404942B257E7700614C59 /* AllLeadersForCategoryView.swift */; };
-		653404972B26300600614C59 /* LeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404962B26300600614C59 /* LeaderView.swift */; };
 		6534049A2B26838D00614C59 /* FolderConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404992B26838D00614C59 /* FolderConnectionHandler.swift */; };
 		653404A22B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */; };
 		653404A52B26CFC100614C59 /* FileUploadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653404A42B26CFC100614C59 /* FileUploadProgressView.swift */; };
@@ -119,7 +118,6 @@
 		653404902B24E51D00614C59 /* TopLeadersForCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLeadersForCategoryView.swift; sourceTree = "<group>"; };
 		653404922B24E96800614C59 /* LeaderAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderAttributes.swift; sourceTree = "<group>"; };
 		653404942B257E7700614C59 /* AllLeadersForCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLeadersForCategoryView.swift; sourceTree = "<group>"; };
-		653404962B26300600614C59 /* LeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderView.swift; sourceTree = "<group>"; };
 		653404992B26838D00614C59 /* FolderConnectionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderConnectionHandler.swift; sourceTree = "<group>"; };
 		653404A12B26CD1900614C59 /* FolderConnectionHandler+ErrorAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderConnectionHandler+ErrorAlerts.swift"; sourceTree = "<group>"; };
 		653404A42B26CFC100614C59 /* FileUploadProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadProgressView.swift; sourceTree = "<group>"; };
@@ -352,7 +350,6 @@
 				65B35EA42B1193C1002E99E4 /* LeaderboardView.swift */,
 				653404902B24E51D00614C59 /* TopLeadersForCategoryView.swift */,
 				653404942B257E7700614C59 /* AllLeadersForCategoryView.swift */,
-				653404962B26300600614C59 /* LeaderView.swift */,
 			);
 			path = Leaderboard;
 			sourceTree = "<group>";
@@ -694,7 +691,6 @@
 				65B35F2F2B11BF1D002E99E4 /* NetworkManager.swift in Sources */,
 				653404AB2B27F2D600614C59 /* NotificationsHandler.swift in Sources */,
 				6529A83E2B1AE5F500FF455E /* EditProfileHandler.swift in Sources */,
-				653404972B26300600614C59 /* LeaderView.swift in Sources */,
 				65A518CF2B2D38BF00A06014 /* PreviewSampleProfile.swift in Sources */,
 				65B39A652B13E61100948C9D /* ProfileManager.swift in Sources */,
 				65B35F712B11C129002E99E4 /* GetUploadedLogsQuery.graphql.swift in Sources */,

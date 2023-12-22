@@ -47,13 +47,6 @@ struct TopLeadersForCategoryView: View {
             )
         ) {
             chartOfTopLeaders
-            if let rangeFormattedLabel {
-                HStack {
-                    Text("\(rangeFormattedLabel.0) - \(rangeFormattedLabel.1)")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
-                }
-            }
             showAllLeadersNavigationLink
         }
         .navigationDestination(isPresented: $readyToNavigate) {
@@ -68,19 +61,40 @@ struct TopLeadersForCategoryView: View {
     
     private var chartOfTopLeaders: some View {
         Chart {
-            if let range {
-                RectangleMark(
-                    xStart: .value("Start Stat", range.0),
-                    xEnd: .value("End Stat", range.1)
-                )
-                .foregroundStyle(.gray.opacity(Constants.Chart.brushOpacity))
-            }
             ForEach(0..<3, id: \.self) { rank in
                 BarMark(
                     x: .value("Stat", leaders[rank].stat),
                     y: .value("Name", leaders[rank].fullName)
                 )
                 .foregroundStyle([Color.blue, .green, .orange][rank])
+            }
+            
+            if let range, let rangeFormattedLabel {
+                RectangleMark(
+                    xStart: .value("Start Stat", range.0),
+                    xEnd: .value("End Stat", range.1)
+                )
+                .foregroundStyle(Color.gray.opacity(Constants.Chart.brushOpacity))
+                .offset(yStart: Constants.Chart.Popover.yOffset)
+                .zIndex(-1)
+                .annotation(
+                    position: .top, spacing: Constants.Chart.Popover.spacing,
+                    overflowResolution: .init(
+                        x: .fit(to: .chart),
+                        y: .disabled
+                    )
+                ) {
+                    RoundedRectangle(cornerRadius: Constants.Chart.Popover.cornerRadius)
+                        .fill(.windowBackground)
+                        .overlay(
+                            Text("\(rangeFormattedLabel.0) - \(rangeFormattedLabel.1)")
+                                .font(.caption)
+                        )
+                        .frame(
+                            width: category == LeaderboardCategory.runCount() ? Constants.Chart.Popover.runCountWidth : Constants.Chart.Popover.width,
+                            height: Constants.Chart.Popover.height
+                        )
+                }
             }
         }
         .chartXAxis {
@@ -148,8 +162,18 @@ struct TopLeadersForCategoryView: View {
     private struct Constants {
         struct Chart {
             static let height: CGFloat = 180
-            static let brushOpacity: CGFloat = 0.2
+            static let brushOpacity: CGFloat = 0.3
+            
+            struct Popover {
+                static let cornerRadius: CGFloat = 15
+                static let spacing: CGFloat = 4
+                static let yOffset: CGFloat = -4
+                static let height: CGFloat = 35
+                static let width: CGFloat = 130
+                static let runCountWidth: CGFloat = 40
+            }
         }
+        
         struct Font {
             static let nameSize: CGFloat = 20
             static let spacing: CGFloat = 5

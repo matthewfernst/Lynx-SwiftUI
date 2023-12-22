@@ -69,7 +69,7 @@ private enum Timeframe {
     case sevenDays, thirtyDays, alltime
 }
 
-enum LeaderboardCategory {
+enum LeaderboardCategory: Equatable {
     case distance(headerLabelText: String = "Distance", headerSystemImage: String = "arrow.right")
     case runCount(headerLabelText: String = "Run Count", headerSystemImage: String = "figure.skiing.downhill")
     case topSpeed(headerLabelText: String = "Top Speed", headerSystemImage: String = "flame")
