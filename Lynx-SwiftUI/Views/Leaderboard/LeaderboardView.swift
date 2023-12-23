@@ -18,7 +18,7 @@ struct LeaderboardView: View {
                 Picker("Timeframe", selection: $timeframe) {
                     Text("7 Days").tag(Timeframe.sevenDays)
                     Text("30 Days").tag(Timeframe.thirtyDays)
-                    Text("All time").tag(Timeframe.alltime)
+                    Text("All-Time").tag(Timeframe.alltime)
                 }
                 .pickerStyle(.segmented)
                 TopLeadersForCategoryView(

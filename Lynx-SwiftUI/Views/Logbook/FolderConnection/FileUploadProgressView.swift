@@ -22,6 +22,7 @@ struct FileUploadProgressView: View {
                     circularProgress
                     thumbsUp
                 }
+                .foregroundStyle(.blue)
                 .frame(
                     width: Constants.progressViewWidthHeight,
                     height: Constants.progressViewWidthHeight

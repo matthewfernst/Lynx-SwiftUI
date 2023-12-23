@@ -17,16 +17,24 @@ class UserManager {
             do {
                 return try KeychainManager.get() // will return nil if no token is available
             } catch {
-                fatalError("KeychainManager failed to handle getting the ExpirableToken. Please check the logs.")
+                Logger.userManager.error("KeychainManager failed to handle getting the ExpirableToken. Please check the logs.")
+                cleanUpFailedReAuth()
+                return nil
             }
         }
         set { // if we do UserManager.shared.token = nil -> we want to delete the token
             do {
                 try (newValue == nil ? KeychainManager.delete() : KeychainManager.save(token: newValue!))
             } catch {
-                fatalError("KeychainManager failed to handle setting the ExpirableToken. Please check the logs.")
+                Logger.userManager.error("KeychainManager failed to handle setting the ExpirableToken. Please check the logs.")
+                cleanUpFailedReAuth()
             }
         }
+    }
+    
+    
+    private func cleanUpFailedReAuth() {
+        ProfileManager.shared.deleteProfile()
     }
     
     func renewToken(completion: @escaping (Result<String, Error>) -> Void) {
@@ -59,17 +67,14 @@ class UserManager {
                 }
             }
         }
-        
-        func cleanUpFailedReAuth() {
-            ProfileManager.shared.deleteProfile()
-        }
+
         
         if profile.oauthType == OAuthType.google.rawValue {
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                 // Check if `user` exists; otherwise, do something with `error`
                 if error != nil {
                     Logger.userManager.error("Restore of previous Google Sign in failed with: \(error)")
-                    cleanUpFailedReAuth()
+                    self.cleanUpFailedReAuth()
                     return
                 }
                 if let oauthToken = user?.idToken?.tokenString {
@@ -80,7 +85,7 @@ class UserManager {
             // TODO: Setup
             handleLoginOrCreateUser(oauthToken: "1234")
         } else {
-            cleanUpFailedReAuth()
+            self.cleanUpFailedReAuth()
             fatalError("OAuth type is not supported. Got: \(profile.oauthType)")
         }
     }
