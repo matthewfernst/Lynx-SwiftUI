@@ -42,7 +42,5 @@ struct Lynx_SwiftUIApp: App {
                 profileManager.saveProfile()
             }
         }
-        
-        
     }
 }

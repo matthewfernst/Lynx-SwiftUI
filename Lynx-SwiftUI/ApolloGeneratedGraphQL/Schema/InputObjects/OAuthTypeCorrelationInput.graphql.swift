@@ -14,7 +14,7 @@ public extension ApolloGeneratedGraphQL {
     public init(
       type: GraphQLEnum<OAuthType>,
       id: ID,
-      token: GraphQLNullable<ID> = nil
+      token: ID
     ) {
       __data = InputDict([
         "type": type,
@@ -33,7 +33,7 @@ public extension ApolloGeneratedGraphQL {
       set { __data["id"] = newValue }
     }
 
-    public var token: GraphQLNullable<ID> {
+    public var token: ID {
       get { __data["token"] }
       set { __data["token"] = newValue }
     }

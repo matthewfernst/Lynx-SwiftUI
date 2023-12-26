@@ -64,7 +64,7 @@ struct LoginView: View {
                     moveInApple = true
                 } completion: {
                     withAnimation {
-                        moveInGoogle = true
+                        moveInGoogle = true   
                     }
                 }
             }

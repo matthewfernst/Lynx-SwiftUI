@@ -32,9 +32,13 @@ struct TopLeadersForCategoryView: View {
     
     @State private var readyToNavigate = false
     @State private var showProgressView = false
+    @State private var allLeaders: [LeaderAttributes]?
+    @State private var showFailedToGetAllLeaders = false
     
-    let leaders: [LeaderAttributes]
+    @Binding var timeframe: Timeframe
+    let topLeaders: [LeaderAttributes]
     let category: LeaderboardCategory
+    
     private var measurementSystem: MeasurementSystem {
         profileManager.profile?.measurementSystem ?? .imperial
     }
@@ -46,27 +50,36 @@ struct TopLeadersForCategoryView: View {
                 systemImage: category.headerSystemImage
             )
         ) {
-            chartOfTopLeaders
+            if topLeaders.isEmpty {
+                Text("No Leaders Yet")
+                    .frame(height: Constants.Chart.height)
+            } else {
+                chartOfTopLeaders
+            }
             showAllLeadersNavigationLink
         }
         .navigationDestination(isPresented: $readyToNavigate) {
-            AllLeadersForCategoryView(
-                category: category,
-                leaders: leaders
-            )
+            if let allLeaders = allLeaders {
+                AllLeadersForCategoryView(
+                    category: category,
+                    leaders: allLeaders
+                )
+            }
         }
+        .alert("Failed to Get All Leaders", isPresented: $showFailedToGetAllLeaders, actions: {})
         .padding(.vertical)
         .listRowSeparator(.hidden)
+        
     }
     
     private var chartOfTopLeaders: some View {
         Chart {
-            ForEach(0..<3, id: \.self) { rank in
+            ForEach(topLeaders.indices, id: \.self) { index in
                 BarMark(
-                    x: .value("Stat", leaders[rank].stat),
-                    y: .value("Name", leaders[rank].fullName)
+                    x: .value("Stat", topLeaders[index].stat),
+                    y: .value("Name", topLeaders[index].fullName)
                 )
-                .foregroundStyle([Color.blue, .green, .orange][rank])
+                .foregroundStyle([Color.blue, .green, .orange][index])
             }
             
             if let range, let rangeFormattedLabel {
@@ -140,9 +153,19 @@ struct TopLeadersForCategoryView: View {
     private var showAllLeadersNavigationLink: some View {
         Button {
             showProgressView = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            ApolloLynxClient.getSpecificLeaderboardAllTime(
+                for: timeframe,
+                sortBy: category.correspondingSort,
+                inMeasurementSystem: measurementSystem
+            ) { result in
+                switch result {
+                case .success(let attributes):
+                    allLeaders = attributes
+                    readyToNavigate = true
+                case .failure(_):
+                    showFailedToGetAllLeaders = true
+                }
                 showProgressView = false
-                readyToNavigate = true
             }
         } label: {
             HStack {
@@ -170,7 +193,7 @@ struct TopLeadersForCategoryView: View {
                 static let yOffset: CGFloat = -4
                 static let height: CGFloat = 35
                 static let width: CGFloat = 130
-                static let runCountWidth: CGFloat = 40
+                static let runCountWidth: CGFloat = 50
             }
         }
         
@@ -181,16 +204,16 @@ struct TopLeadersForCategoryView: View {
     }
 }
 
-
-#Preview {
-    let debugURL = ProfileManager.Constants.defaultProfilePictureURL
-    return TopLeadersForCategoryView(
-        leaders: [
-            .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_612),
-            .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_712),
-            .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_412)
-        ],
-        category: LeaderboardCategory.distance()
-    )
-}
+//
+//#Preview {
+//    let debugURL = ProfileManager.Constants.defaultProfilePictureURL
+//    return TopLeadersForCategoryView(
+//        leaders: [
+//            .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_612),
+//            .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_712),
+//            .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_412)
+//        ],
+//        category: LeaderboardCategory.distance()
+//    )
+//}
 

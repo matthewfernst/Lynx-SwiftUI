@@ -12,17 +12,25 @@ struct AllLeadersForCategoryView: View {
     let leaders: [LeaderAttributes]
     
     var body: some View {
-        List {
-            ForEach(leaders.indices, id: \.self) { index in
-                let rank = index < 3 ? index + 1 : nil
-                LeaderView(
-                    category: category,
-                    attributes: leaders[index],
-                    rank: rank
-                )
+        Group {
+            if leaders.isEmpty {
+                Text("There are no leaders yet. Check back later!")
+                    .frame(maxHeight: .infinity, alignment: .center)
+            } else {
+                List {
+                    ForEach(leaders.indices, id: \.self) { index in
+                        let rank = index < 3 ? index + 1 : nil
+                        LeaderView(
+                            category: category,
+                            attributes: leaders[index],
+                            rank: rank
+                        )
+                    }
+                }
             }
         }
         .navigationTitle(category.headerLabelText)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -98,15 +106,15 @@ struct LeaderView: View {
     private struct Constants {
         struct Rank {
             static let rankImageNameAndColor: [(String, Color, CGFloat)] = [
-                ("crown.fill", .gold, 12),
-                ("medal.fill", .silver, 10),
-                ("medal.fill", .bronze, 10)
+                ("crown.fill", .gold, 15),
+                ("medal.fill", .silver, 13),
+                ("medal.fill", .bronze, 13)
             ]
         }
         
         struct ProfilePicture {
             static let imageWidth: CGFloat = 60
-            static let medalBackgroundWidth: CGFloat = 15
+            static let medalBackgroundWidth: CGFloat = 20
             static let xMedalOffsetDivisor: CGFloat = 1.5
             static let yMedalOffsetDivisor: CGFloat = 1.5
         }
@@ -124,17 +132,17 @@ extension Color {
     static let bronze = Color(red: 205 / 255 , green: 127 / 255, blue: 50 / 255)
 }
 
-#Preview {
-    let debugURL = ProfileManager.Constants.defaultProfilePictureURL
-    return AllLeadersForCategoryView(
-        category: .distance(),
-        leaders: [
-            .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_609),
-            .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_712),
-            .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_409),
-            .init(fullName: "Sully Sullivian", profilePictureURL: debugURL, stat: 5_431),
-            .init(fullName: "Matthew Ernst", profilePictureURL: debugURL, stat: 4_212),
-            .init(fullName: "Christine Perich", profilePictureURL: debugURL, stat: 0),
-        ]
-    )
-}
+//#Preview {
+//    let debugURL = ProfileManager.Constants.defaultProfilePictureURL
+//    return AllLeadersForCategoryView(
+//        category: .distance(),
+//        leaders: [
+//            .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_609),
+//            .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_712),
+//            .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_409),
+//            .init(fullName: "Sully Sullivian", profilePictureURL: debugURL, stat: 5_431),
+//            .init(fullName: "Matthew Ernst", profilePictureURL: debugURL, stat: 4_212),
+//            .init(fullName: "Christine Perich", profilePictureURL: debugURL, stat: 0),
+//        ]
+//    )
+//}

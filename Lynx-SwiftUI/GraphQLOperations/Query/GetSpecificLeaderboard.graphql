@@ -1,7 +1,7 @@
-query GetSelectedLeaderboard($limit: Int, $measurementSystem: MeasurementSystem!, $selectedLeaderboard: LeaderboardSort!)  {
-    leaderboard(sortBy: $selectedLeaderboard, limit: $limit) {
+query GetSpecificLeaderboard($timeframe: Timeframe!, $sortBy: LeaderboardSort!, $measurementSystem: MeasurementSystem!) {
+    leaderboard(sortBy: $sortBy, timeframe: $timeframe) {
         ...leaderboardFields
-        logbook {
+        stats(timeframe: $timeframe) {
             distance(system: $measurementSystem)
             runCount
             topSpeed(system: $measurementSystem)

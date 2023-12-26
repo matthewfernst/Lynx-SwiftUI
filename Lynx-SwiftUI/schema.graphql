@@ -6,7 +6,17 @@ type User {
     firstName: String!
     lastName: String!
     profilePictureUrl: String
+    stats(timeframe: Timeframe = ALL_TIME): UserStats
     logbook: [Log!]!
+    parties: [Party!]!
+    partyInvites: [Party!]!
+}
+
+type UserStats {
+    runCount: Int!
+    distance(system: MeasurementSystem = METRIC): Float!
+    topSpeed(system: MeasurementSystem = METRIC): Float!
+    verticalDistance(system: MeasurementSystem = METRIC): Float!
 }
 
 type Log {
@@ -48,11 +58,32 @@ enum MeasurementSystem {
     IMPERIAL
 }
 
+type Party {
+    id: ID!
+    name: String!
+    partyManager: User!
+    users: [User!]!
+    invitedUsers: [User!]!
+    leaderboard(
+        sortBy: LeaderboardSort = VERTICAL_DISTANCE
+        timeframe: Timeframe = ALL_TIME
+        limit: Int = 5
+    ): [User!]!
+}
+
 enum LeaderboardSort {
     DISTANCE
     RUN_COUNT
     TOP_SPEED
     VERTICAL_DISTANCE
+}
+
+enum Timeframe {
+    DAY
+    WEEK
+    MONTH
+    YEAR
+    ALL_TIME
 }
 
 type AuthorizationToken {
@@ -93,8 +124,13 @@ input InvalidateTokenOption {
 
 type Query {
     selfLookup: User
-    userLookup(id: ID!): User
-    leaderboard(sortBy: LeaderboardSort = VERTICAL_DISTANCE, limit: Int): [User!]!
+    userLookupById(id: ID!): User
+    partyLookupById(id: ID!): Party
+    leaderboard(
+        sortBy: LeaderboardSort = VERTICAL_DISTANCE
+        timeframe: Timeframe = ALL_TIME
+        limit: Int = 5
+    ): [User!]!
 }
 
 type Mutation {
@@ -110,4 +146,11 @@ type Mutation {
     editUser(userData: [UserDataPair!]!): User!
     createInviteKey: String!
     resolveInviteKey(inviteKey: ID!): User!
+    createParty(name: String!): Party!
+    deleteParty(partyId: ID!): Party!
+    createPartyInvite(partyId: ID!, userId: ID!): Party!
+    deletePartyInvite(partyId: ID!, userId: ID!): Party!
+    removeUserFromParty(partyId: ID!, userId: ID!): Party!
+    joinParty(partyId: ID!): User!
+    leaveParty(partyId: ID!): User!
 }

@@ -56,7 +56,7 @@ struct AccountView: View {
     }
     
     private var profileInformation: some View {
-        NavigationLink(destination: EditProfileView()) {
+        NavigationLink(destination: EditProfileView(profileManager: profileManager)) {
                 if let profilePic = profileManager.profilePicture {
                     profilePic
                         .resizable()
@@ -96,7 +96,6 @@ struct AccountView: View {
         } header: {
             Text("Settings")
         }
-        
     }
     
     private var shareInvitationKey: some View {

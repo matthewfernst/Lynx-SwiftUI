@@ -4,16 +4,16 @@
 @_exported import ApolloAPI
 
 public extension ApolloGeneratedGraphQL {
-  class GetSelectedLeaderboardQuery: GraphQLQuery {
-    public static let operationName: String = "GetSelectedLeaderboard"
+  class GetSpecificLeaderboardQuery: GraphQLQuery {
+    public static let operationName: String = "GetSpecificLeaderboard"
     public static let document: ApolloAPI.DocumentType = .notPersisted(
       definition: .init(
         #"""
-        query GetSelectedLeaderboard($limit: Int, $measurementSystem: MeasurementSystem!, $selectedLeaderboard: LeaderboardSort!) {
-          leaderboard(sortBy: $selectedLeaderboard, limit: $limit) {
+        query GetSpecificLeaderboard($timeframe: Timeframe!, $sortBy: LeaderboardSort!, $measurementSystem: MeasurementSystem!) {
+          leaderboard(sortBy: $sortBy, timeframe: $timeframe) {
             __typename
             ...leaderboardFields
-            logbook {
+            stats(timeframe: $timeframe) {
               __typename
               distance(system: $measurementSystem)
               runCount
@@ -26,24 +26,24 @@ public extension ApolloGeneratedGraphQL {
         fragments: [LeaderboardFields.self]
       ))
 
-    public var limit: GraphQLNullable<Int>
+    public var timeframe: GraphQLEnum<Timeframe>
+    public var sortBy: GraphQLEnum<LeaderboardSort>
     public var measurementSystem: GraphQLEnum<MeasurementSystem>
-    public var selectedLeaderboard: GraphQLEnum<LeaderboardSort>
 
     public init(
-      limit: GraphQLNullable<Int>,
-      measurementSystem: GraphQLEnum<MeasurementSystem>,
-      selectedLeaderboard: GraphQLEnum<LeaderboardSort>
+      timeframe: GraphQLEnum<Timeframe>,
+      sortBy: GraphQLEnum<LeaderboardSort>,
+      measurementSystem: GraphQLEnum<MeasurementSystem>
     ) {
-      self.limit = limit
+      self.timeframe = timeframe
+      self.sortBy = sortBy
       self.measurementSystem = measurementSystem
-      self.selectedLeaderboard = selectedLeaderboard
     }
 
     public var __variables: Variables? { [
-      "limit": limit,
-      "measurementSystem": measurementSystem,
-      "selectedLeaderboard": selectedLeaderboard
+      "timeframe": timeframe,
+      "sortBy": sortBy,
+      "measurementSystem": measurementSystem
     ] }
 
     public struct Data: ApolloGeneratedGraphQL.SelectionSet {
@@ -53,8 +53,8 @@ public extension ApolloGeneratedGraphQL {
       public static var __parentType: ApolloAPI.ParentType { ApolloGeneratedGraphQL.Objects.Query }
       public static var __selections: [ApolloAPI.Selection] { [
         .field("leaderboard", [Leaderboard].self, arguments: [
-          "sortBy": .variable("selectedLeaderboard"),
-          "limit": .variable("limit")
+          "sortBy": .variable("sortBy"),
+          "timeframe": .variable("timeframe")
         ]),
       ] }
 
@@ -70,11 +70,11 @@ public extension ApolloGeneratedGraphQL {
         public static var __parentType: ApolloAPI.ParentType { ApolloGeneratedGraphQL.Objects.User }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
-          .field("logbook", [Logbook].self),
+          .field("stats", Stats?.self, arguments: ["timeframe": .variable("timeframe")]),
           .fragment(LeaderboardFields.self),
         ] }
 
-        public var logbook: [Logbook] { __data["logbook"] }
+        public var stats: Stats? { __data["stats"] }
         public var profilePictureUrl: String? { __data["profilePictureUrl"] }
         public var firstName: String { __data["firstName"] }
         public var lastName: String { __data["lastName"] }
@@ -86,14 +86,14 @@ public extension ApolloGeneratedGraphQL {
           public var leaderboardFields: LeaderboardFields { _toFragment() }
         }
 
-        /// Leaderboard.Logbook
+        /// Leaderboard.Stats
         ///
-        /// Parent Type: `Log`
-        public struct Logbook: ApolloGeneratedGraphQL.SelectionSet {
+        /// Parent Type: `UserStats`
+        public struct Stats: ApolloGeneratedGraphQL.SelectionSet {
           public let __data: DataDict
           public init(_dataDict: DataDict) { __data = _dataDict }
 
-          public static var __parentType: ApolloAPI.ParentType { ApolloGeneratedGraphQL.Objects.Log }
+          public static var __parentType: ApolloAPI.ParentType { ApolloGeneratedGraphQL.Objects.UserStats }
           public static var __selections: [ApolloAPI.Selection] { [
             .field("__typename", String.self),
             .field("distance", Double.self, arguments: ["system": .variable("measurementSystem")]),

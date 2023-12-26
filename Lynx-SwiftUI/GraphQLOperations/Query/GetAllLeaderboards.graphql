@@ -1,28 +1,28 @@
-query GetAllLeaderboards($limit: Int, $measurementSystem: MeasurementSystem!)  {
-    distanceLeaders: leaderboard(sortBy: DISTANCE, limit: $limit) {
+query GetAllLeaderboards($timeframe: Timeframe!, $limit: Int, $measurementSystem: MeasurementSystem!)  {
+    distanceLeaders: leaderboard(sortBy: DISTANCE, timeframe: $timeframe, limit: $limit) {
         ...leaderboardFields
-                logbook{
+        stats(timeframe: $timeframe) {
             distance(system: $measurementSystem)
         }
     }
     
-    runCountLeaders: leaderboard(sortBy: RUN_COUNT, limit: $limit){
+    runCountLeaders: leaderboard(sortBy: RUN_COUNT, timeframe: $timeframe, limit: $limit){
         ...leaderboardFields
-        logbook {
+        stats(timeframe: $timeframe) {
             runCount
         }
     }
     
-    topSpeedLeaders: leaderboard(sortBy: TOP_SPEED, limit: $limit) {
+    topSpeedLeaders: leaderboard(sortBy: TOP_SPEED, timeframe: $timeframe, limit: $limit) {
         ...leaderboardFields
-        logbook {
+        stats(timeframe: $timeframe) {
             topSpeed(system: $measurementSystem)
         }
     }
     
-    verticalDistanceLeaders: leaderboard(sortBy: VERTICAL_DISTANCE, limit: $limit) {
+    verticalDistanceLeaders: leaderboard(sortBy: VERTICAL_DISTANCE, timeframe: $timeframe, limit: $limit) {
         ...leaderboardFields
-        logbook {
+        stats(timeframe: $timeframe) {
             verticalDistance(system: $measurementSystem)
         }
     }

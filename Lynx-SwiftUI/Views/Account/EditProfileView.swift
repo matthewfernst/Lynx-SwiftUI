@@ -10,7 +10,7 @@ import PhotosUI
 import OSLog
 
 struct EditProfileView: View {
-    @Environment(ProfileManager.self) private var profileManager
+    var profileManager: ProfileManager
     @Environment(\.dismiss) private var dismiss
     
     private var editProfileHandler = EditProfileHandler()
@@ -25,10 +25,14 @@ struct EditProfileView: View {
     
     @State private var showSavingChanges = false
     
-    @State private var gotToLogin = false
+//    @State private var goToLogin = false
     @State private var showDeleteAccountConfirmation = false
     @State private var showFailedToDeleteAccount = false
     @State private var showMergeAccountsNotAvailable = false
+    
+    init(profileManager: ProfileManager) {
+        self.profileManager = profileManager
+    }
     
     var body: some View {
         NavigationStack {
@@ -51,14 +55,12 @@ struct EditProfileView: View {
                 Button("Delete Account", role: .destructive) {
                     showSavingChanges = true
                     #if DEBUG
-                    LoginHandler.signOut(profileManager: profileManager)
-                    gotToLogin = true
+                    LoginHandler.signOut()
                     #else
                     editProfileHandler.deleteAccount(profileManager: profileManager) { result in
                         switch result {
                         case .success(_):
-                            LoginHandler.signOut(profileManager: profileManager)
-                            gotToLogin = true
+                            LoginHandler.signOut()
                         case .failure(let error):
                             Logger.editProfileView.error("Failed to delete account: \(error)")
                         }
@@ -107,8 +109,7 @@ struct EditProfileView: View {
             }
         }
         .disabled(showSavingChanges)
-        .fullScreenCover(isPresented: $gotToLogin, content: LoginView.init)
-        
+//        .fullScreenCover(isPresented: $goToLogin, content: LoginView.init)
     }
     
     private var changeProfilePicture: some View {
@@ -174,8 +175,7 @@ struct EditProfileView: View {
                 Label("Merge Accounts", systemImage: "shared.with.you")
             }
             Button {
-                LoginHandler.signOut(profileManager: profileManager)
-                gotToLogin = true
+                LoginHandler.signOut()
             } label: {
                 Label("Sign Out", systemImage: "rectangle.portrait.and.arrow.forward")
             }
@@ -198,7 +198,7 @@ struct EditProfileView: View {
 
 
 #Preview {
-    EditProfileView()
+    EditProfileView(profileManager: ProfileManager.shared)
 }
 
 

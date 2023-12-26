@@ -101,13 +101,13 @@ class LoginHandler {
         }
     }
     
-    static func signOut(profileManager: ProfileManager) {
+    static func signOut() {
         UserManager.shared.token = nil
-        if profileManager.profile?.oauthType == OAuthType.google.rawValue {
+        if ProfileManager.shared.profile?.oauthType == OAuthType.google.rawValue {
             GIDSignIn.sharedInstance.signOut()
         }
-        profileManager.deleteProfile()
         ApolloLynxClient.clearCache()
         BookmarkManager.shared.removeAllBookmarks()
+        ProfileManager.shared.deleteProfile()
     }
 }

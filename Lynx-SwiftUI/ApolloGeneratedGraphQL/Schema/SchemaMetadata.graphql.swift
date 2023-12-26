@@ -34,6 +34,7 @@ public extension ApolloGeneratedGraphQL {
       case "Query": return ApolloGeneratedGraphQL.Objects.Query
       case "User": return ApolloGeneratedGraphQL.Objects.User
       case "OAuthTypeCorrelation": return ApolloGeneratedGraphQL.Objects.OAuthTypeCorrelation
+      case "UserStats": return ApolloGeneratedGraphQL.Objects.UserStats
       case "Log": return ApolloGeneratedGraphQL.Objects.Log
       case "LogDetail": return ApolloGeneratedGraphQL.Objects.LogDetail
       case "Mutation": return ApolloGeneratedGraphQL.Objects.Mutation

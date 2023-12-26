@@ -8,68 +8,81 @@
 import SwiftUI
 
 struct LeaderboardView: View {
-    let debugURL = ProfileManager.Constants.defaultProfilePictureURL
+    @Environment(ProfileManager.self) private var profileManager
     
-    @State private var timeframe: Timeframe = .sevenDays
+    @State private var timeframe: Timeframe = .allTime
+    @State private var distanceLeaders: [LeaderAttributes] = []
+    @State private var runCountLeaders: [LeaderAttributes] = []
+    @State private var topSpeedLeaders: [LeaderAttributes] = []
+    @State private var verticalDistanceLeaders: [LeaderAttributes] = []
     
+    @State private var showFailedToGetTopLeaders = false
+    
+    private var measurementSystem: MeasurementSystem {
+        profileManager.profile?.measurementSystem ?? .imperial
+    }
     var body: some View {
         NavigationStack {
             ScrollView {
                 Picker("Timeframe", selection: $timeframe) {
-                    Text("7 Days").tag(Timeframe.sevenDays)
-                    Text("30 Days").tag(Timeframe.thirtyDays)
-                    Text("All-Time").tag(Timeframe.alltime)
+                    Text("Week").tag(Timeframe.week)
+                    Text("Month").tag(Timeframe.month)
+                    Text("All-Time").tag(Timeframe.allTime)
                 }
                 .pickerStyle(.segmented)
-                TopLeadersForCategoryView(
-                    leaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 240_600),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 154_713),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 50_421)
-                    ],
-                    category: .distance()
-                )
                 
-                
-                TopLeadersForCategoryView(
-                    leaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 5),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 4),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 2)
-                    ],
-                    category: .runCount()
-                )
-                
-                TopLeadersForCategoryView(
-                    leaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 33),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 12),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 5)
-                    ],
-                    category: .topSpeed()
-                )
-                
-                TopLeadersForCategoryView(
-                    leaders: [
-                        .init(fullName: "Max Rosoff", profilePictureURL: debugURL, stat: 30_120),
-                        .init(fullName: "Emily Howell", profilePictureURL: debugURL, stat: 12_123),
-                        .init(fullName: "Floris Delèe", profilePictureURL: debugURL, stat: 4_532)
-                    ],
-                    category: .verticalDistance()
-                )
+                ForEach(Array(zip([
+                    distanceLeaders, runCountLeaders, topSpeedLeaders, verticalDistanceLeaders
+                ], [
+                    LeaderboardCategory.distance(), .runCount(), .topSpeed(), .verticalDistance()
+                ])), id: \.1) { leaders, category in
+                    TopLeadersForCategoryView(
+                        timeframe: $timeframe,
+                        topLeaders: leaders,
+                        category: category
+                    )
+                }
             }
             .padding()
+            .alert("Failed to Get Top Leaders", isPresented: $showFailedToGetTopLeaders, actions: {})
             .navigationTitle("Leaderboard")
             .scrollContentBackground(.hidden)
+            .onAppear {
+                populateLeaderboard()
+            }
+            .onChange(of: timeframe) { _, _ in
+                populateLeaderboard()
+            }
+            .refreshable { // TODO: Refresh being wonky on simulator?
+                populateLeaderboard()
+            }
         }
+    }
+    
+    private func populateLeaderboard() {
+        ApolloLynxClient.getAllLeaderboards(
+            for: timeframe,
+            limit: Constants.topThree,
+            inMeasurementSystem: measurementSystem
+        ) { result in
+            switch result {
+            case .success(let leaderboards):
+                distanceLeaders = leaderboards[.distance] ?? []
+                runCountLeaders = leaderboards[.runCount] ?? []
+                topSpeedLeaders = leaderboards[.topSpeed] ?? []
+                verticalDistanceLeaders = leaderboards[.verticalDistance] ?? []
+            case .failure(_):
+                showFailedToGetTopLeaders = true
+            }
+        }
+    }
+    
+    private struct Constants {
+        static let topThree: Int = 3
     }
 }
 
-private enum Timeframe {
-    case sevenDays, thirtyDays, alltime
-}
-
-enum LeaderboardCategory: Equatable {
+enum LeaderboardCategory: Equatable, Hashable {
     case distance(headerLabelText: String = "Distance", headerSystemImage: String = "arrow.right")
     case runCount(headerLabelText: String = "Run Count", headerSystemImage: String = "figure.skiing.downhill")
     case topSpeed(headerLabelText: String = "Top Speed", headerSystemImage: String = "flame")
@@ -92,6 +105,19 @@ enum LeaderboardCategory: Equatable {
                 .topSpeed(_, let systemImage),
                 .verticalDistance(_, let systemImage):
             return systemImage
+        }
+    }
+    
+    var correspondingSort: LeaderboardSort {
+        switch self {
+        case .distance:
+            return .distance
+        case .runCount:
+            return .runCount
+        case .topSpeed:
+            return .topSpeed
+        case .verticalDistance:
+            return .verticalDistance
         }
     }
 }
