@@ -10,11 +10,11 @@ import SwiftUI
 struct LeaderboardView: View {
     @Environment(ProfileManager.self) private var profileManager
     
-    @State private var timeframe: Timeframe = .allTime
+    @State private var verticalDistanceLeaders: [LeaderAttributes] = []
+    @State private var topSpeedLeaders: [LeaderAttributes] = []
     @State private var distanceLeaders: [LeaderAttributes] = []
     @State private var runCountLeaders: [LeaderAttributes] = []
-    @State private var topSpeedLeaders: [LeaderAttributes] = []
-    @State private var verticalDistanceLeaders: [LeaderAttributes] = []
+    
     
     @State private var showFailedToGetTopLeaders = false
     
@@ -24,20 +24,12 @@ struct LeaderboardView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                Picker("Timeframe", selection: $timeframe) {
-                    Text("Week").tag(Timeframe.week)
-                    Text("Month").tag(Timeframe.month)
-                    Text("All-Time").tag(Timeframe.allTime)
-                }
-                .pickerStyle(.segmented)
-                
                 ForEach(Array(zip([
-                    distanceLeaders, runCountLeaders, topSpeedLeaders, verticalDistanceLeaders
+                    verticalDistanceLeaders, topSpeedLeaders, distanceLeaders, runCountLeaders
                 ], [
-                    LeaderboardCategory.distance(), .runCount(), .topSpeed(), .verticalDistance()
+                    LeaderboardCategory.verticalDistance(), .topSpeed(), .distance(), .runCount(),
                 ])), id: \.1) { leaders, category in
                     TopLeadersForCategoryView(
-                        timeframe: $timeframe,
                         topLeaders: leaders,
                         category: category
                     )
@@ -50,9 +42,6 @@ struct LeaderboardView: View {
             .onAppear {
                 populateLeaderboard()
             }
-            .onChange(of: timeframe) { _, _ in
-                populateLeaderboard()
-            }
             .refreshable { // TODO: Refresh being wonky on simulator?
                 populateLeaderboard()
             }
@@ -61,7 +50,7 @@ struct LeaderboardView: View {
     
     private func populateLeaderboard() {
         ApolloLynxClient.getAllLeaderboards(
-            for: timeframe,
+            for: .allTime,
             limit: Constants.topThree,
             inMeasurementSystem: measurementSystem
         ) { result in

@@ -6,32 +6,127 @@
 //
 
 import SwiftUI
+import Charts
 
 struct AllLeadersForCategoryView: View {
+    @Environment(ProfileManager.self) private var profileManager
     let category: LeaderboardCategory
-    let leaders: [LeaderAttributes]
+    @State private var leaders: [LeaderAttributes] = []
     
+    @State private var timeframe: Timeframe = .allTime
+    private var measurementSystem: MeasurementSystem {
+        profileManager.profile?.measurementSystem ?? .imperial
+    }
     var body: some View {
-        Group {
+        VStack {
+            allLeadersCharts
+            listOfLeaders
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            populateLeaders()
+        }
+        .onChange(of: timeframe) { _, _ in
+            populateLeaders()
+        }
+    }
+    
+    
+    private var timeframePicker: some View {
+        Picker("Timeframe", selection: $timeframe) {
+            Text("Day").tag(Timeframe.day)
+            Text("Week").tag(Timeframe.week)
+            Text("Month").tag(Timeframe.month)
+            Text("Season").tag(Timeframe.season)
+            Text("All-Time").tag(Timeframe.allTime)
+        }
+        .pickerStyle(.segmented)
+    }
+    
+    private var allLeadersCharts: some View {
+        VStack(alignment: .leading) {
+            Label(category.headerLabelText, systemImage: category.headerSystemImage)
+                .fontWeight(.bold)
+            Divider()
+            timeframePicker
+                .padding(.bottom)
             if leaders.isEmpty {
-                Text("There are no leaders yet. Check back later!")
-                    .frame(maxHeight: .infinity, alignment: .center)
+                Text("No Leaders Yet")
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                        alignment: .center
+                    )
             } else {
-                List {
-                    ForEach(leaders.indices, id: \.self) { index in
-                        let rank = index < 3 ? index + 1 : nil
-                        LeaderView(
-                            category: category,
-                            attributes: leaders[index],
-                            rank: rank
+                chartView
+            }
+        }
+        .padding()
+    }
+    
+    private var chartView: some View {
+        Chart {
+            ForEach(leaders) { leader in
+                BarMark(
+                    x: .value("Name", leader.fullName),
+                    y: .value("Stat", leader.stat)
+                )
+            }
+        }
+        .chartYAxis {
+            AxisMarks(values: .automatic) { value in
+                if let yAxisValue = value.as(Double.self) {
+                    AxisGridLine()
+                    AxisTick()
+                    AxisValueLabel(
+                        LeaderAttributes.formattedStatLabel(
+                            yAxisValue,
+                            forCategory: category,
+                            withMeasurementSystem: measurementSystem
                         )
-                    }
+                    )
+                } else {
+                    AxisGridLine()
                 }
             }
         }
-        .navigationTitle(category.headerLabelText)
-        .navigationBarTitleDisplayMode(.inline)
+        .chartPlotStyle { plotArea in
+            plotArea.frame(height: 180)
+        }
     }
+    
+    private var listOfLeaders: some View {
+        List {
+            ForEach(leaders.indices, id: \.self) { index in
+                let rank = index < 3 ? index + 1 : nil
+                LeaderView(
+                    category: category,
+                    attributes: leaders[index],
+                    rank: rank
+                )
+            }
+        }
+        .refreshable {
+            populateLeaders()
+        }
+    }
+    
+    
+    private func populateLeaders() {
+        ApolloLynxClient.getSpecificLeaderboardAllTime(
+            for: timeframe,
+            sortBy: category.correspondingSort,
+            inMeasurementSystem: measurementSystem
+        ) { result in
+            switch result {
+            case .success(let attributes):
+                leaders = attributes
+            case .failure(_):
+                print()
+            }
+        }
+    }
+    
 }
 
 /// To be honest, no idea why this looks wack here, but it works :)

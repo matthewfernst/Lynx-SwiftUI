@@ -8,7 +8,7 @@ public extension ApolloGeneratedGraphQL {
     case day = "DAY"
     case week = "WEEK"
     case month = "MONTH"
-    case year = "YEAR"
+    case season = "SEASON"
     case allTime = "ALL_TIME"
   }
 

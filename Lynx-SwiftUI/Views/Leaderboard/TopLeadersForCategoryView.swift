@@ -30,12 +30,9 @@ struct TopLeadersForCategoryView: View {
         )
     }
     
-    @State private var readyToNavigate = false
-    @State private var showProgressView = false
-    @State private var allLeaders: [LeaderAttributes]?
+    @State private var goToMoreInfo = false
     @State private var showFailedToGetAllLeaders = false
     
-    @Binding var timeframe: Timeframe
     let topLeaders: [LeaderAttributes]
     let category: LeaderboardCategory
     
@@ -44,32 +41,22 @@ struct TopLeadersForCategoryView: View {
     }
     
     var body: some View {
-        GroupBox(
-            label: Label(
-                category.headerLabelText.capitalized,
-                systemImage: category.headerSystemImage
-            )
-        ) {
+        GroupBox {
             if topLeaders.isEmpty {
                 Text("No Leaders Yet")
                     .frame(height: Constants.Chart.height)
             } else {
                 chartOfTopLeaders
             }
-            showAllLeadersNavigationLink
+        } label: {
+            chartLabel
         }
-        .navigationDestination(isPresented: $readyToNavigate) {
-            if let allLeaders = allLeaders {
-                AllLeadersForCategoryView(
-                    category: category,
-                    leaders: allLeaders
-                )
-            }
+        .navigationDestination(isPresented: $goToMoreInfo) {
+            AllLeadersForCategoryView(category: category)
         }
         .alert("Failed to Get All Leaders", isPresented: $showFailedToGetAllLeaders, actions: {})
-        .padding(.vertical)
+        .padding(.bottom)
         .listRowSeparator(.hidden)
-        
     }
     
     private var chartOfTopLeaders: some View {
@@ -147,39 +134,24 @@ struct TopLeadersForCategoryView: View {
                     )
             }
         }
-        .padding(.bottom)
     }
     
-    private var showAllLeadersNavigationLink: some View {
-        Button {
-            showProgressView = true
-            ApolloLynxClient.getSpecificLeaderboardAllTime(
-                for: timeframe,
-                sortBy: category.correspondingSort,
-                inMeasurementSystem: measurementSystem
-            ) { result in
-                switch result {
-                case .success(let attributes):
-                    allLeaders = attributes
-                    readyToNavigate = true
-                case .failure(_):
-                    showFailedToGetAllLeaders = true
+    private var chartLabel: some View {
+        HStack {
+            Label(
+                category.headerLabelText.capitalized,
+                systemImage: category.headerSystemImage
+            )
+            Spacer()
+            Image(systemName: "chevron.right")
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.gray)
+                .frame(width: 7)
+                .onTapGesture {
+                    goToMoreInfo.toggle()
                 }
-                showProgressView = false
-            }
-        } label: {
-            HStack {
-                Text("Show All Leaders")
-                Spacer()
-                if showProgressView {
-                    ProgressView()
-                } else {
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(.gray)
-                }
-            }
         }
-        .foregroundStyle(.primary)
     }
     
     private struct Constants {
