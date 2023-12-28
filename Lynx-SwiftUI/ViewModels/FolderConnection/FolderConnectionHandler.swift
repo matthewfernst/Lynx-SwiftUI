@@ -17,6 +17,7 @@ import OSLog
     var showError = false
     var uploadProgress = 0.0
     var currentFileBeingUploaded = ""
+    private var freezingPeriodActive = false
     private var uploadTimer: Timer?
     
     func picker(didPickDocumentsAt url: URL) {
@@ -130,6 +131,12 @@ import OSLog
     }
     
     func getNonUploadedSlopeFiles(forURL url: URL, completion: @escaping ([URL]?) -> Void) {
+        guard !freezingPeriodActive else {
+            Logger.folderConnectionView.info("Freezing period is active. Not uploading.")
+            completion(nil)
+            return
+        }
+        
         var nonUploadedSlopeFiles: [URL] = []
         ApolloLynxClient.getUploadedLogs { [unowned self] result in
             switch result {
@@ -198,9 +205,12 @@ import OSLog
                     }
                     
                     var currentFileNumberBeingUploaded = 0
-                    
+                    self.freezingPeriodActive = true
                     self.uploadTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
                         guard currentFileNumberBeingUploaded < totalNumberOfFiles else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+                                self.freezingPeriodActive = false
+                            }
                             timer.invalidate()
                             completion?()
                             return
@@ -221,6 +231,7 @@ import OSLog
                                         let fileURLString = fileURL.lastPathComponent.replacingOccurrences(of: "%", with: " ")
                                         if let startRange = fileURLString.range(of: "-"), let endRange = fileURLString.range(of: ".slopes") {
                                             self.currentFileBeingUploaded = fileURLString[startRange.upperBound..<endRange.lowerBound].trimmingCharacters(in: .whitespaces)
+                                            Logger.folderConnectionHandler.debug("Current file being uploaded: \(self.currentFileBeingUploaded)")
                                         }
                                     }
                                     if currentFileNumberBeingUploaded == totalNumberOfFiles {

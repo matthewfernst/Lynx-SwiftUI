@@ -24,6 +24,9 @@ struct AutoUploadView: View {
                 }
             )
             .onChange(of: folderConnectionHandler.uploadProgress) { _, newProgress in
+                withAnimation {
+                    slopesFileUploading = folderConnectionHandler.currentFileBeingUploaded
+                }
                 if newProgress >= 1.0 {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) { // wait for last timer shoot off
                         withAnimation {
@@ -34,10 +37,6 @@ struct AutoUploadView: View {
                                 slopesFileUploading = ""
                             }
                         }
-                    }
-                } else {
-                    withAnimation {
-                        slopesFileUploading = folderConnectionHandler.currentFileBeingUploaded
                     }
                 }
             }
