@@ -45,13 +45,11 @@ struct FileUploadProgressView: View {
         }
         .padding()
         .onChange(of: folderConnectionHandler.uploadProgress) { _, newProgress in
-            if newProgress >= Constants.endProgressCheck {
-                withAnimation {
-                    showThumbsUp = true
-                }
-            }
+            updateThumbsUpIfEnd(progress: newProgress)
         }
-        
+        .onAppear {
+            updateThumbsUpIfEnd(progress: folderConnectionHandler.uploadProgress)
+        }
     }
     
     private var allSetText: some View {
@@ -104,6 +102,15 @@ struct FileUploadProgressView: View {
                     showThumbsUp ? Constants.ThumbsUp.secondStartDegreeRotation : Constants.ThumbsUp.secondEndDegreeRotation
                 )
             )
+    }
+    
+    // MARK: - Helpers
+    private func updateThumbsUpIfEnd(progress: Double) {
+        if progress >= Constants.endProgressCheck {
+            withAnimation {
+                showThumbsUp = true
+            }
+        }
     }
     
     private var showIfNotThumbsUp: CGFloat {

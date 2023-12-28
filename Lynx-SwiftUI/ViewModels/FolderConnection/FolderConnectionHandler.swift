@@ -20,6 +20,7 @@ import OSLog
     private var uploadTimer: Timer?
     
     func picker(didPickDocumentsAt url: URL) {
+        resetUploadProgressAndFilename()
         guard url.startAccessingSecurityScopedResource() else {
             // Handle the failure here.
             showUploadError()
@@ -32,76 +33,13 @@ import OSLog
         BookmarkManager.shared.saveBookmark(for: gpsLogsURL)
         
         if FileManager.default.fileExists(atPath: gpsLogsURL.path) {
-            // Get the contents of the directory
-            guard let contents = try? FileManager.default.contentsOfDirectory(at: gpsLogsURL, includingPropertiesForKeys: nil) else {
-                // Failed to access the directory
-                showFileAccessError()
-                return
-            }
-            
-            if contents.allSatisfy({ $0.pathExtension == "slopes" }) {
-                let keys: [URLResourceKey] = [.nameKey, .isDirectoryKey]
-                
-                guard let totalNumberOfFiles = FileManager.default.enumerator(at: gpsLogsURL, includingPropertiesForKeys: keys)?.allObjects.count else {
-                    Logger.folderConnectionHandler.debug("*** Unable to access the contents of \(gpsLogsURL.path) ***\n")
-                    showFileAccessError()
-                    return
+            getNonUploadedSlopeFiles(forURL: gpsLogsURL) { urlsForUpload in
+                if let urlsForUpload {
+                    self.uploadNewFiles(urlsForUpload, completion: nil)
+                } else { // no new files
+                    self.currentFileBeingUploaded = "No new files!"
+                    self.uploadProgress = 1.0
                 }
-                
-                guard let fileList = getFileList(at: gpsLogsURL, includingPropertiesForKeys: keys) else { return }
-                
-                let requestedPathsForUpload = fileList.compactMap { $0.lastPathComponent }
-                Logger.folderConnectionHandler.info("Requested Paths: \(requestedPathsForUpload)")
-                
-                
-                ApolloLynxClient.createUserRecordUploadUrl(filesToUpload: requestedPathsForUpload) { [unowned self] result in
-                    switch result {
-                    case .success(let urlsForUpload):
-                        guard url.startAccessingSecurityScopedResource() else {
-                            // Handle the failure here.
-                            self.showFileAccessError()
-                            return
-                        }
-                        
-                        guard let fileList = self.getFileList(at: gpsLogsURL, includingPropertiesForKeys: keys) else { return }
-                        
-                        var currentFileNumberBeingUploaded = 0
-                        
-                        self.uploadTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
-                            guard currentFileNumberBeingUploaded < totalNumberOfFiles else {
-                                timer.invalidate()
-                                return
-                            }
-                            
-                            if case let fileURL = fileList[currentFileNumberBeingUploaded] {
-                                Logger.folderConnectionHandler.info("Uploading file: \(fileURL.lastPathComponent) to \(urlsForUpload[currentFileNumberBeingUploaded])")
-                                
-                                self.putSlopeFiles(urlEndPoint: urlsForUpload[currentFileNumberBeingUploaded], slopeFileURL: fileURL) { result in
-                                    switch result {
-                                    case .success(_):
-                                        currentFileNumberBeingUploaded += 1
-                                        self.uploadProgress = Double(currentFileNumberBeingUploaded) / Double(totalNumberOfFiles)
-                                        self.currentFileBeingUploaded = fileURL.lastPathComponent.replacingOccurrences(of: "%", with: " ")
-                                        
-                                        if currentFileNumberBeingUploaded == totalNumberOfFiles {
-                                            url.stopAccessingSecurityScopedResource()
-                                        }
-                                    case .failure(let error):
-                                        Logger.folderConnectionHandler.debug("Failed to upload \(fileURL) with error: \(error)")
-                                    }
-                                }
-                            }
-                        }
-                        
-                    case .failure(_):
-                        self.showUploadError()
-                        Logger.folderConnectionHandler.error("FAILURE")
-                    }
-                }
-            } else {
-                showFileExtensionNotSupported(
-                    extensions: contents.filter({ $0.lastPathComponent != "slopes" }).map({ $0.lastPathComponent })
-                )
             }
         } else {
             showWrongDirectorySelected(directory: url.lastPathComponent)
@@ -119,9 +57,11 @@ import OSLog
                                                                options: .skipsHiddenFiles,
                                                                errorHandler: { (url, error) -> Bool in
             Logger.folderConnectionHandler.error("Failed to access file at URL: \(url), error: \(error)")
+            self.showFileAccessError()
             return true
         }) else {
             Logger.folderConnectionHandler.error("Unable to access the contents of \(url.path)")
+            showFileAccessError()
             return nil
         }
         
@@ -189,24 +129,18 @@ import OSLog
         currentFileBeingUploaded = ""
     }
     
-    func getNonUploadedSlopeFiles(completion: @escaping ([URL]?) -> Void) {
-        guard let bookmark = BookmarkManager.shared.bookmark else {
-            Logger.folderConnectionHandler.info("No bookmark saved. Cannot check for nonUploadedFiles.")
-            completion(nil)
-            return
-        }
-
+    func getNonUploadedSlopeFiles(forURL url: URL, completion: @escaping ([URL]?) -> Void) {
         var nonUploadedSlopeFiles: [URL] = []
         ApolloLynxClient.getUploadedLogs { [unowned self] result in
             switch result {
             case .success(let uploadedFiles):
                 do {
-                    let resourceValues = try bookmark.url.resourceValues(forKeys: [.isDirectoryKey])
+                    let resourceValues = try url.resourceValues(forKeys: [.isDirectoryKey])
                     if resourceValues.isDirectory ?? false {
                         let keys: [URLResourceKey] = [.nameKey, .isDirectoryKey, .creationDateKey]
-                        if let fileList = self.getFileList(at: bookmark.url, includingPropertiesForKeys: keys) {
+                        if let fileList = self.getFileList(at: url, includingPropertiesForKeys: keys) {
                             for case let fileURL in fileList {
-                                Logger.folderConnectionHandler.debug("Checking \(fileURL.absoluteString) for upload.")
+                                Logger.folderConnectionHandler.debug("Checking \(fileURL.lastPathComponent) for upload.")
                                 if self.isSlopesFiles(fileURL) {
                                     if !uploadedFiles.contains(fileURL.lastPathComponent) {
                                         nonUploadedSlopeFiles.append(fileURL)
@@ -237,7 +171,7 @@ import OSLog
         }
     }
     
-    func uploadNewFiles(_ nonUploadedSlopeFiles: [URL], completion: @escaping (() -> Void)) {
+    func uploadNewFiles(_ nonUploadedSlopeFiles: [URL], completion: (() -> Void)?) {
         guard let gpsLogsURL = BookmarkManager.shared.bookmark?.url else {
             return
         }
@@ -252,7 +186,10 @@ import OSLog
         if contents.allSatisfy({ $0.pathExtension == "slopes" }) {
             let totalNumberOfFiles = nonUploadedSlopeFiles.count
             
-            ApolloLynxClient.createUserRecordUploadUrl(filesToUpload: nonUploadedSlopeFiles.map { $0.lastPathComponent }) { [unowned self] result in
+            let requestedPathsForUpload = nonUploadedSlopeFiles.map { $0.lastPathComponent }
+            Logger.folderConnectionHandler.info("Requested Paths: \(requestedPathsForUpload)")
+            
+            ApolloLynxClient.createUserRecordUploadUrl(filesToUpload: requestedPathsForUpload ) { [unowned self] result in
                 switch result {
                 case .success(let urlsForUpload):
                     guard gpsLogsURL.startAccessingSecurityScopedResource() else {
@@ -265,7 +202,7 @@ import OSLog
                     self.uploadTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { timer in
                         guard currentFileNumberBeingUploaded < totalNumberOfFiles else {
                             timer.invalidate()
-                            completion()
+                            completion?()
                             return
                         }
                         

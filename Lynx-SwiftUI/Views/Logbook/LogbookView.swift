@@ -44,18 +44,7 @@ struct LogbookView: View {
                 .onAppear {
                     BookmarkManager.shared.loadAllBookmarks()
                     requestLogs()
-                    
-                    folderConnectionHandler.getNonUploadedSlopeFiles { files in
-                        if let files {
-                            showAutoUpload = true
-                            
-                            folderConnectionHandler.uploadNewFiles(files) {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 3.25) { // give time for Lambda's to fire and animation to end
-                                    requestLogs()
-                                }
-                            }
-                        }
-                    }
+                    checkForNewFilesAndUpload()
                 }
                 .sheet(isPresented: $showUploadFilesSheet) {
                     FolderConnectionView(
@@ -234,6 +223,22 @@ struct LogbookView: View {
                         logbookStats.logbooks = logs
                     case .failure(let error):
                         Logger.logbook.error("Failed to get logs: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func checkForNewFilesAndUpload() {
+        if let url = BookmarkManager.shared.bookmark?.url {
+            folderConnectionHandler.getNonUploadedSlopeFiles(forURL: url) { files in
+                if let files {
+                    showAutoUpload = true
+                    
+                    folderConnectionHandler.uploadNewFiles(files) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.25) { // give time for Lambda's to fire and animation to end
+                            requestLogs()
+                        }
                     }
                 }
             }
