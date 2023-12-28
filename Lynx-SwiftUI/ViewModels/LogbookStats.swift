@@ -8,12 +8,8 @@ import Foundation
 import SwiftUI
 
 @Observable final class LogbookStats {
-    private(set) var measurementSystem: MeasurementSystem
+    private var profileManager = ProfileManager.shared
     var logbooks: Logbooks = []
-    
-    init(measurementSystem: MeasurementSystem) {
-        self.measurementSystem = measurementSystem
-    }
     
     // MARK: - Lifetime Stats
     func getDistanceFormatted(distance: Double) -> String {
@@ -104,7 +100,7 @@ import SwiftUI
     }
     
     func logbookTopSpeed(at index: Int) -> String {
-        return String(format: "%.1f\(measurementSystem.milesOrKilometersPerHour)", logbook(at: index)?.topSpeed ?? 0.0)
+        return String(format: "%.1f\(profileManager.measurementSystem.milesOrKilometersPerHour)", logbook(at: index)?.topSpeed ?? 0.0)
     }
     
     func getConfiguredLogbookData(at index: Int) -> ConfiguredLogbookData? {
@@ -157,17 +153,17 @@ import SwiftUI
         }
         
         if averageVerticalFeet >= 1000 {
-            return String(format: "%.1fk \(measurementSystem.feetOrMeters)", averageVerticalFeet / 1000)
+            return String(format: "%.1fk \(profileManager.measurementSystem.feetOrMeters)", averageVerticalFeet / 1000)
         }
         
-        return String(format: "%.0f \(measurementSystem.feetOrMeters)", averageVerticalFeet)
+        return String(format: "%.0f \(profileManager.measurementSystem.feetOrMeters)", averageVerticalFeet)
     }
     
     private func calculateAverageDistance() -> String {
         let averageDistance = logbooks.map { $0.distance }.reduce(0.0) {
             return $0 + $1/Double(logbooks.count)
         }
-        switch measurementSystem {
+        switch profileManager.measurementSystem {
         case .imperial:
             return String(format: "%.1f MI", averageDistance.feetToMiles)
         case .metric:
@@ -180,19 +176,19 @@ import SwiftUI
             return $0 + $1/Double(logbooks.count)
         }
         
-        return String(format: "%.1f \(measurementSystem.milesOrKilometersPerHour)", averageSpeed)
+        return String(format: "%.1f \(profileManager.measurementSystem.milesOrKilometersPerHour)", averageSpeed)
     }
     
     private func calculateBestTopSpeed() -> String {
-        return String(format: "%.1f \(measurementSystem.milesOrKilometersPerHour)", logbooks.map { $0.topSpeed }.max() ?? 0.0)
+        return String(format: "%.1f \(profileManager.measurementSystem.milesOrKilometersPerHour)", logbooks.map { $0.topSpeed }.max() ?? 0.0)
     }
     
     private func calculateBestTallestRun() -> String {
-        return String(format: "%.1f \(measurementSystem.feetOrMeters)", logbooks.map { $0.verticalDistance }.max() ?? 0.0)
+        return String(format: "%.1f \(profileManager.measurementSystem.feetOrMeters)", logbooks.map { $0.verticalDistance }.max() ?? 0.0)
     }
     
     private func calculateBestLongestRun() -> String {
-        switch measurementSystem {
+        switch profileManager.measurementSystem {
         case .imperial:
             return String(format: "%.1f MI", (logbooks.map { $0.distance }.max() ?? 0.0).feetToMiles)
         case .metric:

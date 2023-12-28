@@ -215,7 +215,7 @@ struct LogbookView: View {
             ApolloLynxClient.clearCache()
             Task {
                 ApolloLynxClient.getLogs(
-                    measurementSystem: profileManager.profile!.measurementSystem
+                    measurementSystem: profileManager.measurementSystem
                 ) { result in
                     switch result {
                     case .success(let logs):
@@ -277,5 +277,5 @@ struct LogbookView: View {
 }
 
 #Preview {
-    LogbookView(folderConnectionHandler: FolderConnectionHandler(), logbookStats: LogbookStats(measurementSystem: .imperial))
+    LogbookView(folderConnectionHandler: FolderConnectionHandler(), logbookStats: LogbookStats())
 }

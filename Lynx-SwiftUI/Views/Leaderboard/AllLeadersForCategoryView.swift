@@ -14,9 +14,7 @@ struct AllLeadersForCategoryView: View {
     @State private var leaders: [LeaderAttributes] = []
     
     @State private var timeframe: Timeframe = .allTime
-    private var measurementSystem: MeasurementSystem {
-        profileManager.profile?.measurementSystem ?? .imperial
-    }
+
     var body: some View {
         VStack {
             allLeadersCharts
@@ -82,7 +80,7 @@ struct AllLeadersForCategoryView: View {
                         LeaderAttributes.formattedStatLabel(
                             yAxisValue,
                             forCategory: category,
-                            withMeasurementSystem: measurementSystem
+                            withMeasurementSystem: profileManager.measurementSystem
                         )
                     )
                 } else {
@@ -116,7 +114,7 @@ struct AllLeadersForCategoryView: View {
         ApolloLynxClient.getSpecificLeaderboardAllTime(
             for: timeframe,
             sortBy: category.correspondingSort,
-            inMeasurementSystem: measurementSystem
+            inMeasurementSystem: profileManager.measurementSystem
         ) { result in
             switch result {
             case .success(let attributes):
@@ -137,9 +135,6 @@ struct LeaderView: View {
     let category: LeaderboardCategory
     let attributes: LeaderAttributes
     let rank: Int?
-    private var measurementSystem: MeasurementSystem {
-        profileManager.profile?.measurementSystem ?? .imperial
-    }
     
     var body: some View {
         HStack {
@@ -191,7 +186,7 @@ struct LeaderView: View {
                 LeaderAttributes.formattedStatLabel(
                     attributes.stat,
                     forCategory: category,
-                    withMeasurementSystem: measurementSystem
+                    withMeasurementSystem: profileManager.measurementSystem
                 )
             )
         }

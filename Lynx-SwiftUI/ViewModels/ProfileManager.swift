@@ -33,6 +33,10 @@ import OSLog
     private(set) var profilePicture: Image?
     
     // MARK: - Intent's
+    var measurementSystem: MeasurementSystem {
+        profile?.measurementSystem ?? .imperial
+    }
+    
     func fetchProfile() {
         let fetchDescriptor = FetchDescriptor<Profile>()
         profile = try? modelContext?.fetch(fetchDescriptor).first

@@ -37,5 +37,5 @@ struct LifetimeDetailsView: View {
 }
 
 #Preview {
-    LifetimeDetailsView(logbookStats: LogbookStats(measurementSystem: .imperial))
+    LifetimeDetailsView(logbookStats: LogbookStats())
 }

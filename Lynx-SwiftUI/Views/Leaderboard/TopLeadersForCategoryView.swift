@@ -20,12 +20,12 @@ struct TopLeadersForCategoryView: View {
             LeaderAttributes.formattedStatLabel(
                 range.0,
                 forCategory: category,
-                withMeasurementSystem: measurementSystem
+                withMeasurementSystem: profileManager.measurementSystem
             ),
             LeaderAttributes.formattedStatLabel(
                 range.1,
                 forCategory: category,
-                withMeasurementSystem: measurementSystem
+                withMeasurementSystem: profileManager.measurementSystem
             )
         )
     }
@@ -35,10 +35,6 @@ struct TopLeadersForCategoryView: View {
     
     let topLeaders: [LeaderAttributes]
     let category: LeaderboardCategory
-    
-    private var measurementSystem: MeasurementSystem {
-        profileManager.profile?.measurementSystem ?? .imperial
-    }
     
     var body: some View {
         GroupBox {
@@ -106,7 +102,7 @@ struct TopLeadersForCategoryView: View {
                         LeaderAttributes.formattedStatLabel(
                             xAxisValue,
                             forCategory: category,
-                            withMeasurementSystem: measurementSystem
+                            withMeasurementSystem: profileManager.measurementSystem
                         )
                     )
                 } else {

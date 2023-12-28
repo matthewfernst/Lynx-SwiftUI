@@ -66,5 +66,5 @@ struct FullLifetimeSummaryView: View {
 
 
 #Preview {
-    FullLifetimeSummaryView(logbookStats: LogbookStats(measurementSystem: .imperial))
+    FullLifetimeSummaryView(logbookStats: LogbookStats())
 }

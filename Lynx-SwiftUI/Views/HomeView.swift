@@ -14,7 +14,7 @@ struct HomeView: View {
     @Environment(ProfileManager.self) private var profileManager
     
     @State private var folderConnectionHandler = FolderConnectionHandler()
-    @State private var logbookStats = LogbookStats(measurementSystem: .imperial)
+    @State private var logbookStats = LogbookStats()
         
     var body: some View {
         TabView {

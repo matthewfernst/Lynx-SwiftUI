@@ -18,9 +18,6 @@ struct LeaderboardView: View {
     
     @State private var showFailedToGetTopLeaders = false
     
-    private var measurementSystem: MeasurementSystem {
-        profileManager.profile?.measurementSystem ?? .imperial
-    }
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -52,7 +49,7 @@ struct LeaderboardView: View {
         ApolloLynxClient.getAllLeaderboards(
             for: .allTime,
             limit: Constants.topThree,
-            inMeasurementSystem: measurementSystem
+            inMeasurementSystem: profileManager.measurementSystem
         ) { result in
             switch result {
             case .success(let leaderboards):

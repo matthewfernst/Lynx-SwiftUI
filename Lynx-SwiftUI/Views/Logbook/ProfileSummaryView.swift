@@ -37,7 +37,7 @@ struct ProfileSummaryView: View {
             Text(logbookStats.lifetimeVertical)
                 .font(.system(size: Constants.Font.statFontSize))
                 .fontWeight(.semibold)
-            Text("lifetime vertical \(logbookStats.measurementSystem.feetOrMeters.lowercased())")
+            Text("lifetime vertical \(profileManager.measurementSystem.feetOrMeters.lowercased())")
                 .font(.system(size: Constants.Font.labelFontSize))
         }
         .padding()
@@ -58,5 +58,5 @@ struct ProfileSummaryView: View {
 }
 
 #Preview {
-    ProfileSummaryView(logbookStats: LogbookStats(measurementSystem: .imperial))
+    ProfileSummaryView(logbookStats: LogbookStats())
 }
