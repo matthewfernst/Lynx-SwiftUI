@@ -24,7 +24,7 @@ class LoginHandler {
     ) {
         
 #if DEBUG
-        profileManager.update(withNewProfile: Profile.debugProfile)
+        profileManager.update(newProfileWith: Profile.debugProfile)
         goToHome.wrappedValue = true
 #else
         ApolloLynxClient.loginOrCreateUser(
@@ -43,6 +43,7 @@ class LoginHandler {
                     self.loginUser(profileManager: profileManager) { result in
                         switch result {
                         case .success(_):
+                            profileManager.update(loginWith: true)
                             goToHome.wrappedValue = true
                         case .failure(_):
                             showSignInError.wrappedValue = true
@@ -83,7 +84,7 @@ class LoginHandler {
         Error>) -> Void
     ) {
         profileManager.update(
-            withNewProfile: Profile(
+            newProfileWith: Profile(
                 id: profileAttributes.id,
                 oauthType: profileAttributes.oauthType,
                 firstName: profileAttributes.firstName!,
@@ -108,6 +109,6 @@ class LoginHandler {
         }
         ApolloLynxClient.clearCache()
         BookmarkManager.shared.removeAllBookmarks()
-        ProfileManager.shared.deleteProfile()
+        ProfileManager.shared.update(loginWith: false) // Keychain clean up deletes profile ¯\_(ツ)_/¯
     }
 }

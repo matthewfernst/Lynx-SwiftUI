@@ -48,7 +48,7 @@ struct HomeView: View {
         
         center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {
-                profileManager.update(withNotifcationsAllowed: granted)
+                profileManager.update(notifcationsAllowedWith: granted)
             }
             if granted {
                 Logger.homeView.debug("Notifications granted")

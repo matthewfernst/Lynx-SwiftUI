@@ -17,7 +17,7 @@ struct Lynx_SwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if profileManager.profile != nil {
+                if profileManager.isSignedIn {
                     HomeView()
                 } else {
                     LoginView()

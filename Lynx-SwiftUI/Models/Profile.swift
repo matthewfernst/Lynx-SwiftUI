@@ -19,6 +19,7 @@ final class Profile {
     var profilePictureURL: URL?
     var measurementSystem: MeasurementSystem = Profile.getDefaultMeasurementSystem()
     var notificationsAllowed: Bool?
+    var isSignedIn = false
     
     init(
         id: String,

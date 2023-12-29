@@ -33,6 +33,10 @@ import OSLog
     private(set) var profilePicture: Image?
     
     // MARK: - Intent's
+    var isSignedIn: Bool {
+        profile?.isSignedIn ?? false
+    }
+    
     var measurementSystem: MeasurementSystem {
         profile?.measurementSystem ?? .imperial
     }
@@ -51,22 +55,28 @@ import OSLog
         saveProfile()
     }
     
-    func update(withNewProfile newProfile: Profile) {
+    func update(loginWith loggedIn: Bool) {
+        if let profile {
+            profile.isSignedIn = loggedIn
+        }
+    }
+    
+    func update(newProfileWith newProfile: Profile) {
         deleteProfile()
         modelContext?.insert(newProfile)
         fetchProfile()
     }
     
-    func update(withNewProfilePictureURL newURL: URL) {
+    func update(newProfilePictureURLWith newURL: URL) {
         profile?.profilePictureURL = newURL
         downloadProfilePicture(withURL: newURL)
     }
     
-    func update(withMeasurementSystem newSystem: MeasurementSystem) {
+    func update(measurementSystemWith newSystem: MeasurementSystem) {
         profile?.measurementSystem = newSystem
     }
     
-    func update(withNotifcationsAllowed allowed: Bool) {
+    func update(notifcationsAllowedWith allowed: Bool) {
         profile?.notificationsAllowed = allowed
     }
     

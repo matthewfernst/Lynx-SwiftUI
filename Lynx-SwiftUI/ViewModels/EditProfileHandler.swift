@@ -119,7 +119,7 @@ class EditProfileHandler {
             getDataAsync(from: newProfilePictureURL) { currentData in
                 if newData == currentData {
                     DispatchQueue.main.async {
-                        profileManager.update(withNewProfilePictureURL: newProfilePictureURL)
+                        profileManager.update(newProfilePictureURLWith: newProfilePictureURL)
                         completion() // Dismiss view and stop ProgressView
                     }
                 } else {
@@ -133,7 +133,7 @@ class EditProfileHandler {
                     } else {
                         // Maximum attempts reached, stop polling
                         DispatchQueue.main.async {
-                            profileManager.update(withNewProfilePictureURL: newProfilePictureURL)
+                            profileManager.update(newProfilePictureURLWith: newProfilePictureURL)
                             completion()
                         }
                     }
