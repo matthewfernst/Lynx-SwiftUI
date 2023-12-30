@@ -10,14 +10,23 @@ import SwiftUI
 import GoogleSignIn
 
 class GoogleSignInHandler {
-    func signIn(showErrorSigningIn: Binding<Bool>, completion: @escaping (ProfileAttributes, String) -> Void) {
+    func signIn(
+        isSigningIn: Binding<Bool>,
+        showErrorSigningIn: Binding<Bool>,
+        completion: @escaping (ProfileAttributes, String) -> Void
+    ) {
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first,
            let rootViewController = window.rootViewController {
             GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { signInResult, error in
                 guard error == nil else {
-                    showErrorSigningIn.wrappedValue = true
+                    let err = error as? NSError
+                    if err!.domain == kGIDSignInErrorDomain && err!.code == -5 {
+                        isSigningIn.wrappedValue = false
+                    } else {
+                        showErrorSigningIn.wrappedValue = true
+                    }
                     return
                 }
                 

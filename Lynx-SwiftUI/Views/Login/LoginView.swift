@@ -8,14 +8,15 @@
 import SwiftUI
 import AuthenticationServices
 import GoogleSignInSwift
+import FacebookLogin
 
 struct LoginView: View {
     @Environment(ProfileManager.self) private var profileManager
     
     private var loginHandler = LoginHandler()
-    private var googleSignInHandler = GoogleSignInHandler()
     private var appleSignInHandler = AppleSignInHandler()
-    
+    private var googleSignInHandler = GoogleSignInHandler()
+    private var facebookSignInHandler = FacebookSignInHandler()
     
     @State private var goToHome = false
     @State private var showSignInError = false
@@ -26,6 +27,7 @@ struct LoginView: View {
     @State private var moveInLogo = false
     @State private var moveInApple = false
     @State private var moveInGoogle = false
+    @State private var moveInFacebook = false
     
     var body: some View {
         ZStack {
@@ -65,6 +67,10 @@ struct LoginView: View {
                 } completion: {
                     withAnimation {
                         moveInGoogle = true   
+                    } completion: {
+                        withAnimation {
+                            moveInFacebook = true
+                        }
                     }
                 }
             }
@@ -113,15 +119,14 @@ struct LoginView: View {
             width: Constants.SignInButton.width,
             height: Constants.SignInButton.height
         )
-        .padding()
     }
     
     private var signInWithGoogleButton: some View {
-        Button {
-            withAnimation {
-                isSigningIn = true
-            }
-            googleSignInHandler.signIn(showErrorSigningIn: $showSignInError) { attributes, oauthToken in
+        signInButton(company: "Google") {
+            googleSignInHandler.signIn(
+                isSigningIn: $isSigningIn,
+                showErrorSigningIn: $showSignInError
+            ) { attributes, oauthToken in
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
                     withProfileAttributes: attributes,
@@ -131,10 +136,38 @@ struct LoginView: View {
                     showSignInError: $showSignInError
                 )
             }
-        } label: {
-            googleLogoAndText
         }
-        .buttonStyle(GoogleButtonStyle())
+    }
+    
+    private var signInWithFacebookButton: some View {
+        signInButton(company: "Facebook") {
+            facebookSignInHandler.signIn(
+                isSigningIn: $isSigningIn,
+                showErrorSigningIn: $showSignInError
+            ) { attributes, oauthToken in
+                loginHandler.commonSignIn(
+                    profileManager: profileManager,
+                    withProfileAttributes: attributes,
+                    oauthToken: oauthToken,
+                    goToHome: $goToHome,
+                    showInvitationSheet: $showInvitationSheet,
+                    showSignInError: $showSignInError
+                )
+            }
+        }
+    }
+    
+    private func signInButton(company: String, handler: @escaping () -> Void) -> some View {
+        Button {
+            withAnimation {
+                isSigningIn = true
+            }
+            handler()
+
+        } label: {
+            logoAndSignInText(company: company)
+        }
+        .buttonStyle(SignInButtonStyle())
         .frame(
             width: Constants.SignInButton.width,
             height: Constants.SignInButton.height
@@ -146,7 +179,7 @@ struct LoginView: View {
         )
     }
     
-    struct GoogleButtonStyle: ButtonStyle {
+    private struct SignInButtonStyle: ButtonStyle {
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .frame(maxWidth: .infinity)
@@ -156,14 +189,14 @@ struct LoginView: View {
         }
     }
     
-    private var googleLogoAndText: some View {
+    private func logoAndSignInText(company: String) -> some View {
         HStack(spacing: Constants.SignInButton.spacing) {
-            Image("GoogleLogo")
+            Image("\(company)Logo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: Constants.googleLogoWidth)
+                .frame(width: Constants.logoWidth)
             
-            Text("Sign in with Google")
+            Text("Sign in with \(company)")
                 .foregroundStyle(.black)
                 .font(
                     .system(size: Constants.SignInButton.fontSize,
@@ -171,6 +204,7 @@ struct LoginView: View {
                 )
         }
     }
+    
     
     private var signInProgressView: some View {
         ProgressView("Signing in...")
@@ -182,7 +216,7 @@ struct LoginView: View {
     @ViewBuilder
     private var signLynxLogoAndSignInButtonStack: some View {
         GeometryReader { geometry in
-            VStack {
+            VStack(alignment: .center) {
                 Spacer()
                 Image("LynxLogo")
                     .resizable()
@@ -200,7 +234,9 @@ struct LoginView: View {
                     signInWithAppleButton
                         .offset(y: moveInApple ? 0 : 200)
                     signInWithGoogleButton
-                        .offset(y: moveInGoogle ? 0 : 100)
+                        .offset(y: moveInGoogle ? 0 : 200)
+                    signInWithFacebookButton
+                        .offset(y: moveInFacebook ? 0 : 200)
                 }
                 Spacer()
             }
@@ -226,7 +262,7 @@ struct LoginView: View {
             static let spacing: CGFloat = 4
         }
         
-        static let googleLogoWidth: CGFloat = 12
+        static let logoWidth: CGFloat = 14
     }
 }
 

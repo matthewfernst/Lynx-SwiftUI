@@ -8,11 +8,13 @@
 import SwiftUI
 import SwiftData
 import GoogleSignIn
-
+import FBSDKLoginKit
 @main
 struct Lynx_SwiftUIApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @State private var profileManager = ProfileManager.shared
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {

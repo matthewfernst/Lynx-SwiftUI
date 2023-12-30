@@ -441,5 +441,53 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "982E5536-9924-4914-BF5C-98B0C7F37EE0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lynx-SwiftUI/ViewModels/SignIn/GoogleSignInHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "signIn(isSigningIn:showErrorSigningIn:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "982E5536-9924-4914-BF5C-98B0C7F37EE0 - 7279cc4dbcb8d508"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.GoogleSignInHandler.signIn(showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/GoogleSignInHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "912">
+               </Location>
+               <Location
+                  uuid = "982E5536-9924-4914-BF5C-98B0C7F37EE0 - 5a7e1f94585bdc14"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.GoogleSignInHandler.signIn(isSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
+                  moduleName = "Lynx-SwiftUI"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/GoogleSignInHandler.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "1112">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

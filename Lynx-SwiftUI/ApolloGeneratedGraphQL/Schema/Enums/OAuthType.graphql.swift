@@ -7,6 +7,7 @@ public extension ApolloGeneratedGraphQL {
   enum OAuthType: String, EnumType {
     case apple = "APPLE"
     case google = "GOOGLE"
+    case facebook = "FACEBOOK"
   }
 
 }

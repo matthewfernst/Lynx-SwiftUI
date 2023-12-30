@@ -21,6 +21,8 @@ extension Logger {
     
     static let editProfileView = Logger(subsystem: subsystem, category: "EditProfileView")
     
+    static let facebookSignInHandler = Logger(subsystem: subsystem, category: "FacebookSignInHandler")
+    
     static let folderConnectionHandler = Logger(subsystem: subsystem, category: "FolderConnectionHandler")
     
     static let folderConnectionView = Logger(subsystem: subsystem, category: "FolderConnectionView")
