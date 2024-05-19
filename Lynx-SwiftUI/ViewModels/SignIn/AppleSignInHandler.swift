@@ -21,7 +21,7 @@ class AppleSignInHandler {
     ) {
 #if DEBUG
         completion(
-            ProfileAttributes( id: "123456", oauthType: OAuthType.apple.rawValue), "1234"
+            ProfileAttributes( id: "123456", oauthType: OAuthType.apple.rawValue, validatedInvite: true), "1234"
         )
 #endif
         switch result {
@@ -39,6 +39,7 @@ class AppleSignInHandler {
                     .init(
                         id: appleIDCredential.user,
                         oauthType: OAuthType.apple.rawValue,
+                        validatedInvite: true, // TODO: - NEW PROFILE ATTRIBUTES
                         email: appleIDCredential.email,
                         firstName: appleIDCredential.fullName?.givenName,
                         lastName: appleIDCredential.fullName?.familyName

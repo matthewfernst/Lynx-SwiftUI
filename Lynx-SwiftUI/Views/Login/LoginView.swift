@@ -46,15 +46,12 @@ struct LoginView: View {
                 }
         }
         .sheet(isPresented: $showInvitationSheet, content: {
-            InvitationKeyView(isSigningIn: $isSigningIn) { // TODO: Some way to do this better??
-                loginHandler.loginUser(profileManager: profileManager) { result in
-                    switch result {
-                    case .success(_):
-                        goToHome = true
-                    case .failure(_):
-                        showSignInError = true
-                    }
-                }
+            InvitationKeyView(isSigningIn: $isSigningIn) {
+                loginHandler.loginUser(
+                    profileManager: profileManager,
+                    goToHome: $goToHome,
+                    showSignInError: $showSignInError
+                )
             }
             .interactiveDismissDisabled()
         })
@@ -106,7 +103,7 @@ struct LoginView: View {
             appleSignInHandler.onCompletion(result, showErrorSigningIn: $showSignInError) { attributes, oauthToken in
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
-                    withProfileAttributes: attributes,
+                    withOAuthAttributes: attributes,
                     oauthToken: oauthToken,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,
@@ -129,7 +126,7 @@ struct LoginView: View {
             ) { attributes, oauthToken in
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
-                    withProfileAttributes: attributes,
+                    withOAuthAttributes: attributes,
                     oauthToken: oauthToken,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,
@@ -147,7 +144,7 @@ struct LoginView: View {
             ) { attributes, oauthToken in
                 loginHandler.commonSignIn(
                     profileManager: profileManager,
-                    withProfileAttributes: attributes,
+                    withOAuthAttributes: attributes,
                     oauthToken: oauthToken,
                     goToHome: $goToHome,
                     showInvitationSheet: $showInvitationSheet,

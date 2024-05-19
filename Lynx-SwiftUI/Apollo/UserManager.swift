@@ -48,7 +48,7 @@ class UserManager {
         }
         
         func handleLoginOrCreateUser(oauthToken: String) {
-            ApolloLynxClient.loginOrCreateUser(
+            ApolloLynxClient.oauthSignIn(
                 id: profile.id,
                 oauthType: profile.oauthType,
                 oauthToken: oauthToken,

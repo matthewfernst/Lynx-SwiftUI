@@ -22,9 +22,10 @@ class BookmarkManager {
             // Start accessing a security-scoped resource.
             guard url.startAccessingSecurityScopedResource() else {
                 // Handle the failure here.
+                Logger.bookmarkManager.error("Unable to access URL: \(url)")
                 return
             }
-            
+//
             if bookmark?.url == url { return }
             
             // Make sure you release the security-scoped resource when you finish.

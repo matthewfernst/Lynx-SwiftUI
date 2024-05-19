@@ -113,12 +113,12 @@ struct FileUploadProgressView: View {
         }
     }
     
-    private var showIfNotThumbsUp: CGFloat {
-        showThumbsUp ? 0 : 1
-    }
-    
     private var showIfThumbsUp: CGFloat {
         showThumbsUp ? 1 : 0
+    }
+    
+    private var showIfNotThumbsUp: CGFloat {
+        showThumbsUp ? 0 : 1
     }
     
     // MARK: - Constants

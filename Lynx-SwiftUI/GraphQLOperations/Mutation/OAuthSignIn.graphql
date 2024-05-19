@@ -1,4 +1,4 @@
-mutation LoginOrCreateUser($oauthLoginId: OAuthTypeCorrelationInput!, $email: String, $userData: [UserDataPair!]) {
+mutation OAuthSignIn($oauthLoginId: OAuthTypeCorrelationInput!, $email: String, $userData: [UserDataPair!]) {
   oauthSignIn(
     oauthLoginId: $oauthLoginId
     email: $email,

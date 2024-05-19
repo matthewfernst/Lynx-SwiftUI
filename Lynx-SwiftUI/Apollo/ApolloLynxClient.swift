@@ -129,6 +129,7 @@ class ApolloLynxClient {
                 let profileAttributes = ProfileAttributes(
                     id: id,
                     oauthType: oauthType.rawValue,
+                    validatedInvite: selfLookup.validatedInvite,
                     email: selfLookup.email,
                     firstName: selfLookup.firstName,
                     lastName: selfLookup.lastName,
@@ -164,7 +165,7 @@ class ApolloLynxClient {
         }
     }
     
-    static func loginOrCreateUser(
+    static func oauthSignIn(
         id: String,
         oauthType: String,
         oauthToken: String,
@@ -172,18 +173,17 @@ class ApolloLynxClient {
         firstName: String?,
         lastName: String?,
         profilePictureUrl: URL?,
-        completion: @escaping (Result<Bool,
-        Error>) -> Void
+        completion: @escaping (Result<ApolloGeneratedGraphQL.ID, Error>) -> Void
     ) {
         
 
-        Logger.apollo.debug("Login in with following: type               -> \(oauthType)")
-        Logger.apollo.debug("                         id                 -> \(id)")
-        Logger.apollo.debug("                         token              -> \(oauthToken)")
-        Logger.apollo.debug("                         email              -> \(email ?? "nil")")
-        Logger.apollo.debug("                         firstName          -> \(firstName ?? "nil")")
-        Logger.apollo.debug("                         lastName           -> \(lastName ?? "nil")")
-        Logger.apollo.debug("                         profilePictureUrl  -> \(profilePictureUrl?.absoluteString ?? "nil")")
+        Logger.apollo.debug("Sign with following: type               -> \(oauthType)")
+        Logger.apollo.debug("                     id                 -> \(id)")
+        Logger.apollo.debug("                     token              -> \(oauthToken)")
+        Logger.apollo.debug("                     email              -> \(email ?? "nil")")
+        Logger.apollo.debug("                     firstName          -> \(firstName ?? "nil")")
+        Logger.apollo.debug("                     lastName           -> \(lastName ?? "nil")")
+        Logger.apollo.debug("                     profilePictureUrl  -> \(profilePictureUrl?.absoluteString ?? "nil")")
 
         
         var userData: [ApolloGeneratedGraphQL.UserDataPair] = []
@@ -206,20 +206,20 @@ class ApolloLynxClient {
             emailNullable = GraphQLNullable<String>(stringLiteral: email!)
         }
         
-        apolloClient.perform(mutation: ApolloGeneratedGraphQL.LoginOrCreateUserMutation(
+        apolloClient.perform(mutation: ApolloGeneratedGraphQL.OAuthSignInMutation(
             oauthLoginId: oauthLoginId,
             email: emailNullable,
             userData: userDataNullable)) { result in
             switch result {
             case .success(let graphQLResult):
-                guard let data = graphQLResult.data?.createUserOrSignIn else {
+                guard let data = graphQLResult.data?.oauthSignIn else {
                     let error = UserError.noAuthorizationTokenReturned
                     completion(.failure(error))
                     return
                 }
                 
-                let authorizationToken = data.token
-                Logger.apollo.debug("OUR TOKEN ->                 \(authorizationToken)")
+                let authorizationToken = data.accessToken
+                Logger.apollo.debug("ACCESS TOKEN ->                 \(authorizationToken)")
                 guard let expiryInMilliseconds = Double(data.expiryDate) else {
                     Logger.apollo.error("Could not convert expiryDate to Double.")
                     return
@@ -230,7 +230,7 @@ class ApolloLynxClient {
                     expirationDate: Date(timeIntervalSince1970: expiryInMilliseconds / 1000)
                 )
                 
-                completion(.success((data.validatedInvite)))
+                completion(.success((data.refreshToken)))
                 
             case .failure(let error):
                 Logger.apollo.error("LoginOrCreateUser mutation failed with Error: \(error)")
@@ -436,25 +436,26 @@ class ApolloLynxClient {
             case BackendCouldntDelete
         }
         
-        let deleteUserOptions = ApolloGeneratedGraphQL.DeleteUserOptions(tokensToInvalidate: GraphQLNullable<[ApolloGeneratedGraphQL.InvalidateTokenOption]>(arrayLiteral: ApolloGeneratedGraphQL.InvalidateTokenOption(token: token, type: GraphQLEnum(type))))
-        
-        apolloClient.perform(mutation: ApolloGeneratedGraphQL.DeleteAccountMutation(options: deleteUserOptions)) { result in
-            switch result {
-            case .success(let graphQLResult):
-                guard let _ = graphQLResult.data?.deleteUser.id else {
-                    Logger.apollo.error("Couldn't unwrap delete user.")
-                    completion(.failure(DeleteAccountErrors.UnwrapOfReturnedUserFailed))
-                    return
-                }
-                
-                Logger.apollo.info("Successfully deleted user.")
-                completion(.success(()))
-                
-            case .failure(let error):
-                Logger.apollo.error("Failed to delete user: \(error)")
-                completion(.failure(DeleteAccountErrors.BackendCouldntDelete))
-            }
-        }
+        // TODO: - FIX ME
+//        let deleteUserOptions = ApolloGeneratedGraphQL.DeleteUserOptions(tokensToInvalidate: GraphQLNullable<[ApolloGeneratedGraphQL.InvalidateTokenOption]>(arrayLiteral: ApolloGeneratedGraphQL.InvalidateTokenOption(type: GraphQLEnum(type), token: token)))
+//        
+//        apolloClient.perform(mutation: ApolloGeneratedGraphQL.DeleteAccountMutation(options: deleteUserOptions)) { result in
+//            switch result {
+//            case .success(let graphQLResult):
+//                guard let _ = graphQLResult.data?.deleteUser.id else {
+//                    Logger.apollo.error("Couldn't unwrap delete user.")
+//                    completion(.failure(DeleteAccountErrors.UnwrapOfReturnedUserFailed))
+//                    return
+//                }
+//                
+//                Logger.apollo.info("Successfully deleted user.")
+//                completion(.success(()))
+//                
+//            case .failure(let error):
+//                Logger.apollo.error("Failed to delete user: \(error)")
+//                completion(.failure(DeleteAccountErrors.BackendCouldntDelete))
+//            }
+//        }
     }
     
     static func mergeAccount(with account: ApolloGeneratedGraphQL.OAuthTypeCorrelationInput, completion: @escaping ((Result<Void, Error>) -> Void)) {
@@ -612,6 +613,7 @@ class ApolloLynxClient {
 struct ProfileAttributes: CustomDebugStringConvertible {
     var id: String
     var oauthType: String
+    var validatedInvite: Bool
     var email: String? = nil
     var firstName: String? = nil
     var lastName: String? = nil
@@ -620,6 +622,7 @@ struct ProfileAttributes: CustomDebugStringConvertible {
     init(
         id: String,
         oauthType: String,
+        validatedInvite: Bool,
         email: String? = nil,
         firstName: String? = nil,
         lastName: String? = nil,
@@ -627,6 +630,7 @@ struct ProfileAttributes: CustomDebugStringConvertible {
     ) {
         self.id = id
         self.oauthType = oauthType
+        self.validatedInvite = validatedInvite
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -637,6 +641,7 @@ struct ProfileAttributes: CustomDebugStringConvertible {
        """
        id: \(self.id)
        oauthType: \(self.oauthType)
+       validatedInvite: \(self.validatedInvite)
        firstName: \(self.firstName ?? "Johnny")
        lastName: \(self.lastName ?? "Appleseed")
        email: \(self.email ?? "johnny.appleseed@email.com")

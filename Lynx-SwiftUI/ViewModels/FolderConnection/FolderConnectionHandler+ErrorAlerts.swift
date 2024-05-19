@@ -42,7 +42,7 @@ extension FolderConnectionHandler {
     func showWrongDirectorySelected(directory: String) {
         errorAlert = Alert(
             title: Text("Wrong Directory Selected"),
-            message: Text("The correct directory for uploading 'Slopes', but recieved '\(directory)'. Please try again.")
+            message: Text("The correct directory for uploading is 'Slopes/GPSLogs', but recieved '\(directory)'. Please try again.")
         )
     }
 }

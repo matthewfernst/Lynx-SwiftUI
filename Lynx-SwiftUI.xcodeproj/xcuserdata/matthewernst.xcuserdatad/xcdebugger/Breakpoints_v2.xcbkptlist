@@ -18,83 +18,6 @@
             endingLineNumber = "29"
             landmarkName = "onCompletion(_:showErrorSigningIn:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - ea29554fca78941b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "23"
-                  endingLineNumber = "23"
-                  offsetFromSymbolStart = "328">
-               </Location>
-               <Location
-                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - ee53305cf2e3b634"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "23"
-                  endingLineNumber = "23"
-                  offsetFromSymbolStart = "1236">
-               </Location>
-               <Location
-                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - ea29554fca78941b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "23"
-                  endingLineNumber = "23"
-                  offsetFromSymbolStart = "452">
-               </Location>
-               <Location
-                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - efc926e792b300c4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "340">
-               </Location>
-               <Location
-                  uuid = "2D8A65E5-E117-41B0-894E-FC62727D68CC - cb3c036ab788cbc9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "1252">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -116,192 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A14FB0D1-B56C-4A03-94EE-98371E0FBCA2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "onCompletion(_:showErrorSigningIn:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A14FB0D1-B56C-4A03-94EE-98371E0FBCA2 - 55c792179f5be081"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "340">
-               </Location>
-               <Location
-                  uuid = "A14FB0D1-B56C-4A03-94EE-98371E0FBCA2 - 55c792179f5be081"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "492">
-               </Location>
-               <Location
-                  uuid = "A14FB0D1-B56C-4A03-94EE-98371E0FBCA2 - 7132b79aba602b8c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "1596">
-               </Location>
-               <Location
-                  uuid = "A14FB0D1-B56C-4A03-94EE-98371E0FBCA2 - 7132b79aba602b8c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "1248">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "onCompletion(_:showErrorSigningIn:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57 - 55c792179f5be081"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "340">
-               </Location>
-               <Location
-                  uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57 - 55c792179f5be081"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "29"
-                  endingLineNumber = "29"
-                  offsetFromSymbolStart = "492">
-               </Location>
-               <Location
-                  uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57 - 7132b79aba602bad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "1516">
-               </Location>
-               <Location
-                  uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57 - 7132b79aba602bad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "1580">
-               </Location>
-               <Location
-                  uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57 - 7132b79aba602bad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "1168">
-               </Location>
-               <Location
-                  uuid = "64D7740D-32AE-44C9-8C5A-E6ED6BD48A57 - 7132b79aba602bad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "1232">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "3965B30B-437A-417B-9AED-D9D7A560978D"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -309,135 +46,9 @@
             filePath = "Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "onCompletion(_:showErrorSigningIn:completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "3965B30B-437A-417B-9AED-D9D7A560978D - 55c792179f5bfd4a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "54"
-                  endingLineNumber = "54"
-                  offsetFromSymbolStart = "752">
-               </Location>
-               <Location
-                  uuid = "3965B30B-437A-417B-9AED-D9D7A560978D - 55c792179f5bfd4a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[2] = Dead, Arg[3] = Owned To Guaranteed&gt; of function signature specialization &lt;Arg[2] = [Closure Propagated : closure #1 (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; () in closure #2 (Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.LoginView.(signInWithAppleButton in _A49CB866F8515F95529E49A8D16F0DC3).getter : some, Argument Types : [Lynx_SwiftUI.LoginView]&gt; of Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "54"
-                  endingLineNumber = "54"
-                  offsetFromSymbolStart = "908">
-               </Location>
-               <Location
-                  uuid = "3965B30B-437A-417B-9AED-D9D7A560978D - 7132b79aba603664"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "53"
-                  endingLineNumber = "53"
-                  offsetFromSymbolStart = "5616">
-               </Location>
-               <Location
-                  uuid = "3965B30B-437A-417B-9AED-D9D7A560978D - 7132b79aba603664"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.AppleSignInHandler.onCompletion(_: Swift.Result&lt;__C.ASAuthorization, Swift.Error&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/AppleSignInHandler.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "53"
-                  endingLineNumber = "53"
-                  offsetFromSymbolStart = "5220">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F797F15A-9887-4C49-AF39-8F939C086859"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "renewToken(completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "F797F15A-9887-4C49-AF39-8F939C086859 - 6d257803a2188dd5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Lynx_SwiftUI.UserManager.renewToken(completion: (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/UserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "73"
-                  endingLineNumber = "73"
-                  offsetFromSymbolStart = "624">
-               </Location>
-               <Location
-                  uuid = "F797F15A-9887-4C49-AF39-8F939C086859 - ca6c198d9f60ce03"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDGoogleUser&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.UserManager.renewToken(completion: (Swift.Result&lt;Swift.String, Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Lynx-SwiftUI"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/Apollo/UserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "73"
-                  endingLineNumber = "73"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B5EB3ED9-D1F6-4358-9955-D5FC98730B34"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Lynx-SwiftUI/Apollo/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "renewToken(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -455,36 +66,50 @@
             endingLineNumber = "28"
             landmarkName = "signIn(isSigningIn:showErrorSigningIn:completion:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "75F9915D-AAEA-4A13-A03B-28D38CA5193F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lynx-SwiftUI/ViewModels/FolderConnection/FolderConnectionHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "uploadNewFiles(_:completion:)"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "982E5536-9924-4914-BF5C-98B0C7F37EE0 - 7279cc4dbcb8d508"
+                  uuid = "75F9915D-AAEA-4A13-A03B-28D38CA5193F - 79be68ba062ac35b"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.GoogleSignInHandler.signIn(showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
+                  symbolName = "function signature specialization &lt;Arg[0] = [Closure Propagated : function signature specialization &lt;Arg[1] = [Constant Propagated Function : closure #1 (Foundation.URL) -&gt; Swift.Bool in Lynx_SwiftUI.FolderConnectionHandler.uploadNewFiles(_: Swift.Array&lt;Foundation.URL&gt;, completion: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; ()]&gt; of generic specialization &lt;Swift.Array&lt;Foundation.URL&gt;&gt; of closure #1 (A.Element) throws -&gt; Swift.Bool in (extension in Swift):Swift.Sequence.allSatisfy((A.Element) throws -&gt; Swift.Bool) throws -&gt; Swift.Bool, Argument Types : []&gt; of generic specialization &lt;Swift.Array&lt;Foundation.URL&gt;&gt; of Swift.Sequence.contains(where: (&#x3c4;_0_0.Element) throws -&gt; Swift.Bool) throws -&gt; Swift.Bool"
                   moduleName = "Lynx-SwiftUI"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/GoogleSignInHandler.swift"
+                  urlString = "file:///Users/matthewernst/Developer/ios/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/FolderConnection/FolderConnectionHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
-                  offsetFromSymbolStart = "912">
+                  startingLineNumber = "195"
+                  endingLineNumber = "195">
                </Location>
                <Location
-                  uuid = "982E5536-9924-4914-BF5C-98B0C7F37EE0 - 5a7e1f94585bdc14"
+                  uuid = "75F9915D-AAEA-4A13-A03B-28D38CA5193F - c6131c4714c4d748"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Lynx_SwiftUI.GoogleSignInHandler.signIn(isSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, showErrorSigningIn: SwiftUI.Binding&lt;Swift.Bool&gt;, completion: (Lynx_SwiftUI.ProfileAttributes, Swift.String) -&gt; ()) -&gt; ()"
+                  symbolName = "Lynx_SwiftUI.FolderConnectionHandler.uploadNewFiles(_: Swift.Array&lt;Foundation.URL&gt;, completion: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; ()"
                   moduleName = "Lynx-SwiftUI"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewernst/Developer/iOS/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/SignIn/GoogleSignInHandler.swift"
+                  urlString = "file:///Users/matthewernst/Developer/ios/Lynx-SwiftUI/Lynx-SwiftUI/ViewModels/FolderConnection/FolderConnectionHandler.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "28"
-                  endingLineNumber = "28"
-                  offsetFromSymbolStart = "1112">
+                  startingLineNumber = "195"
+                  endingLineNumber = "195">
                </Location>
             </Locations>
          </BreakpointContent>

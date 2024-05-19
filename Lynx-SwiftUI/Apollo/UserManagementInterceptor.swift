@@ -38,7 +38,7 @@ class UserManagementInterceptor: ApolloInterceptor {
     ) {
         
         // Bypass token check for login mutation
-        if request.operation is ApolloGeneratedGraphQL.LoginOrCreateUserMutation {
+        if request.operation is ApolloGeneratedGraphQL.OAuthSignInMutation {
             UserManager.shared.token = nil
             chain.proceedAsync(request: request,
                                response: response,

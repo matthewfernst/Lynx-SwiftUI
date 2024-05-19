@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVKit
 import OSLog
 
 struct FolderConnectionView: View {
@@ -14,6 +15,8 @@ struct FolderConnectionView: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var showDocumentPicker = false
+    @State var dismissForUpload: Bool = false
+    @State private var player: AVPlayer? = nil
     
     var body: some View {
         NavigationStack {
@@ -26,12 +29,10 @@ struct FolderConnectionView: View {
                 ) { result in
                     switch result {
                     case .success(let url):
-                        folderConnectionHandler.picker(didPickDocumentsAt: url)
-                        dismiss()
-                        // Let a small amount of time pass for this view to dismiss
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            showUploadProgressView = true
-                        }
+                        folderConnectionHandler.picker(
+                            didPickDocumentsAt: url,
+                            dismissForUpload: $dismissForUpload
+                        )
                     case .failure(let error):
                         Logger.folderConnectionView.error(
                             "Failed in selecting folder with error: \(error)"
@@ -41,11 +42,26 @@ struct FolderConnectionView: View {
                 .alert(isPresented: $folderConnectionHandler.showError) {
                     folderConnectionHandler.errorAlert!
                 }
+                .onChange(of: dismissForUpload) { _, newValue in
+                    if newValue {
+                        dismiss()
+                        // Let a small amount of time pass for this view to dismiss
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showUploadProgressView = true
+                        }
+                    }
+                }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
                             dismiss()
                         }
+                    }
+                }
+                .onAppear {
+                    if let url = Bundle.main.url(forResource: "HowToUpload", withExtension: "mov") {
+                        player = AVPlayer(url: url)
+                        player?.play()
                     }
                 }
         }
@@ -56,11 +72,11 @@ struct FolderConnectionView: View {
             Text(Constants.howToUploadInformation)
                 .multilineTextAlignment(.center)
                 .frame(maxHeight: .infinity)
-            Image("StepsToUpload")
-                .resizable()
-                .scaledToFill()
-                .padding()
-                .frame(maxHeight: .infinity)
+            if let player {
+                VideoPlayer(player: player)
+                    .aspectRatio(2/3, contentMode: .fill)
+                    .padding()
+            }
             Button("Continue") {
                 showDocumentPicker = true
             }
@@ -72,7 +88,7 @@ struct FolderConnectionView: View {
     
     private struct Constants {
         static let howToUploadInformation = """
-                                            To upload, please follow the instructions illustrated below. When you are ready, click the 'Continue' button and select the correct directory
+                                            To upload, please follow the instructions illustrated below. When you are ready, click the 'Continue' button and select the correct directory.
                                             """
     }
 }
